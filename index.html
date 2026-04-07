@@ -7,181 +7,97 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background: linear-gradient(160deg, #0f0c29, #302b63, #24243e);
-  min-height:100vh; font-family:'Poppins',sans-serif; padding:20px;
-}
+body { background:linear-gradient(160deg,#0f0c29,#302b63,#24243e); min-height:100vh; font-family:'Poppins',sans-serif; padding:20px; }
 .wrap { max-width:460px; margin:0 auto; }
-
-/* Header */
-.header { text-align:center; margin-bottom:24px; position:relative; }
-.header-bg {
-  background: linear-gradient(135deg, #f7c948, #ff6b35, #e94560, #a855f7, #3b82f6);
-  border-radius: 20px; padding: 24px 20px; margin-bottom: 0;
-  position: relative; overflow: hidden;
-}
-.header-bg::before {
-  content:''; position:absolute; inset:0;
-  background: rgba(0,0,0,0.3); border-radius:20px;
-}
+.header { text-align:center; margin-bottom:24px; }
+.header-bg { background:linear-gradient(135deg,#f7c948,#ff6b35,#e94560,#a855f7,#3b82f6); border-radius:20px; padding:24px 20px; position:relative; overflow:hidden; }
+.header-bg::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.3); border-radius:20px; }
 .header-bg * { position:relative; z-index:1; }
 .header-icon { font-size:40px; margin-bottom:6px; display:block; }
 .header-bg h1 { font-size:20px; font-weight:900; color:white; letter-spacing:-0.5px; }
 .header-bg .sub { font-size:12px; color:rgba(255,255,255,0.8); font-weight:700; letter-spacing:2px; margin-top:2px; }
-.notice {
-  margin-top:10px; background:rgba(247,201,72,0.15);
-  border:1px solid rgba(247,201,72,0.4); border-radius:10px;
-  padding:8px 16px; font-size:11px; color:rgba(255,255,255,0.6); line-height:1.6;
-}
+.notice { margin-top:10px; background:rgba(247,201,72,0.15); border:1px solid rgba(247,201,72,0.4); border-radius:10px; padding:8px 16px; font-size:11px; color:rgba(255,255,255,0.6); line-height:1.6; }
 .notice strong { color:#f7c948; }
-
-/* Cards */
-.card {
-  border-radius:16px; padding:20px; margin-bottom:14px;
-  backdrop-filter: blur(10px);
-}
+.card { border-radius:16px; padding:20px; margin-bottom:14px; backdrop-filter:blur(10px); }
 .card-1 { background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); }
 .card-2 { background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.3); }
 .card-3 { background:rgba(30,144,255,0.12); border:1px solid rgba(30,144,255,0.3); }
 .card-4 { background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); }
 .card-5 { background:rgba(247,201,72,0.10); border:1px solid rgba(247,201,72,0.3); }
-.card-6 { background:rgba(233,69,96,0.10); border:1px solid rgba(233,69,96,0.3); }
+.card-6 { background:rgba(255,107,53,0.10); border:1px solid rgba(255,107,53,0.3); }
 .card-7 { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); }
-
 .card-title { font-size:12px; font-weight:800; letter-spacing:1px; margin-bottom:14px; }
 .card-1 .card-title { color:#7ecfff; }
 .card-2 .card-title { color:#c084fc; }
 .card-3 .card-title { color:#60a5fa; }
 .card-4 .card-title { color:#6ee7b7; }
 .card-5 .card-title { color:#f7c948; }
-.card-6 .card-title { color:#fb7185; }
+.card-6 .card-title { color:#ffa07a; }
 .card-7 .card-title { color:rgba(255,255,255,0.6); }
-
-label {
-  font-size:11px; font-weight:700; color:rgba(255,255,255,0.45);
-  letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:5px;
-}
+label { font-size:11px; font-weight:700; color:rgba(255,255,255,0.45); letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:5px; }
 label .req { color:#ff8a8a; }
-input, select, textarea {
-  width:100%; padding:10px 14px; border-radius:10px;
-  border:1px solid rgba(255,255,255,0.15);
-  background:rgba(255,255,255,0.07); color:white; font-size:13px;
-  font-family:'Poppins',sans-serif; outline:none; margin-bottom:12px;
-}
+input, select, textarea { width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:white; font-size:13px; font-family:'Poppins',sans-serif; outline:none; margin-bottom:12px; }
 select { background:#1a1035; }
 select option { background:#1a1035; color:white; }
 textarea { resize:none; }
 input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
-
 .toggle-wrap { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
-.toggle-btn {
-  flex:1; padding:9px 10px; border-radius:10px; text-align:center;
-  cursor:pointer; font-size:12px; font-weight:700;
-  border:1px solid rgba(255,255,255,0.12);
-  background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.5);
-  transition:all 0.15s; user-select:none; min-width:80px;
-}
+.toggle-btn { flex:1; padding:9px 10px; border-radius:10px; text-align:center; cursor:pointer; font-size:12px; font-weight:700; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none; min-width:80px; }
 .toggle-btn.active-green { border-color:#10b981; background:rgba(16,185,129,0.2); color:#6ee7b7; }
 .toggle-btn.active-blue { border-color:#3b82f6; background:rgba(59,130,246,0.2); color:#93c5fd; }
-.toggle-btn.active-purple { border-color:#a855f7; background:rgba(168,85,247,0.2); color:#c084fc; }
 .toggle-btn.active-pink { border-color:#e94560; background:rgba(233,69,96,0.2); color:#fda4af; }
-
-.check-option {
-  display:flex; align-items:center; gap:10px; padding:11px 14px;
-  border-radius:10px; margin-bottom:8px; cursor:pointer;
-  border:1px solid rgba(255,255,255,0.12);
-  background:rgba(255,255,255,0.04); transition:all 0.15s;
-}
+.check-option { display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:10px; margin-bottom:8px; cursor:pointer; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); transition:all 0.15s; }
 .check-option.active { border-color:#a855f7; background:rgba(168,85,247,0.15); }
-.check-box {
-  width:16px; height:16px; border-radius:3px; flex-shrink:0;
-  border:2px solid rgba(255,255,255,0.3); background:transparent;
-  display:flex; align-items:center; justify-content:center;
-}
+.check-box { width:16px; height:16px; border-radius:3px; flex-shrink:0; border:2px solid rgba(255,255,255,0.3); background:transparent; display:flex; align-items:center; justify-content:center; }
 .check-box.active { border-color:#a855f7; background:#a855f7; }
 .check-inner { width:8px; height:8px; background:white; border-radius:1px; display:none; }
 .check-box.active .check-inner { display:block; }
 .check-label { font-size:13px; color:rgba(255,255,255,0.6); }
 .check-option.active .check-label { color:white; font-weight:700; }
-
+.date-option { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:10px; margin-bottom:8px; cursor:pointer; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); transition:all 0.15s; }
+.date-option.active { border-color:#f7c948; background:rgba(247,201,72,0.12); }
+.date-radio { width:16px; height:16px; border-radius:50%; flex-shrink:0; border:2px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; }
+.date-radio.active { border-color:#f7c948; }
+.date-dot { width:8px; height:8px; background:#f7c948; border-radius:50%; display:none; }
+.date-radio.active .date-dot { display:block; }
+.date-info { flex:1; }
+.date-label { font-size:13px; color:rgba(255,255,255,0.6); font-weight:600; }
+.date-option.active .date-label { color:#f7c948; font-weight:700; }
+.date-sub { font-size:10px; color:rgba(255,255,255,0.3); margin-top:1px; }
 .size-wrap { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
-.size-btn {
-  padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:700;
-  border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05);
-  color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none;
-}
+.size-btn { padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:700; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none; }
 .size-btn.active { border-color:#10b981; background:rgba(16,185,129,0.25); color:#6ee7b7; }
-
 .num-wrap { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
-.num-btn {
-  padding:7px 14px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:700;
-  border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05);
-  color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none;
-}
+.num-btn { padding:7px 14px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:700; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none; }
 .num-btn.active { border-color:#f7c948; background:rgba(247,201,72,0.2); color:#f7c948; }
-
-.anak-card {
-  background:rgba(247,201,72,0.08); border:1px solid rgba(247,201,72,0.2);
-  border-radius:10px; padding:14px; margin-bottom:10px;
-}
+.anak-card { background:rgba(247,201,72,0.08); border:1px solid rgba(247,201,72,0.2); border-radius:10px; padding:14px; margin-bottom:10px; }
 .anak-title { font-size:11px; font-weight:800; color:#f7c948; margin-bottom:10px; }
-
 .err { color:#ff8a8a; font-size:11px; margin-top:-8px; margin-bottom:8px; display:none; }
-
-.transport-info {
-  background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25);
-  border-radius:10px; padding:12px 14px; margin-top:4px; margin-bottom:4px;
-  font-size:11px; color:rgba(255,255,255,0.5); line-height:1.8;
-}
+.transport-info { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25); border-radius:10px; padding:12px 14px; margin-bottom:12px; font-size:11px; color:rgba(255,255,255,0.5); line-height:1.8; }
 .transport-info strong { color:#7ecfff; }
-
-.budget-option {
-  padding:10px 14px; border-radius:10px; margin-bottom:8px; cursor:pointer; font-size:13px;
-  border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04);
-  color:rgba(255,255,255,0.6); transition:all 0.2s; user-select:none;
-}
-.budget-option.active { border-color:#f7c948; background:rgba(247,201,72,0.15); color:#f7c948; font-weight:700; }
-
-.summary {
-  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(168,85,247,0.1));
-  border:1px solid rgba(168,85,247,0.3); border-radius:16px;
-  padding:16px; margin-bottom:14px; font-size:12px;
-  color:rgba(255,255,255,0.6); line-height:2; display:none;
-}
+.keluarga-row { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px 14px; margin-bottom:10px; }
+.keluarga-label { font-size:13px; color:white; font-weight:600; }
+.keluarga-ctrl { display:flex; align-items:center; gap:10px; }
+.ctrl-btn { width:28px; height:28px; border-radius:50%; border:none; cursor:pointer; font-size:16px; font-weight:900; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+.ctrl-minus { background:rgba(233,69,96,0.3); color:#fda4af; }
+.ctrl-minus:hover { background:rgba(233,69,96,0.5); }
+.ctrl-plus { background:rgba(16,185,129,0.3); color:#6ee7b7; }
+.ctrl-plus:hover { background:rgba(16,185,129,0.5); }
+.ctrl-val { font-size:16px; font-weight:900; color:white; min-width:20px; text-align:center; }
+.summary { background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(168,85,247,0.1)); border:1px solid rgba(168,85,247,0.3); border-radius:16px; padding:16px; margin-bottom:14px; font-size:12px; color:rgba(255,255,255,0.6); line-height:2; display:none; }
 .summary strong { color:white; }
 .summary span { color:#f7c948; font-weight:700; }
-
-.btn-submit {
-  width:100%; padding:14px; border-radius:12px; border:none;
-  background: linear-gradient(90deg, #f7c948, #ff6b35, #e94560, #a855f7);
-  background-size: 200%;
-  color:white; font-size:15px; font-weight:900; cursor:pointer;
-  letter-spacing:1px; font-family:'Poppins',sans-serif; margin-bottom:30px;
-  animation: shimmer 3s linear infinite;
-}
+.btn-submit { width:100%; padding:14px; border-radius:12px; border:none; background:linear-gradient(90deg,#f7c948,#ff6b35,#e94560,#a855f7); background-size:200%; color:white; font-size:15px; font-weight:900; cursor:pointer; letter-spacing:1px; font-family:'Poppins',sans-serif; margin-bottom:30px; animation:shimmer 3s linear infinite; }
 @keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
-
 .hidden { display:none; }
-
-.success {
-  text-align:center;
-  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(168,85,247,0.15));
-  border:1px solid rgba(168,85,247,0.4); border-radius:16px;
-  padding:32px; color:white; display:none;
-}
+.success { text-align:center; background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(168,85,247,0.15)); border:1px solid rgba(168,85,247,0.4); border-radius:16px; padding:32px; color:white; display:none; }
 .success h2 { color:#c084fc; margin-bottom:8px; }
 .success p { font-size:13px; color:rgba(255,255,255,0.6); line-height:2; margin-bottom:20px; }
-.btn-reset {
-  background: linear-gradient(90deg,#a855f7,#3b82f6);
-  color:white; border:none; border-radius:10px; padding:10px 24px;
-  font-weight:800; cursor:pointer; font-size:13px; font-family:'Poppins',sans-serif;
-}
+.btn-reset { background:linear-gradient(90deg,#a855f7,#3b82f6); color:white; border:none; border-radius:10px; padding:10px 24px; font-weight:800; cursor:pointer; font-size:13px; font-family:'Poppins',sans-serif; }
 </style>
 </head>
 <body>
 <div class="wrap">
-
-  <!-- Header -->
   <div class="header">
     <div class="header-bg">
       <span class="header-icon">🚌</span>
@@ -218,6 +134,33 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
       <div class="err" id="err-noHp">Wajib diisi</div>
     </div>
 
+    <!-- Pilihan Tanggal -->
+    <div class="card card-5">
+      <div class="card-title">📅 PILIHAN TANGGAL TOUR</div>
+      <div class="date-option" id="date-1" onclick="pilihTanggal('16-17 Agustus 2026','date-1',['date-2','date-3'])">
+        <div class="date-radio" id="radio-date-1"><div class="date-dot"></div></div>
+        <div class="date-info">
+          <div class="date-label">🗓️ 16 – 17 Agustus 2026</div>
+          <div class="date-sub">Sabtu – Minggu · Setelah HUT RI 🇮🇩</div>
+        </div>
+      </div>
+      <div class="date-option" id="date-2" onclick="pilihTanggal('19-20 September 2026','date-2',['date-1','date-3'])">
+        <div class="date-radio" id="radio-date-2"><div class="date-dot"></div></div>
+        <div class="date-info">
+          <div class="date-label">🗓️ 19 – 20 September 2026</div>
+          <div class="date-sub">Jumat – Sabtu</div>
+        </div>
+      </div>
+      <div class="date-option" id="date-3" onclick="pilihTanggal('26-27 September 2026','date-3',['date-1','date-2'])">
+        <div class="date-radio" id="radio-date-3"><div class="date-dot"></div></div>
+        <div class="date-info">
+          <div class="date-label">🗓️ 26 – 27 September 2026</div>
+          <div class="date-sub">Jumat – Sabtu</div>
+        </div>
+      </div>
+      <div class="err" id="err-tanggal">Wajib dipilih</div>
+    </div>
+
     <!-- Opsi Kehadiran -->
     <div class="card card-2">
       <div class="card-title">🎫 OPSI KEHADIRAN</div>
@@ -240,6 +183,38 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
       <div class="err" id="err-tour">Wajib dipilih</div>
     </div>
 
+    <!-- Data Keluarga -->
+    <div class="card card-6 hidden" id="card-keluarga">
+      <div class="card-title">👨‍👩‍👧‍👦 DATA KELUARGA</div>
+
+      <!-- Istri -->
+      <div class="keluarga-row">
+        <div class="keluarga-label">👩 Istri</div>
+        <div class="keluarga-ctrl">
+          <button class="ctrl-btn ctrl-minus" onclick="ubahIstri(-1)">−</button>
+          <div class="ctrl-val" id="val-istri">0</div>
+          <button class="ctrl-btn ctrl-plus" onclick="ubahIstri(1)">+</button>
+        </div>
+      </div>
+      <div id="istri-input" class="hidden" style="margin-bottom:10px">
+        <input type="text" id="nama-istri" placeholder="Nama istri" style="margin-bottom:0"/>
+      </div>
+
+      <!-- Anak -->
+      <div class="keluarga-row">
+        <div>
+          <div class="keluarga-label">👶 Anak (Belum Menikah)</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">Hanya anak belum menikah</div>
+        </div>
+        <div class="keluarga-ctrl">
+          <button class="ctrl-btn ctrl-minus" onclick="ubahAnak(-1)">−</button>
+          <div class="ctrl-val" id="val-anak">0</div>
+          <button class="ctrl-btn ctrl-plus" onclick="ubahAnak(1)">+</button>
+        </div>
+      </div>
+      <div id="anak-list"></div>
+    </div>
+
     <!-- Transportasi -->
     <div class="card card-3">
       <div class="card-title">🚗 TRANSPORTASI</div>
@@ -248,7 +223,6 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
         Jabodetabek · Sentul · Bogor · Purwakarta · Bandung<br>
         <span style="color:rgba(255,255,255,0.35)">Pertimbangkan jarak tujuan sebelum memilih transportasi.</span>
       </div>
-      <div style="margin-bottom:10px"/>
       <label>Cara Berangkat <span class="req">*</span></label>
       <div class="toggle-wrap">
         <div class="toggle-btn" id="trans-bus" onclick="pilihTransport('Ikut Bus Panitia','trans-bus','trans-mandiri','active-blue')">🚌 Ikut Bus Panitia</div>
@@ -271,27 +245,6 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
       <div class="err" id="err-size-k">Wajib dipilih</div>
     </div>
 
-    <!-- Data Anak -->
-    <div class="card card-5 hidden" id="card-anak">
-      <div class="card-title">👶 DATA ANAK (Belum Menikah)</div>
-      <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6">Hanya daftarkan anak yang <strong style="color:#f7c948">belum menikah</strong>.</p>
-      <label>Jumlah Anak yang Ikut</label>
-      <div class="num-wrap" id="num-anak"></div>
-      <div id="anak-list"></div>
-    </div>
-
-    <!-- Budget -->
-    <div class="card card-6">
-      <div class="card-title">💰 BUDGET YANG DISANGGUPI</div>
-      <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6">Berapa budget per orang yang Anda sanggup keluarkan?</p>
-      <div class="budget-option" onclick="pilihBudget(this,'< Rp 300.000')">⬜ &lt; Rp 300.000</div>
-      <div class="budget-option" onclick="pilihBudget(this,'Rp 300.000 – 500.000')">⬜ Rp 300.000 – 500.000</div>
-      <div class="budget-option" onclick="pilihBudget(this,'Rp 500.000 – 750.000')">⬜ Rp 500.000 – 750.000</div>
-      <div class="budget-option" onclick="pilihBudget(this,'Rp 750.000 – 1.000.000')">⬜ Rp 750.000 – 1.000.000</div>
-      <div class="budget-option" onclick="pilihBudget(this,'> Rp 1.000.000')">⬜ &gt; Rp 1.000.000</div>
-      <div class="err" id="err-budget">Wajib dipilih</div>
-    </div>
-
     <!-- Catatan -->
     <div class="card card-7">
       <div class="card-title">📝 CATATAN KHUSUS</div>
@@ -299,7 +252,6 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
     </div>
 
     <div class="summary" id="summary"></div>
-
     <button class="btn-submit" onclick="submitForm()">DAFTAR SEKARANG 🚌</button>
   </div>
 
@@ -313,14 +265,18 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
 
 <script>
 const sizes = ["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"];
-let state = { tour:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahAnak:0, anak:[], budget:"" };
+let state = {
+  tanggal:"", tour:"", kehadiran:"", transport:"", lenganK:"", sizeK:"",
+  jumlahIstri:0, jumlahAnak:0, anak:[]
+};
 
+// Build sizes
 function buildSizes(id, key) {
   const w = document.getElementById(id);
   w.innerHTML = "";
   sizes.forEach(s => {
     const d = document.createElement("div");
-    d.className = "size-btn" + (state[key]===s?" active":"");
+    d.className = "size-btn"+(state[key]===s?" active":"");
     d.textContent = s;
     d.onclick = () => { state[key]=s; buildSizes(id,key); showErr("err-"+id,""); updateSummary(); };
     w.appendChild(d);
@@ -328,43 +284,19 @@ function buildSizes(id, key) {
 }
 buildSizes("size-k","sizeK");
 
-function buildNumAnak() {
-  const w = document.getElementById("num-anak");
-  w.innerHTML = "";
-  [0,1,2,3,4,5].forEach(n => {
-    const d = document.createElement("div");
-    d.className = "num-btn" + (state.jumlahAnak===n?" active":"");
-    d.textContent = n;
-    d.onclick = () => { state.jumlahAnak=n; state.anak=Array.from({length:n},(_,i)=>state.anak[i]||{nama:"",usia:"",lengan:"",size:""}); buildNumAnak(); buildAnakList(); updateSummary(); };
-    w.appendChild(d);
+// Tanggal
+function pilihTanggal(val, on, offs) {
+  state.tanggal = val;
+  document.getElementById(on).classList.add("active");
+  document.getElementById("radio-"+on).classList.add("active");
+  offs.forEach(o => {
+    document.getElementById(o).classList.remove("active");
+    document.getElementById("radio-"+o).classList.remove("active");
   });
-}
-buildNumAnak();
-
-function buildAnakList() {
-  const w = document.getElementById("anak-list");
-  w.innerHTML = "";
-  state.anak.forEach((a,i) => {
-    const d = document.createElement("div");
-    d.className = "anak-card";
-    d.innerHTML = `
-      <div class="anak-title">Anak ke-${i+1}</div>
-      <label>Nama</label>
-      <input type="text" placeholder="Nama anak" value="${a.nama}" onchange="state.anak[${i}].nama=this.value;updateSummary()"/>
-      <label>Usia (tahun)</label>
-      <input type="number" placeholder="Usia" value="${a.usia}" onchange="state.anak[${i}].usia=this.value;updateSummary()"/>
-      <label>Model Lengan <span class="req">*</span></label>
-      <div class="toggle-wrap">
-        <div class="toggle-btn ${a.lengan==='Lengan Pendek'?'active-green':''}" onclick="state.anak[${i}].lengan='Lengan Pendek';buildAnakList()">👕 Lengan Pendek</div>
-        <div class="toggle-btn ${a.lengan==='Lengan Panjang'?'active-green':''}" onclick="state.anak[${i}].lengan='Lengan Panjang';buildAnakList()">🧥 Lengan Panjang</div>
-      </div>
-      <label>Ukuran Kaos <span class="req">*</span></label>
-      <div class="size-wrap">${sizes.map(s=>`<div class="size-btn ${a.size===s?'active':''}" onclick="state.anak[${i}].size='${s}';buildAnakList()">${s}</div>`).join("")}</div>
-    `;
-    w.appendChild(d);
-  });
+  showErr("err-tanggal",""); updateSummary();
 }
 
+// Tour
 function pilihTour(val, on, off) {
   state.tour = val;
   document.getElementById(on).classList.add("active");
@@ -374,22 +306,63 @@ function pilihTour(val, on, off) {
   showErr("err-tour",""); updateSummary();
 }
 
+// Kehadiran
 function onKehadiranChange() {
   state.kehadiran = document.getElementById("tipeKehadiran").value;
-  document.getElementById("card-anak").classList.toggle("hidden", state.kehadiran !== "Bawa Keluarga");
-  if (state.kehadiran !== "Bawa Keluarga") { state.jumlahAnak=0; state.anak=[]; buildNumAnak(); buildAnakList(); }
+  const keluarga = state.kehadiran === "Bawa Keluarga";
+  document.getElementById("card-keluarga").classList.toggle("hidden", !keluarga);
+  if (!keluarga) { state.jumlahIstri=0; state.jumlahAnak=0; state.anak=[]; renderIstri(); renderAnak(); }
   showErr("err-kehadiran",""); updateSummary();
 }
 
+// Istri
+function ubahIstri(d) {
+  state.jumlahIstri = Math.max(0, Math.min(1, state.jumlahIstri + d));
+  renderIstri(); updateSummary();
+}
+function renderIstri() {
+  document.getElementById("val-istri").textContent = state.jumlahIstri;
+  document.getElementById("istri-input").classList.toggle("hidden", state.jumlahIstri === 0);
+}
+
+// Anak
+function ubahAnak(d) {
+  const n = Math.max(0, Math.min(8, state.jumlahAnak + d));
+  state.jumlahAnak = n;
+  state.anak = Array.from({length:n}, (_,i) => state.anak[i] || {nama:"", usia:""});
+  document.getElementById("val-anak").textContent = n;
+  buildAnakList(); updateSummary();
+}
+
+function buildAnakList() {
+  const w = document.getElementById("anak-list");
+  w.innerHTML = "";
+  state.anak.forEach((a,i) => {
+    const d = document.createElement("div");
+    d.className = "anak-card";
+    d.innerHTML = `
+      <div class="anak-title">👶 Anak ke-${i+1}</div>
+      <label>Nama Anak</label>
+      <input type="text" placeholder="Nama anak" value="${a.nama}"
+        onchange="state.anak[${i}].nama=this.value;updateSummary()" style="margin-bottom:8px"/>
+      <label>Usia (tahun)</label>
+      <input type="number" placeholder="Contoh: 8" min="0" max="25" value="${a.usia}"
+        onchange="state.anak[${i}].usia=this.value;updateSummary()" style="margin-bottom:0"/>
+    `;
+    w.appendChild(d);
+  });
+}
+
+// Transport
 function pilihTransport(val, on, off, cls) {
   state.transport = val;
-  document.getElementById(on).classList.add(cls);
   document.getElementById(on).classList.remove("active-blue","active-pink");
   document.getElementById(on).classList.add(cls);
-  document.getElementById(off).classList.remove("active-blue","active-pink","active-green","active-purple");
+  document.getElementById(off).classList.remove("active-blue","active-pink");
   showErr("err-transport",""); updateSummary();
 }
 
+// Lengan
 function pilihLengan(val, on, off) {
   state.lenganK = val;
   document.getElementById(on).classList.add("active-green");
@@ -397,19 +370,11 @@ function pilihLengan(val, on, off) {
   showErr("err-lengan-k",""); updateSummary();
 }
 
-function pilihBudget(el, val) {
-  state.budget = val;
-  document.querySelectorAll(".budget-option").forEach(b => { b.classList.remove("active"); b.innerHTML = "⬜ " + b.innerHTML.replace("✅ ",""); });
-  el.classList.add("active");
-  el.innerHTML = "✅ " + el.innerHTML.replace("⬜ ","");
-  showErr("err-budget",""); updateSummary();
-}
-
 function showErr(id, msg) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.textContent = msg || "Wajib diisi";
-  el.style.display = !msg ? "none" : "block";
+  el.textContent = msg||"Wajib diisi";
+  el.style.display = !msg?"none":"block";
 }
 
 function updateSummary() {
@@ -417,14 +382,16 @@ function updateSummary() {
   const nama = document.getElementById("nama").value;
   if (!nama && !state.tour) { s.style.display="none"; return; }
   s.style.display = "block";
+  const total = 1 + state.jumlahIstri + state.jumlahAnak;
   let html = `📋 <strong>Ringkasan:</strong><br>`;
   if (nama) html += `👤 ${nama}<br>`;
+  if (state.tanggal) html += `📅 <span>${state.tanggal}</span><br>`;
   if (state.tour) html += `🏕️ <span>${state.tour}</span><br>`;
-  if (state.kehadiran) html += `🎫 <span>${state.kehadiran}</span><br>`;
+  if (state.kehadiran) html += `🎫 <span>${state.kehadiran}</span>`;
+  if (total > 1) html += ` — <span>${total} orang</span>`;
+  if (state.kehadiran) html += `<br>`;
   if (state.transport) html += `🚗 <span>${state.transport}</span><br>`;
   if (state.sizeK) html += `👕 Kaos: ${state.lenganK} / Size <span>${state.sizeK}</span><br>`;
-  if (state.jumlahAnak>0) html += `👶 Anak: <span>${state.jumlahAnak} orang</span><br>`;
-  if (state.budget) html += `💰 Budget: <span>${state.budget}</span><br>`;
   s.innerHTML = html;
 }
 
@@ -435,18 +402,22 @@ async function submitForm() {
   const dept = document.getElementById("dept").value;
   const nik = document.getElementById("nik").value;
   const catatan = document.getElementById("catatan").value;
+  const namaIstri = document.getElementById("nama-istri") ? document.getElementById("nama-istri").value : "";
+
   if (!nama) { showErr("err-nama","Wajib diisi"); ok=false; } else showErr("err-nama","");
   if (!noHp) { showErr("err-noHp","Wajib diisi"); ok=false; } else showErr("err-noHp","");
   if (!dept) { showErr("err-dept","Wajib dipilih"); ok=false; } else showErr("err-dept","");
+  if (!state.tanggal) { showErr("err-tanggal","Wajib dipilih"); ok=false; } else showErr("err-tanggal","");
   if (!state.kehadiran) { showErr("err-kehadiran","Wajib dipilih"); ok=false; } else showErr("err-kehadiran","");
   if (!state.tour) { showErr("err-tour","Wajib dipilih"); ok=false; } else showErr("err-tour","");
   if (!state.transport) { showErr("err-transport","Wajib dipilih"); ok=false; } else showErr("err-transport","");
   if (!state.lenganK) { showErr("err-lengan-k","Wajib dipilih"); ok=false; } else showErr("err-lengan-k","");
   if (!state.sizeK) { showErr("err-size-k","Wajib dipilih"); ok=false; } else showErr("err-size-k","");
-  if (!state.budget) { showErr("err-budget","Wajib dipilih"); ok=false; } else showErr("err-budget","");
   if (!ok) return;
 
-  const anakSummary = state.anak.map((a,i)=>`Anak ${i+1}: ${a.nama} (${a.usia} th) - ${a.lengan} Size ${a.size}`).join(" | ");
+  const anakSummary = state.anak.map((a,i)=>`Anak ${i+1}: ${a.nama||'-'} (${a.usia||'?'} th)`).join(" | ");
+  const total = 1 + state.jumlahIstri + state.jumlahAnak;
+
   const btn = document.querySelector(".btn-submit");
   btn.textContent = "Mengirim... ⏳"; btn.disabled = true;
 
@@ -456,52 +427,55 @@ async function submitForm() {
       headers:{"Content-Type":"application/json","Accept":"application/json"},
       body: JSON.stringify({
         "access_key": "d1928f4a-7e6c-49f0-943f-5e8a2b6b0311",
-        "subject": "Pendaftaran Tour Baru - " + nama,
+        "subject": "Pendaftaran Tour - " + nama,
         "Nama": nama, "NIK": nik||"-", "Section": dept, "No HP": noHp,
-        "Pilihan Tour": state.tour, "Kehadiran": state.kehadiran,
-        "Transportasi": state.transport,
-        "Kaos Karyawan": `${state.lenganK} / Size ${state.sizeK}`,
+        "Tanggal Tour": state.tanggal,
+        "Pilihan Tour": state.tour,
+        "Kehadiran": state.kehadiran,
+        "Jumlah Istri": state.jumlahIstri,
+        "Nama Istri": namaIstri||"-",
         "Jumlah Anak": state.jumlahAnak,
         "Data Anak": anakSummary||"-",
-        "Budget": state.budget, "Catatan": catatan||"-"
+        "Total Peserta": total,
+        "Transportasi": state.transport,
+        "Kaos Karyawan": `${state.lenganK} / Size ${state.sizeK}`,
+        "Catatan": catatan||"-"
       })
     });
     if (res.ok) {
       document.getElementById("formArea").style.display = "none";
-      const total = 1 + state.jumlahAnak;
       document.getElementById("successDetail").innerHTML =
         `Nama: <strong style="color:white">${nama}</strong><br>
+         Tanggal: <strong style="color:#f7c948">${state.tanggal}</strong><br>
          Tour: <strong style="color:#c084fc">${state.tour}</strong><br>
-         Kehadiran: <strong style="color:#c084fc">${state.kehadiran}</strong><br>
-         Transportasi: <strong style="color:#c084fc">${state.transport}</strong><br>
          Total peserta: <strong style="color:#f7c948">${total} orang</strong><br>
-         Kaos: <strong style="color:#6ee7b7">${state.lenganK} / Size ${state.sizeK}</strong><br>
-         Budget: <strong style="color:#f7c948">${state.budget}</strong>`;
+         Transportasi: <strong style="color:#93c5fd">${state.transport}</strong><br>
+         Kaos: <strong style="color:#6ee7b7">${state.lenganK} / Size ${state.sizeK}</strong>`;
       document.getElementById("successArea").style.display = "block";
     } else {
-      alert("Gagal mengirim. Coba lagi ya!");
-      btn.textContent = "DAFTAR SEKARANG 🚌"; btn.disabled = false;
+      alert("Gagal mengirim. Coba lagi ya!"); btn.textContent="DAFTAR SEKARANG 🚌"; btn.disabled=false;
     }
   } catch(e) {
-    alert("Gagal mengirim. Periksa koneksi internet.");
-    btn.textContent = "DAFTAR SEKARANG 🚌"; btn.disabled = false;
+    alert("Gagal mengirim. Periksa koneksi internet."); btn.textContent="DAFTAR SEKARANG 🚌"; btn.disabled=false;
   }
 }
 
 function resetForm() {
-  state = { tour:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahAnak:0, anak:[], budget:"" };
+  state = { tanggal:"", tour:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahIstri:0, jumlahAnak:0, anak:[] };
   document.getElementById("formArea").style.display = "block";
   document.getElementById("successArea").style.display = "none";
-  ["nama","nik","noHp","catatan"].forEach(id => document.getElementById(id).value = "");
-  document.getElementById("dept").value = "";
-  document.getElementById("tipeKehadiran").value = "";
-  document.getElementById("card-anak").classList.add("hidden");
-  buildSizes("size-k","sizeK"); buildNumAnak(); buildAnakList();
-  document.querySelectorAll(".toggle-btn").forEach(el=>el.classList.remove("active-green","active-blue","active-purple","active-pink"));
-  document.querySelectorAll(".check-option,.check-box").forEach(el=>el.classList.remove("active"));
-  document.querySelectorAll(".check-inner").forEach(el=>el.style.display="none");
-  document.querySelectorAll(".budget-option").forEach(el=>{ el.classList.remove("active"); el.innerHTML="⬜ "+el.innerHTML.replace("✅ ",""); });
-  document.getElementById("summary").style.display = "none";
+  ["nama","nik","noHp","catatan"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("dept").value="";
+  document.getElementById("tipeKehadiran").value="";
+  document.getElementById("card-keluarga").classList.add("hidden");
+  document.getElementById("val-istri").textContent="0";
+  document.getElementById("val-anak").textContent="0";
+  document.getElementById("istri-input").classList.add("hidden");
+  buildSizes("size-k","sizeK"); buildAnakList();
+  document.querySelectorAll(".toggle-btn").forEach(el=>el.classList.remove("active-green","active-blue","active-pink"));
+  document.querySelectorAll(".check-option,.check-box,.date-option,.date-radio").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".check-inner,.date-dot").forEach(el=>el.style.display="none");
+  document.getElementById("summary").style.display="none";
 }
 </script>
 </body>
