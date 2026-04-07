@@ -360,11 +360,13 @@ function updateSummary() {
   s.innerHTML = html;
 }
 
-function submitForm() {
+async function submitForm() {
   let ok = true;
   const nama = document.getElementById("nama").value;
   const noHp = document.getElementById("noHp").value;
   const dept = document.getElementById("dept").value;
+  const nik = document.getElementById("nik").value;
+  const catatan = document.getElementById("catatan").value;
   if (!nama) { showErr("err-nama","Wajib diisi"); ok=false; } else showErr("err-nama","");
   if (!noHp) { showErr("err-noHp","Wajib diisi"); ok=false; } else showErr("err-noHp","");
   if (!dept) { showErr("err-dept","Wajib dipilih"); ok=false; } else showErr("err-dept","");
@@ -378,11 +380,52 @@ function submitForm() {
     if (!state.sizeI) { showErr("err-size-i","Wajib dipilih"); ok=false; } else showErr("err-size-i","");
   }
   if (!ok) return;
-  const total = 1 + (state.istri==="Ya"?1:0) + state.jumlahAnak;
-  document.getElementById("formArea").style.display = "none";
-  const sd = document.getElementById("successDetail");
-  sd.innerHTML = `Nama: <strong style="color:white">${nama}</strong><br>Tour: <strong style="color:#f0d080">${state.tour}</strong><br>Kehadiran: <strong style="color:#f0d080">${state.kehadiran}</strong><br>Total peserta: <strong style="color:#f0d080">${total} orang</strong><br>Kaos: <strong style="color:#f0d080">${state.lenganK} / Size ${state.sizeK}</strong><br>Budget: <strong style="color:#f0d080">${state.budget}</strong>`;
-  document.getElementById("successArea").style.display = "block";
+
+  // Build anak summary
+  const anakSummary = state.anak.map((a,i) => `Anak ${i+1}: ${a.nama} (${a.usia} th) - ${a.lengan} Size ${a.size}`).join(" | ");
+
+  // Kirim ke Formspree
+  const btn = document.querySelector(".btn-submit");
+  btn.textContent = "Mengirim...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("https://formspree.io/f/mzdkoelq", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        "Nama": nama,
+        "NIK": nik || "-",
+        "Section": dept,
+        "No HP": noHp,
+        "Pilihan Tour": state.tour,
+        "Kehadiran": state.kehadiran,
+        "Kaos Karyawan": `${state.lenganK} / Size ${state.sizeK}`,
+        "Istri Ikut": state.istri || "Tidak",
+        "Kaos Istri": state.istri==="Ya" ? `${state.lenganI} / Size ${state.sizeI}` : "-",
+        "Jumlah Anak": state.jumlahAnak,
+        "Data Anak": anakSummary || "-",
+        "Budget": state.budget,
+        "Catatan": catatan || "-"
+      })
+    });
+
+    if (res.ok) {
+      const total = 1 + (state.istri==="Ya"?1:0) + state.jumlahAnak;
+      document.getElementById("formArea").style.display = "none";
+      const sd = document.getElementById("successDetail");
+      sd.innerHTML = `Nama: <strong style="color:white">${nama}</strong><br>Tour: <strong style="color:#f0d080">${state.tour}</strong><br>Kehadiran: <strong style="color:#f0d080">${state.kehadiran}</strong><br>Total peserta: <strong style="color:#f0d080">${total} orang</strong><br>Kaos: <strong style="color:#f0d080">${state.lenganK} / Size ${state.sizeK}</strong><br>Budget: <strong style="color:#f0d080">${state.budget}</strong>`;
+      document.getElementById("successArea").style.display = "block";
+    } else {
+      alert("Gagal mengirim. Coba lagi ya!");
+      btn.textContent = "DAFTAR SEKARANG 🚌";
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert("Gagal mengirim. Periksa koneksi internet.");
+    btn.textContent = "DAFTAR SEKARANG 🚌";
+    btn.disabled = false;
+  }
 }
 
 function resetForm() {
