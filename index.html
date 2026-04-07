@@ -1,0 +1,349 @@
+import { useState } from "react";
+
+const deptOptions = [
+  "CCR & Ordering NR Engine Sec",
+  "CCR Plant #2 Prod Indication & Admin Sec",
+  "CCR Vehicle Plant #1 Sec",
+  "Component Ordering & Inventory Mgt. Sec",
+  "Warehouse KRW Plant & Steel Opr Sec",
+  "Warehouse Ordering & Engineering Sec",
+  "Warehouse Plant #3 Sec",
+];
+const sizeOptions = ["S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
+const sleeveOptions = ["Lengan Pendek", "Lengan Panjang"];
+const budgetOptions = ["< Rp 300.000", "Rp 300.000 – 500.000", "Rp 500.000 – 750.000", "Rp 750.000 – 1.000.000", "> Rp 1.000.000"];
+
+const initialForm = {
+  nama: "", nik: "", dept: "", noHp: "",
+  opsiTour: "",
+  tipeKehadiran: "",
+  lenganKaryawan: "", ukuranKaosKaryawan: "",
+  ikutIstri: "",
+  lenganIstri: "", ukuranKaosIstri: "",
+  jumlahAnak: "",
+  anak: [],
+  budget: "",
+  catatan: "",
+};
+
+export default function FormTour() {
+  const [form, setForm] = useState(initialForm);
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+    setErrors(er => ({ ...er, [name]: "" }));
+  }
+
+  function handleJumlahAnak(val) {
+    const n = parseInt(val) || 0;
+    const anak = Array.from({ length: n }, (_, i) => form.anak[i] || { nama: "", usia: "", lengan: "", ukuranKaos: "" });
+    setForm(f => ({ ...f, jumlahAnak: val, anak }));
+  }
+
+  function handleAnak(i, field, val) {
+    const anak = [...form.anak];
+    anak[i] = { ...anak[i], [field]: val };
+    setForm(f => ({ ...f, anak }));
+  }
+
+  function validate() {
+    const e = {};
+    if (!form.nama) e.nama = "Wajib diisi";
+    if (!form.noHp) e.noHp = "Wajib diisi";
+    if (!form.dept) e.dept = "Wajib dipilih";
+    if (!form.opsiTour) e.opsiTour = "Wajib dipilih";
+    if (!form.tipeKehadiran) e.tipeKehadiran = "Wajib dipilih";
+    if (!form.lenganKaryawan) e.lenganKaryawan = "Wajib dipilih";
+    if (!form.ukuranKaosKaryawan) e.ukuranKaosKaryawan = "Wajib dipilih";
+    if (!form.budget) e.budget = "Wajib dipilih";
+    if (form.ikutIstri === "Ya") {
+      if (!form.lenganIstri) e.lenganIstri = "Wajib dipilih";
+      if (!form.ukuranKaosIstri) e.ukuranKaosIstri = "Wajib dipilih";
+    }
+    form.anak.forEach((a, i) => {
+      if (!a.nama) e[`anak_nama_${i}`] = "Wajib diisi";
+      if (!a.usia) e[`anak_usia_${i}`] = "Wajib diisi";
+      if (!a.lengan) e[`anak_lengan_${i}`] = "Wajib dipilih";
+      if (!a.ukuranKaos) e[`anak_kaos_${i}`] = "Wajib dipilih";
+    });
+    return e;
+  }
+
+  function handleSubmit() {
+    const e = validate();
+    if (Object.keys(e).length > 0) { setErrors(e); return; }
+    setSubmitted(true);
+  }
+
+  function reset() { setForm(initialForm); setSubmitted(false); setErrors({}); }
+
+  const totalPeserta = 1 + (form.ikutIstri === "Ya" ? 1 : 0) + form.anak.length;
+
+  if (submitted) return (
+    <div style={{ minHeight:"100vh", background:"linear-gradient(135deg,#0a2010,#1a4020)", display:"flex", alignItems:"center", justifyContent:"center", padding:20, fontFamily:"sans-serif" }}>
+      <div style={{ background:"rgba(255,255,255,0.07)", border:"1px solid rgba(76,175,80,0.4)", borderRadius:16, padding:32, maxWidth:400, width:"100%", textAlign:"center", color:"white" }}>
+        <div style={{ fontSize:52, marginBottom:12 }}>✅</div>
+        <div style={{ fontSize:20, fontWeight:800, color:"#a8e6aa", marginBottom:8 }}>Pendaftaran Terkirim!</div>
+        <div style={{ fontSize:13, color:"rgba(255,255,255,0.6)", marginBottom:16, lineHeight:2 }}>
+          Nama: <strong style={{color:"white"}}>{form.nama}</strong><br/>
+          Tour: <strong style={{color:"#f0d080"}}>{form.opsiTour} 🏕️</strong><br/>
+          Kehadiran: <strong style={{color:"#f0d080"}}>{form.tipeKehadiran}</strong><br/>
+          Total peserta: <strong style={{color:"#f0d080"}}>{totalPeserta} orang</strong><br/>
+          Kaos karyawan: <strong style={{color:"#f0d080"}}>{form.lenganKaryawan} / Size {form.ukuranKaosKaryawan}</strong><br/>
+          Budget: <strong style={{color:"#f0d080"}}>{form.budget}</strong>
+        </div>
+        <button onClick={reset} style={{ background:"linear-gradient(90deg,#4caf50,#2e7d32)", color:"white", border:"none", borderRadius:10, padding:"10px 24px", fontWeight:800, cursor:"pointer", fontSize:13 }}>
+          Isi Form Baru
+        </button>
+      </div>
+    </div>
+  );
+
+  const inputStyle = (err) => ({
+    width:"100%", padding:"10px 14px", borderRadius:10,
+    border: err ? "1px solid #ff6b6b" : "1px solid rgba(255,255,255,0.15)",
+    background:"rgba(255,255,255,0.07)", color:"white", fontSize:13, outline:"none", boxSizing:"border-box"
+  });
+
+  const Label = ({text, required}) => (
+    <div style={{ fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.45)", letterSpacing:1, textTransform:"uppercase", marginBottom:5 }}>
+      {text} {required && <span style={{color:"#ff8a8a"}}>*</span>}
+    </div>
+  );
+
+  const Err = ({msg}) => msg ? <div style={{color:"#ff8a8a",fontSize:11,marginTop:3,marginBottom:4}}>{msg}</div> : null;
+
+  const TogglePick = ({options, value, onChange, error}) => (
+    <div>
+      <div style={{ display:"flex", gap:8 }}>
+        {options.map(o => (
+          <div key={o} onClick={() => onChange(o)}
+            style={{ flex:1, padding:"9px 10px", borderRadius:10, textAlign:"center", cursor:"pointer", fontSize:12, fontWeight:700,
+              border: value===o ? "1px solid #4caf50" : "1px solid rgba(255,255,255,0.12)",
+              background: value===o ? "rgba(76,175,80,0.2)" : "rgba(255,255,255,0.04)",
+              color: value===o ? "#a8e6aa" : "rgba(255,255,255,0.5)", transition:"all 0.15s" }}>
+            {o}
+          </div>
+        ))}
+      </div>
+      <Err msg={error}/>
+    </div>
+  );
+
+  const SizePicker = ({value, onChange, error}) => (
+    <div>
+      <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+        {sizeOptions.map(s => (
+          <div key={s} onClick={() => onChange(s)}
+            style={{ padding:"6px 12px", borderRadius:8, cursor:"pointer", fontSize:12, fontWeight:700,
+              border: value===s ? "1px solid #4caf50" : "1px solid rgba(255,255,255,0.15)",
+              background: value===s ? "rgba(76,175,80,0.25)" : "rgba(255,255,255,0.05)",
+              color: value===s ? "#a8e6aa" : "rgba(255,255,255,0.5)", transition:"all 0.15s" }}>
+            {s}
+          </div>
+        ))}
+      </div>
+      <Err msg={error}/>
+    </div>
+  );
+
+  const KaosSection = ({lenganVal, onLengan, lenganErr, sizeVal, onSize, sizeErr}) => (
+    <>
+      <Label text="Model Lengan" required/>
+      <TogglePick options={sleeveOptions} value={lenganVal} onChange={onLengan} error={lenganErr}/>
+      <div style={{marginTop:12}}/>
+      <Label text="Ukuran" required/>
+      <SizePicker value={sizeVal} onChange={onSize} error={sizeErr}/>
+    </>
+  );
+
+  const card = (title, emoji, children, borderColor="rgba(76,175,80,0.2)") => (
+    <div style={{ background:"rgba(255,255,255,0.05)", border:`1px solid ${borderColor}`, borderRadius:16, padding:20, marginBottom:14 }}>
+      <div style={{ fontSize:12, fontWeight:800, color: borderColor.includes("200,168") ? "#f0d080" : "#a8e6aa", marginBottom:14, letterSpacing:1 }}>
+        {emoji} {title}
+      </div>
+      {children}
+    </div>
+  );
+
+  return (
+    <div style={{ minHeight:"100vh", background:"linear-gradient(135deg,#0a2010,#1a4020)", padding:20, fontFamily:"sans-serif" }}>
+      <div style={{ maxWidth:440, margin:"0 auto" }}>
+
+        {/* Header */}
+        <div style={{ textAlign:"center", marginBottom:20 }}>
+          <div style={{ fontSize:32, marginBottom:4 }}>🚌</div>
+          <div style={{ fontSize:22, fontWeight:900, color:"white" }}>Form Pendaftaran</div>
+          <div style={{ fontSize:13, color:"#a8e6aa", fontWeight:700, letterSpacing:1 }}>COMPANY TOUR 2026</div>
+          <div style={{ marginTop:8, background:"rgba(200,168,75,0.15)", border:"1px solid rgba(200,168,75,0.3)", borderRadius:10, padding:"8px 16px", fontSize:11, color:"rgba(255,255,255,0.5)", lineHeight:1.6 }}>
+            Anak yang didaftarkan adalah yang <strong style={{color:"#f0d080"}}>belum menikah</strong>
+          </div>
+        </div>
+
+        {/* Data Peserta */}
+        {card("DATA PESERTA", "👤", <>
+          <Label text="Nama Lengkap" required/>
+          <input name="nama" placeholder="Nama lengkap" value={form.nama} onChange={handleChange} style={{...inputStyle(errors.nama), marginBottom:4}}/>
+          <Err msg={errors.nama}/>
+          <div style={{marginBottom:10}}/>
+          <Label text="NIK / ID Karyawan"/>
+          <input name="nik" placeholder="Nomor induk karyawan" value={form.nik} onChange={handleChange} style={{...inputStyle(false), marginBottom:10}}/>
+          <Label text="Section" required/>
+          <select name="dept" value={form.dept} onChange={handleChange}
+            style={{ width:"100%", padding:"10px 14px", borderRadius:10, border: errors.dept ? "1px solid #ff6b6b" : "1px solid rgba(255,255,255,0.15)", background:"#1a3a20", color: form.dept ? "white" : "rgba(255,255,255,0.35)", fontSize:13, outline:"none", marginBottom:4 }}>
+            <option value="">Pilih section...</option>
+            {deptOptions.map(o => <option key={o} value={o} style={{background:"#1a3a20"}}>{o}</option>)}
+          </select>
+          <Err msg={errors.dept}/>
+          <div style={{marginBottom:10}}/>
+          <Label text="No. HP / WhatsApp" required/>
+          <input name="noHp" type="tel" placeholder="08xxxxxxxxxx" value={form.noHp} onChange={handleChange} style={{...inputStyle(errors.noHp), marginBottom:4}}/>
+          <Err msg={errors.noHp}/>
+        </>)}
+
+        {/* Kehadiran */}
+        {card("OPSI KEHADIRAN", "🎫", <>
+          <Label text="Kehadiran" required/>
+          <select name="tipeKehadiran" value={form.tipeKehadiran}
+            onChange={e=>{
+              const v=e.target.value;
+              setForm(f=>({...f,tipeKehadiran:v,ikutIstri:v==="Sendiri"?"Tidak":"",lenganIstri:"",ukuranKaosIstri:"",jumlahAnak:"",anak:[]}));
+              setErrors(er=>({...er,tipeKehadiran:""}));
+            }}
+            style={{width:"100%",padding:"10px 14px",borderRadius:10,border:errors.tipeKehadiran?"1px solid #ff6b6b":"1px solid rgba(255,255,255,0.15)",background:"#1a3a20",color:form.tipeKehadiran?"white":"rgba(255,255,255,0.35)",fontSize:13,outline:"none",marginBottom:4}}>
+            <option value="">Pilih tipe kehadiran...</option>
+            <option value="Sendiri" style={{background:"#1a3a20"}}>Sendiri</option>
+            <option value="Bawa Keluarga" style={{background:"#1a3a20"}}>Bawa Keluarga</option>
+          </select>
+          <Err msg={errors.tipeKehadiran}/>
+          <div style={{marginTop:14}}/>
+          <Label text="Pilihan Tour" required/>
+          {["One Day Tour","Menginap (2 Hari 1 Malam)"].map(o=>(
+            <div key={o} onClick={()=>{setForm(f=>({...f,opsiTour:o}));setErrors(e=>({...e,opsiTour:""}));}}
+              style={{display:"flex",alignItems:"center",gap:10,padding:"11px 14px",borderRadius:10,marginBottom:8,cursor:"pointer",
+                border:form.opsiTour===o?"1px solid #4caf50":"1px solid rgba(255,255,255,0.12)",
+                background:form.opsiTour===o?"rgba(76,175,80,0.15)":"rgba(255,255,255,0.04)",
+                transition:"all 0.15s"}}>
+              <div style={{width:16,height:16,borderRadius:3,border:form.opsiTour===o?"2px solid #4caf50":"2px solid rgba(255,255,255,0.3)",background:form.opsiTour===o?"#4caf50":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                {form.opsiTour===o && <div style={{width:8,height:8,background:"white",borderRadius:1}}/>}
+              </div>
+              <span style={{fontSize:13,color:form.opsiTour===o?"white":"rgba(255,255,255,0.6)",fontWeight:form.opsiTour===o?700:400}}>{o}</span>
+            </div>
+          ))}
+          <Err msg={errors.opsiTour}/>
+        </>)}
+
+        {/* Kaos */}
+        {card("KAOS KARYAWAN", "👕", <>
+          <KaosSection
+            lenganVal={form.lenganKaryawan} onLengan={v=>{setForm(f=>({...f,lenganKaryawan:v}));setErrors(e=>({...e,lenganKaryawan:""}));}} lenganErr={errors.lenganKaryawan}
+            sizeVal={form.ukuranKaosKaryawan} onSize={v=>{setForm(f=>({...f,ukuranKaosKaryawan:v}));setErrors(e=>({...e,ukuranKaosKaryawan:""}));}} sizeErr={errors.ukuranKaosKaryawan}
+          />
+        </>)}
+
+        {/* Kaos Istri */}
+        {form.tipeKehadiran === "Bawa Keluarga" && card("KAOS ISTRI / PASANGAN", "👗", <>
+          <Label text="Istri / Pasangan Ikut?"/>
+          <TogglePick options={["Ya","Tidak"]} value={form.ikutIstri}
+            onChange={v=>{setForm(f=>({...f,ikutIstri:v,lenganIstri:"",ukuranKaosIstri:""}));setErrors(e=>({...e,ikutIstri:"",lenganIstri:"",ukuranKaosIstri:""}));}}/>
+          {form.ikutIstri === "Ya" && <>
+            <div style={{marginTop:14}}/>
+            <KaosSection
+              lenganVal={form.lenganIstri} onLengan={v=>{setForm(f=>({...f,lenganIstri:v}));setErrors(e=>({...e,lenganIstri:""}));}} lenganErr={errors.lenganIstri}
+              sizeVal={form.ukuranKaosIstri} onSize={v=>{setForm(f=>({...f,ukuranKaosIstri:v}));setErrors(e=>({...e,ukuranKaosIstri:""}));}} sizeErr={errors.ukuranKaosIstri}
+            />
+          </>}
+        </>)}
+
+        {/* Data Anak */}
+        {form.tipeKehadiran === "Bawa Keluarga" && card("DATA ANAK (Belum Menikah)", "👶", <>
+          <div style={{fontSize:11, color:"rgba(255,255,255,0.4)", marginBottom:12, lineHeight:1.6}}>
+            Hanya daftarkan anak yang <strong style={{color:"#f0d080"}}>belum menikah</strong>.
+          </div>
+          <Label text="Jumlah Anak Belum Menikah yang Ikut"/>
+          <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:14}}>
+            {[0,1,2,3,4,5].map(n=>(
+              <div key={n} onClick={()=>handleJumlahAnak(String(n))}
+                style={{ padding:"7px 14px", borderRadius:8, cursor:"pointer", fontSize:13, fontWeight:700,
+                  border: form.jumlahAnak===String(n) ? "1px solid #4caf50" : "1px solid rgba(255,255,255,0.15)",
+                  background: form.jumlahAnak===String(n) ? "rgba(76,175,80,0.25)" : "rgba(255,255,255,0.05)",
+                  color: form.jumlahAnak===String(n) ? "#a8e6aa" : "rgba(255,255,255,0.5)" }}>
+                {n}
+              </div>
+            ))}
+          </div>
+
+          {form.anak.map((a,i)=>(
+            <div key={i} style={{background:"rgba(200,168,75,0.08)", border:"1px solid rgba(200,168,75,0.2)", borderRadius:10, padding:14, marginBottom:10}}>
+              <div style={{fontSize:11, fontWeight:800, color:"#f0d080", marginBottom:10}}>Anak ke-{i+1}</div>
+              <input placeholder="Nama anak" value={a.nama} onChange={e=>handleAnak(i,"nama",e.target.value)}
+                style={{...inputStyle(errors[`anak_nama_${i}`]), marginBottom:4, fontSize:12}}/>
+              <Err msg={errors[`anak_nama_${i}`]}/>
+              <div style={{marginBottom:8}}/>
+              <input placeholder="Usia (tahun)" type="number" value={a.usia} onChange={e=>handleAnak(i,"usia",e.target.value)}
+                style={{...inputStyle(errors[`anak_usia_${i}`]), marginBottom:4, fontSize:12}}/>
+              <Err msg={errors[`anak_usia_${i}`]}/>
+              <div style={{marginTop:10}}/>
+              <Label text="Model Lengan Kaos" required/>
+              <TogglePick options={sleeveOptions} value={a.lengan} onChange={v=>handleAnak(i,"lengan",v)} error={errors[`anak_lengan_${i}`]}/>
+              <div style={{marginTop:10}}/>
+              <Label text="Ukuran Kaos" required/>
+              <SizePicker value={a.ukuranKaos} onChange={v=>handleAnak(i,"ukuranKaos",v)} error={errors[`anak_kaos_${i}`]}/>
+            </div>
+          ))}
+
+          {form.anak.length > 0 && (
+            <div style={{background:"rgba(76,175,80,0.1)", border:"1px solid rgba(76,175,80,0.3)", borderRadius:8, padding:"8px 12px", fontSize:12, color:"#a8e6aa", fontWeight:700}}>
+              ✅ Total anak terdaftar: <strong>{form.anak.length} orang</strong>
+            </div>
+          )}
+        </>, "rgba(200,168,75,0.25)")}
+
+        {/* Budget */}
+        {card("BUDGET YANG DISANGGUPI", "💰", <>
+          <div style={{fontSize:11, color:"rgba(255,255,255,0.4)", marginBottom:12, lineHeight:1.6}}>
+            Berapa budget per orang yang Anda sanggup keluarkan?
+          </div>
+          {budgetOptions.map(b=>(
+            <div key={b} onClick={()=>{setForm(f=>({...f,budget:b}));setErrors(e=>({...e,budget:""}));}}
+              style={{ padding:"10px 14px", borderRadius:10, marginBottom:8, cursor:"pointer", fontSize:13,
+                border: form.budget===b ? "1px solid #f0d080" : "1px solid rgba(255,255,255,0.12)",
+                background: form.budget===b ? "rgba(200,168,75,0.2)" : "rgba(255,255,255,0.04)",
+                color: form.budget===b ? "#f0d080" : "rgba(255,255,255,0.6)",
+                fontWeight: form.budget===b ? 700 : 400, transition:"all 0.2s" }}>
+              {form.budget===b ? "✅" : "⬜"} {b}
+            </div>
+          ))}
+          <Err msg={errors.budget}/>
+        </>, "rgba(200,168,75,0.25)")}
+
+        {/* Catatan */}
+        {card("CATATAN KHUSUS", "📝", <>
+          <textarea name="catatan" placeholder="Alergi makanan, kebutuhan khusus, dll..." value={form.catatan} onChange={handleChange}
+            rows={3} style={{width:"100%", padding:"10px 14px", borderRadius:10, border:"1px solid rgba(255,255,255,0.12)", background:"rgba(255,255,255,0.07)", color:"white", fontSize:13, outline:"none", resize:"none", boxSizing:"border-box"}}/>
+        </>)}
+
+        {/* Summary */}
+        {(form.nama || form.tipeKehadiran) && (
+          <div style={{background:"rgba(255,255,255,0.05)", border:"1px solid rgba(76,175,80,0.2)", borderRadius:16, padding:16, marginBottom:14, fontSize:12, color:"rgba(255,255,255,0.6)", lineHeight:2}}>
+            📋 <strong style={{color:"white"}}>Ringkasan:</strong><br/>
+            {form.nama && <>👤 {form.nama}<br/></>}
+            {form.tipeKehadiran && <>🎫 {form.tipeKehadiran}<br/></>}
+            {form.lenganKaryawan && form.ukuranKaosKaryawan && <>👕 Kaos karyawan: {form.lenganKaryawan} / Size {form.ukuranKaosKaryawan}<br/></>}
+            {form.ikutIstri==="Ya" && form.ukuranKaosIstri && <>👗 Kaos istri: {form.lenganIstri} / Size {form.ukuranKaosIstri}<br/></>}
+            {form.anak.length>0 && <>👶 Anak ikut: {form.anak.length} orang<br/></>}
+            {form.budget && <>💰 Budget: {form.budget}<br/></>}
+          </div>
+        )}
+
+        <button onClick={handleSubmit}
+          style={{width:"100%", padding:"14px", borderRadius:12, border:"none", background:"linear-gradient(90deg,#2e7d32,#4caf50)", color:"white", fontSize:15, fontWeight:900, cursor:"pointer", letterSpacing:1, marginBottom:30}}>
+          DAFTAR SEKARANG 🚌
+        </button>
+      </div>
+    </div>
+  );
+}
