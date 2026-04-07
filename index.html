@@ -390,10 +390,12 @@ async function submitForm() {
   btn.disabled = true;
 
   try {
-    const res = await fetch("https://formspree.io/f/mzdkoelq", {
+    const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify({
+        "access_key": "d1928f4a-7e6c-49f0-943f-5e8a2b6b0311",
+        "subject": "Pendaftaran Tour Baru - " + nama,
         "Nama": nama,
         "NIK": nik || "-",
         "Section": dept,
