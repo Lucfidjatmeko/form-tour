@@ -1,349 +1,411 @@
-import { useState } from "react";
-
-const deptOptions = [
-  "CCR & Ordering NR Engine Sec",
-  "CCR Plant #2 Prod Indication & Admin Sec",
-  "CCR Vehicle Plant #1 Sec",
-  "Component Ordering & Inventory Mgt. Sec",
-  "Warehouse KRW Plant & Steel Opr Sec",
-  "Warehouse Ordering & Engineering Sec",
-  "Warehouse Plant #3 Sec",
-];
-const sizeOptions = ["S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
-const sleeveOptions = ["Lengan Pendek", "Lengan Panjang"];
-const budgetOptions = ["< Rp 300.000", "Rp 300.000 – 500.000", "Rp 500.000 – 750.000", "Rp 750.000 – 1.000.000", "> Rp 1.000.000"];
-
-const initialForm = {
-  nama: "", nik: "", dept: "", noHp: "",
-  opsiTour: "",
-  tipeKehadiran: "",
-  lenganKaryawan: "", ukuranKaosKaryawan: "",
-  ikutIstri: "",
-  lenganIstri: "", ukuranKaosIstri: "",
-  jumlahAnak: "",
-  anak: [],
-  budget: "",
-  catatan: "",
-};
-
-export default function FormTour() {
-  const [form, setForm] = useState(initialForm);
-  const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
-    setErrors(er => ({ ...er, [name]: "" }));
-  }
-
-  function handleJumlahAnak(val) {
-    const n = parseInt(val) || 0;
-    const anak = Array.from({ length: n }, (_, i) => form.anak[i] || { nama: "", usia: "", lengan: "", ukuranKaos: "" });
-    setForm(f => ({ ...f, jumlahAnak: val, anak }));
-  }
-
-  function handleAnak(i, field, val) {
-    const anak = [...form.anak];
-    anak[i] = { ...anak[i], [field]: val };
-    setForm(f => ({ ...f, anak }));
-  }
-
-  function validate() {
-    const e = {};
-    if (!form.nama) e.nama = "Wajib diisi";
-    if (!form.noHp) e.noHp = "Wajib diisi";
-    if (!form.dept) e.dept = "Wajib dipilih";
-    if (!form.opsiTour) e.opsiTour = "Wajib dipilih";
-    if (!form.tipeKehadiran) e.tipeKehadiran = "Wajib dipilih";
-    if (!form.lenganKaryawan) e.lenganKaryawan = "Wajib dipilih";
-    if (!form.ukuranKaosKaryawan) e.ukuranKaosKaryawan = "Wajib dipilih";
-    if (!form.budget) e.budget = "Wajib dipilih";
-    if (form.ikutIstri === "Ya") {
-      if (!form.lenganIstri) e.lenganIstri = "Wajib dipilih";
-      if (!form.ukuranKaosIstri) e.ukuranKaosIstri = "Wajib dipilih";
-    }
-    form.anak.forEach((a, i) => {
-      if (!a.nama) e[`anak_nama_${i}`] = "Wajib diisi";
-      if (!a.usia) e[`anak_usia_${i}`] = "Wajib diisi";
-      if (!a.lengan) e[`anak_lengan_${i}`] = "Wajib dipilih";
-      if (!a.ukuranKaos) e[`anak_kaos_${i}`] = "Wajib dipilih";
-    });
-    return e;
-  }
-
-  function handleSubmit() {
-    const e = validate();
-    if (Object.keys(e).length > 0) { setErrors(e); return; }
-    setSubmitted(true);
-  }
-
-  function reset() { setForm(initialForm); setSubmitted(false); setErrors({}); }
-
-  const totalPeserta = 1 + (form.ikutIstri === "Ya" ? 1 : 0) + form.anak.length;
-
-  if (submitted) return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(135deg,#0a2010,#1a4020)", display:"flex", alignItems:"center", justifyContent:"center", padding:20, fontFamily:"sans-serif" }}>
-      <div style={{ background:"rgba(255,255,255,0.07)", border:"1px solid rgba(76,175,80,0.4)", borderRadius:16, padding:32, maxWidth:400, width:"100%", textAlign:"center", color:"white" }}>
-        <div style={{ fontSize:52, marginBottom:12 }}>✅</div>
-        <div style={{ fontSize:20, fontWeight:800, color:"#a8e6aa", marginBottom:8 }}>Pendaftaran Terkirim!</div>
-        <div style={{ fontSize:13, color:"rgba(255,255,255,0.6)", marginBottom:16, lineHeight:2 }}>
-          Nama: <strong style={{color:"white"}}>{form.nama}</strong><br/>
-          Tour: <strong style={{color:"#f0d080"}}>{form.opsiTour} 🏕️</strong><br/>
-          Kehadiran: <strong style={{color:"#f0d080"}}>{form.tipeKehadiran}</strong><br/>
-          Total peserta: <strong style={{color:"#f0d080"}}>{totalPeserta} orang</strong><br/>
-          Kaos karyawan: <strong style={{color:"#f0d080"}}>{form.lenganKaryawan} / Size {form.ukuranKaosKaryawan}</strong><br/>
-          Budget: <strong style={{color:"#f0d080"}}>{form.budget}</strong>
-        </div>
-        <button onClick={reset} style={{ background:"linear-gradient(90deg,#4caf50,#2e7d32)", color:"white", border:"none", borderRadius:10, padding:"10px 24px", fontWeight:800, cursor:"pointer", fontSize:13 }}>
-          Isi Form Baru
-        </button>
-      </div>
-    </div>
-  );
-
-  const inputStyle = (err) => ({
-    width:"100%", padding:"10px 14px", borderRadius:10,
-    border: err ? "1px solid #ff6b6b" : "1px solid rgba(255,255,255,0.15)",
-    background:"rgba(255,255,255,0.07)", color:"white", fontSize:13, outline:"none", boxSizing:"border-box"
-  });
-
-  const Label = ({text, required}) => (
-    <div style={{ fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.45)", letterSpacing:1, textTransform:"uppercase", marginBottom:5 }}>
-      {text} {required && <span style={{color:"#ff8a8a"}}>*</span>}
-    </div>
-  );
-
-  const Err = ({msg}) => msg ? <div style={{color:"#ff8a8a",fontSize:11,marginTop:3,marginBottom:4}}>{msg}</div> : null;
-
-  const TogglePick = ({options, value, onChange, error}) => (
-    <div>
-      <div style={{ display:"flex", gap:8 }}>
-        {options.map(o => (
-          <div key={o} onClick={() => onChange(o)}
-            style={{ flex:1, padding:"9px 10px", borderRadius:10, textAlign:"center", cursor:"pointer", fontSize:12, fontWeight:700,
-              border: value===o ? "1px solid #4caf50" : "1px solid rgba(255,255,255,0.12)",
-              background: value===o ? "rgba(76,175,80,0.2)" : "rgba(255,255,255,0.04)",
-              color: value===o ? "#a8e6aa" : "rgba(255,255,255,0.5)", transition:"all 0.15s" }}>
-            {o}
-          </div>
-        ))}
-      </div>
-      <Err msg={error}/>
-    </div>
-  );
-
-  const SizePicker = ({value, onChange, error}) => (
-    <div>
-      <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-        {sizeOptions.map(s => (
-          <div key={s} onClick={() => onChange(s)}
-            style={{ padding:"6px 12px", borderRadius:8, cursor:"pointer", fontSize:12, fontWeight:700,
-              border: value===s ? "1px solid #4caf50" : "1px solid rgba(255,255,255,0.15)",
-              background: value===s ? "rgba(76,175,80,0.25)" : "rgba(255,255,255,0.05)",
-              color: value===s ? "#a8e6aa" : "rgba(255,255,255,0.5)", transition:"all 0.15s" }}>
-            {s}
-          </div>
-        ))}
-      </div>
-      <Err msg={error}/>
-    </div>
-  );
-
-  const KaosSection = ({lenganVal, onLengan, lenganErr, sizeVal, onSize, sizeErr}) => (
-    <>
-      <Label text="Model Lengan" required/>
-      <TogglePick options={sleeveOptions} value={lenganVal} onChange={onLengan} error={lenganErr}/>
-      <div style={{marginTop:12}}/>
-      <Label text="Ukuran" required/>
-      <SizePicker value={sizeVal} onChange={onSize} error={sizeErr}/>
-    </>
-  );
-
-  const card = (title, emoji, children, borderColor="rgba(76,175,80,0.2)") => (
-    <div style={{ background:"rgba(255,255,255,0.05)", border:`1px solid ${borderColor}`, borderRadius:16, padding:20, marginBottom:14 }}>
-      <div style={{ fontSize:12, fontWeight:800, color: borderColor.includes("200,168") ? "#f0d080" : "#a8e6aa", marginBottom:14, letterSpacing:1 }}>
-        {emoji} {title}
-      </div>
-      {children}
-    </div>
-  );
-
-  return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(135deg,#0a2010,#1a4020)", padding:20, fontFamily:"sans-serif" }}>
-      <div style={{ maxWidth:440, margin:"0 auto" }}>
-
-        {/* Header */}
-        <div style={{ textAlign:"center", marginBottom:20 }}>
-          <div style={{ fontSize:32, marginBottom:4 }}>🚌</div>
-          <div style={{ fontSize:22, fontWeight:900, color:"white" }}>Form Pendaftaran</div>
-          <div style={{ fontSize:13, color:"#a8e6aa", fontWeight:700, letterSpacing:1 }}>COMPANY TOUR 2026</div>
-          <div style={{ marginTop:8, background:"rgba(200,168,75,0.15)", border:"1px solid rgba(200,168,75,0.3)", borderRadius:10, padding:"8px 16px", fontSize:11, color:"rgba(255,255,255,0.5)", lineHeight:1.6 }}>
-            Anak yang didaftarkan adalah yang <strong style={{color:"#f0d080"}}>belum menikah</strong>
-          </div>
-        </div>
-
-        {/* Data Peserta */}
-        {card("DATA PESERTA", "👤", <>
-          <Label text="Nama Lengkap" required/>
-          <input name="nama" placeholder="Nama lengkap" value={form.nama} onChange={handleChange} style={{...inputStyle(errors.nama), marginBottom:4}}/>
-          <Err msg={errors.nama}/>
-          <div style={{marginBottom:10}}/>
-          <Label text="NIK / ID Karyawan"/>
-          <input name="nik" placeholder="Nomor induk karyawan" value={form.nik} onChange={handleChange} style={{...inputStyle(false), marginBottom:10}}/>
-          <Label text="Section" required/>
-          <select name="dept" value={form.dept} onChange={handleChange}
-            style={{ width:"100%", padding:"10px 14px", borderRadius:10, border: errors.dept ? "1px solid #ff6b6b" : "1px solid rgba(255,255,255,0.15)", background:"#1a3a20", color: form.dept ? "white" : "rgba(255,255,255,0.35)", fontSize:13, outline:"none", marginBottom:4 }}>
-            <option value="">Pilih section...</option>
-            {deptOptions.map(o => <option key={o} value={o} style={{background:"#1a3a20"}}>{o}</option>)}
-          </select>
-          <Err msg={errors.dept}/>
-          <div style={{marginBottom:10}}/>
-          <Label text="No. HP / WhatsApp" required/>
-          <input name="noHp" type="tel" placeholder="08xxxxxxxxxx" value={form.noHp} onChange={handleChange} style={{...inputStyle(errors.noHp), marginBottom:4}}/>
-          <Err msg={errors.noHp}/>
-        </>)}
-
-        {/* Kehadiran */}
-        {card("OPSI KEHADIRAN", "🎫", <>
-          <Label text="Kehadiran" required/>
-          <select name="tipeKehadiran" value={form.tipeKehadiran}
-            onChange={e=>{
-              const v=e.target.value;
-              setForm(f=>({...f,tipeKehadiran:v,ikutIstri:v==="Sendiri"?"Tidak":"",lenganIstri:"",ukuranKaosIstri:"",jumlahAnak:"",anak:[]}));
-              setErrors(er=>({...er,tipeKehadiran:""}));
-            }}
-            style={{width:"100%",padding:"10px 14px",borderRadius:10,border:errors.tipeKehadiran?"1px solid #ff6b6b":"1px solid rgba(255,255,255,0.15)",background:"#1a3a20",color:form.tipeKehadiran?"white":"rgba(255,255,255,0.35)",fontSize:13,outline:"none",marginBottom:4}}>
-            <option value="">Pilih tipe kehadiran...</option>
-            <option value="Sendiri" style={{background:"#1a3a20"}}>Sendiri</option>
-            <option value="Bawa Keluarga" style={{background:"#1a3a20"}}>Bawa Keluarga</option>
-          </select>
-          <Err msg={errors.tipeKehadiran}/>
-          <div style={{marginTop:14}}/>
-          <Label text="Pilihan Tour" required/>
-          {["One Day Tour","Menginap (2 Hari 1 Malam)"].map(o=>(
-            <div key={o} onClick={()=>{setForm(f=>({...f,opsiTour:o}));setErrors(e=>({...e,opsiTour:""}));}}
-              style={{display:"flex",alignItems:"center",gap:10,padding:"11px 14px",borderRadius:10,marginBottom:8,cursor:"pointer",
-                border:form.opsiTour===o?"1px solid #4caf50":"1px solid rgba(255,255,255,0.12)",
-                background:form.opsiTour===o?"rgba(76,175,80,0.15)":"rgba(255,255,255,0.04)",
-                transition:"all 0.15s"}}>
-              <div style={{width:16,height:16,borderRadius:3,border:form.opsiTour===o?"2px solid #4caf50":"2px solid rgba(255,255,255,0.3)",background:form.opsiTour===o?"#4caf50":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                {form.opsiTour===o && <div style={{width:8,height:8,background:"white",borderRadius:1}}/>}
-              </div>
-              <span style={{fontSize:13,color:form.opsiTour===o?"white":"rgba(255,255,255,0.6)",fontWeight:form.opsiTour===o?700:400}}>{o}</span>
-            </div>
-          ))}
-          <Err msg={errors.opsiTour}/>
-        </>)}
-
-        {/* Kaos */}
-        {card("KAOS KARYAWAN", "👕", <>
-          <KaosSection
-            lenganVal={form.lenganKaryawan} onLengan={v=>{setForm(f=>({...f,lenganKaryawan:v}));setErrors(e=>({...e,lenganKaryawan:""}));}} lenganErr={errors.lenganKaryawan}
-            sizeVal={form.ukuranKaosKaryawan} onSize={v=>{setForm(f=>({...f,ukuranKaosKaryawan:v}));setErrors(e=>({...e,ukuranKaosKaryawan:""}));}} sizeErr={errors.ukuranKaosKaryawan}
-          />
-        </>)}
-
-        {/* Kaos Istri */}
-        {form.tipeKehadiran === "Bawa Keluarga" && card("KAOS ISTRI / PASANGAN", "👗", <>
-          <Label text="Istri / Pasangan Ikut?"/>
-          <TogglePick options={["Ya","Tidak"]} value={form.ikutIstri}
-            onChange={v=>{setForm(f=>({...f,ikutIstri:v,lenganIstri:"",ukuranKaosIstri:""}));setErrors(e=>({...e,ikutIstri:"",lenganIstri:"",ukuranKaosIstri:""}));}}/>
-          {form.ikutIstri === "Ya" && <>
-            <div style={{marginTop:14}}/>
-            <KaosSection
-              lenganVal={form.lenganIstri} onLengan={v=>{setForm(f=>({...f,lenganIstri:v}));setErrors(e=>({...e,lenganIstri:""}));}} lenganErr={errors.lenganIstri}
-              sizeVal={form.ukuranKaosIstri} onSize={v=>{setForm(f=>({...f,ukuranKaosIstri:v}));setErrors(e=>({...e,ukuranKaosIstri:""}));}} sizeErr={errors.ukuranKaosIstri}
-            />
-          </>}
-        </>)}
-
-        {/* Data Anak */}
-        {form.tipeKehadiran === "Bawa Keluarga" && card("DATA ANAK (Belum Menikah)", "👶", <>
-          <div style={{fontSize:11, color:"rgba(255,255,255,0.4)", marginBottom:12, lineHeight:1.6}}>
-            Hanya daftarkan anak yang <strong style={{color:"#f0d080"}}>belum menikah</strong>.
-          </div>
-          <Label text="Jumlah Anak Belum Menikah yang Ikut"/>
-          <div style={{display:"flex", gap:8, flexWrap:"wrap", marginBottom:14}}>
-            {[0,1,2,3,4,5].map(n=>(
-              <div key={n} onClick={()=>handleJumlahAnak(String(n))}
-                style={{ padding:"7px 14px", borderRadius:8, cursor:"pointer", fontSize:13, fontWeight:700,
-                  border: form.jumlahAnak===String(n) ? "1px solid #4caf50" : "1px solid rgba(255,255,255,0.15)",
-                  background: form.jumlahAnak===String(n) ? "rgba(76,175,80,0.25)" : "rgba(255,255,255,0.05)",
-                  color: form.jumlahAnak===String(n) ? "#a8e6aa" : "rgba(255,255,255,0.5)" }}>
-                {n}
-              </div>
-            ))}
-          </div>
-
-          {form.anak.map((a,i)=>(
-            <div key={i} style={{background:"rgba(200,168,75,0.08)", border:"1px solid rgba(200,168,75,0.2)", borderRadius:10, padding:14, marginBottom:10}}>
-              <div style={{fontSize:11, fontWeight:800, color:"#f0d080", marginBottom:10}}>Anak ke-{i+1}</div>
-              <input placeholder="Nama anak" value={a.nama} onChange={e=>handleAnak(i,"nama",e.target.value)}
-                style={{...inputStyle(errors[`anak_nama_${i}`]), marginBottom:4, fontSize:12}}/>
-              <Err msg={errors[`anak_nama_${i}`]}/>
-              <div style={{marginBottom:8}}/>
-              <input placeholder="Usia (tahun)" type="number" value={a.usia} onChange={e=>handleAnak(i,"usia",e.target.value)}
-                style={{...inputStyle(errors[`anak_usia_${i}`]), marginBottom:4, fontSize:12}}/>
-              <Err msg={errors[`anak_usia_${i}`]}/>
-              <div style={{marginTop:10}}/>
-              <Label text="Model Lengan Kaos" required/>
-              <TogglePick options={sleeveOptions} value={a.lengan} onChange={v=>handleAnak(i,"lengan",v)} error={errors[`anak_lengan_${i}`]}/>
-              <div style={{marginTop:10}}/>
-              <Label text="Ukuran Kaos" required/>
-              <SizePicker value={a.ukuranKaos} onChange={v=>handleAnak(i,"ukuranKaos",v)} error={errors[`anak_kaos_${i}`]}/>
-            </div>
-          ))}
-
-          {form.anak.length > 0 && (
-            <div style={{background:"rgba(76,175,80,0.1)", border:"1px solid rgba(76,175,80,0.3)", borderRadius:8, padding:"8px 12px", fontSize:12, color:"#a8e6aa", fontWeight:700}}>
-              ✅ Total anak terdaftar: <strong>{form.anak.length} orang</strong>
-            </div>
-          )}
-        </>, "rgba(200,168,75,0.25)")}
-
-        {/* Budget */}
-        {card("BUDGET YANG DISANGGUPI", "💰", <>
-          <div style={{fontSize:11, color:"rgba(255,255,255,0.4)", marginBottom:12, lineHeight:1.6}}>
-            Berapa budget per orang yang Anda sanggup keluarkan?
-          </div>
-          {budgetOptions.map(b=>(
-            <div key={b} onClick={()=>{setForm(f=>({...f,budget:b}));setErrors(e=>({...e,budget:""}));}}
-              style={{ padding:"10px 14px", borderRadius:10, marginBottom:8, cursor:"pointer", fontSize:13,
-                border: form.budget===b ? "1px solid #f0d080" : "1px solid rgba(255,255,255,0.12)",
-                background: form.budget===b ? "rgba(200,168,75,0.2)" : "rgba(255,255,255,0.04)",
-                color: form.budget===b ? "#f0d080" : "rgba(255,255,255,0.6)",
-                fontWeight: form.budget===b ? 700 : 400, transition:"all 0.2s" }}>
-              {form.budget===b ? "✅" : "⬜"} {b}
-            </div>
-          ))}
-          <Err msg={errors.budget}/>
-        </>, "rgba(200,168,75,0.25)")}
-
-        {/* Catatan */}
-        {card("CATATAN KHUSUS", "📝", <>
-          <textarea name="catatan" placeholder="Alergi makanan, kebutuhan khusus, dll..." value={form.catatan} onChange={handleChange}
-            rows={3} style={{width:"100%", padding:"10px 14px", borderRadius:10, border:"1px solid rgba(255,255,255,0.12)", background:"rgba(255,255,255,0.07)", color:"white", fontSize:13, outline:"none", resize:"none", boxSizing:"border-box"}}/>
-        </>)}
-
-        {/* Summary */}
-        {(form.nama || form.tipeKehadiran) && (
-          <div style={{background:"rgba(255,255,255,0.05)", border:"1px solid rgba(76,175,80,0.2)", borderRadius:16, padding:16, marginBottom:14, fontSize:12, color:"rgba(255,255,255,0.6)", lineHeight:2}}>
-            📋 <strong style={{color:"white"}}>Ringkasan:</strong><br/>
-            {form.nama && <>👤 {form.nama}<br/></>}
-            {form.tipeKehadiran && <>🎫 {form.tipeKehadiran}<br/></>}
-            {form.lenganKaryawan && form.ukuranKaosKaryawan && <>👕 Kaos karyawan: {form.lenganKaryawan} / Size {form.ukuranKaosKaryawan}<br/></>}
-            {form.ikutIstri==="Ya" && form.ukuranKaosIstri && <>👗 Kaos istri: {form.lenganIstri} / Size {form.ukuranKaosIstri}<br/></>}
-            {form.anak.length>0 && <>👶 Anak ikut: {form.anak.length} orang<br/></>}
-            {form.budget && <>💰 Budget: {form.budget}<br/></>}
-          </div>
-        )}
-
-        <button onClick={handleSubmit}
-          style={{width:"100%", padding:"14px", borderRadius:12, border:"none", background:"linear-gradient(90deg,#2e7d32,#4caf50)", color:"white", fontSize:15, fontWeight:900, cursor:"pointer", letterSpacing:1, marginBottom:30}}>
-          DAFTAR SEKARANG 🚌
-        </button>
-      </div>
-    </div>
-  );
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Pendaftaran Company Tour 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:linear-gradient(135deg,#0a2010,#1a4020); min-height:100vh; font-family:'Poppins',sans-serif; padding:20px; }
+.wrap { max-width:460px; margin:0 auto; }
+.header { text-align:center; margin-bottom:20px; }
+.header h1 { font-size:22px; font-weight:900; color:white; }
+.header .sub { font-size:13px; color:#a8e6aa; font-weight:700; letter-spacing:1px; }
+.notice { margin-top:8px; background:rgba(200,168,75,0.15); border:1px solid rgba(200,168,75,0.3); border-radius:10px; padding:8px 16px; font-size:11px; color:rgba(255,255,255,0.5); line-height:1.6; }
+.notice strong { color:#f0d080; }
+.card { background:rgba(255,255,255,0.05); border:1px solid rgba(76,175,80,0.2); border-radius:16px; padding:20px; margin-bottom:14px; }
+.card.gold { border-color:rgba(200,168,75,0.25); }
+.card-title { font-size:12px; font-weight:800; color:#a8e6aa; letter-spacing:1px; margin-bottom:14px; }
+.card.gold .card-title { color:#f0d080; }
+label { font-size:11px; font-weight:700; color:rgba(255,255,255,0.45); letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:5px; }
+label .req { color:#ff8a8a; }
+input, select, textarea {
+  width:100%; padding:10px 14px; border-radius:10px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.07); color:white; font-size:13px;
+  font-family:'Poppins',sans-serif; outline:none; margin-bottom:12px;
 }
+select { background:#1a3a20; }
+select option { background:#1a3a20; color:white; }
+textarea { resize:none; }
+input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
+.toggle-wrap { display:flex; gap:8px; margin-bottom:12px; }
+.toggle-btn {
+  flex:1; padding:9px 10px; border-radius:10px; text-align:center;
+  cursor:pointer; font-size:12px; font-weight:700;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.5);
+  transition:all 0.15s; user-select:none;
+}
+.toggle-btn.active { border-color:#4caf50; background:rgba(76,175,80,0.2); color:#a8e6aa; }
+.check-option {
+  display:flex; align-items:center; gap:10px; padding:11px 14px;
+  border-radius:10px; margin-bottom:8px; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.04); transition:all 0.15s;
+}
+.check-option.active { border-color:#4caf50; background:rgba(76,175,80,0.15); }
+.check-box {
+  width:16px; height:16px; border-radius:3px; flex-shrink:0;
+  border:2px solid rgba(255,255,255,0.3); background:transparent;
+  display:flex; align-items:center; justify-content:center;
+}
+.check-box.active { border-color:#4caf50; background:#4caf50; }
+.check-inner { width:8px; height:8px; background:white; border-radius:1px; display:none; }
+.check-box.active .check-inner { display:block; }
+.check-label { font-size:13px; color:rgba(255,255,255,0.6); }
+.check-option.active .check-label { color:white; font-weight:700; }
+.size-wrap { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.size-btn {
+  padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:700;
+  border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05);
+  color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none;
+}
+.size-btn.active { border-color:#4caf50; background:rgba(76,175,80,0.25); color:#a8e6aa; }
+.num-wrap { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.num-btn {
+  padding:7px 14px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:700;
+  border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05);
+  color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none;
+}
+.num-btn.active { border-color:#4caf50; background:rgba(76,175,80,0.25); color:#a8e6aa; }
+.anak-card { background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.2); border-radius:10px; padding:14px; margin-bottom:10px; }
+.anak-title { font-size:11px; font-weight:800; color:#f0d080; margin-bottom:10px; }
+.err { color:#ff8a8a; font-size:11px; margin-top:-8px; margin-bottom:8px; display:none; }
+.summary { background:rgba(255,255,255,0.05); border:1px solid rgba(76,175,80,0.2); border-radius:16px; padding:16px; margin-bottom:14px; font-size:12px; color:rgba(255,255,255,0.6); line-height:2; display:none; }
+.summary strong { color:white; }
+.summary span { color:#f0d080; font-weight:700; }
+.budget-option {
+  padding:10px 14px; border-radius:10px; margin-bottom:8px; cursor:pointer; font-size:13px;
+  border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.6); transition:all 0.2s; user-select:none;
+}
+.budget-option.active { border-color:#f0d080; background:rgba(200,168,75,0.2); color:#f0d080; font-weight:700; }
+.btn-submit {
+  width:100%; padding:14px; border-radius:12px; border:none;
+  background:linear-gradient(90deg,#2e7d32,#4caf50); color:white;
+  font-size:15px; font-weight:900; cursor:pointer; letter-spacing:1px;
+  font-family:'Poppins',sans-serif; margin-bottom:30px;
+}
+.divider { height:1px; background:rgba(255,255,255,0.08); margin:12px 0; }
+.hidden { display:none; }
+.success { text-align:center; background:rgba(255,255,255,0.07); border:1px solid rgba(76,175,80,0.4); border-radius:16px; padding:32px; color:white; display:none; }
+.success h2 { color:#a8e6aa; margin-bottom:8px; }
+.success p { font-size:13px; color:rgba(255,255,255,0.6); line-height:2; margin-bottom:20px; }
+.btn-reset { background:linear-gradient(90deg,#4caf50,#2e7d32); color:white; border:none; border-radius:10px; padding:10px 24px; font-weight:800; cursor:pointer; font-size:13px; font-family:'Poppins',sans-serif; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div style="font-size:32px;margin-bottom:4px">🚌</div>
+    <h1>Form Pendaftaran</h1>
+    <div class="sub">COMPANY TOUR 2026</div>
+    <div class="notice">Anak yang didaftarkan adalah yang <strong>belum menikah</strong></div>
+  </div>
+
+  <!-- Form -->
+  <div id="formArea">
+
+    <!-- Data Peserta -->
+    <div class="card">
+      <div class="card-title">👤 DATA PESERTA</div>
+      <label>Nama Lengkap <span class="req">*</span></label>
+      <input type="text" id="nama" placeholder="Nama lengkap"/>
+      <div class="err" id="err-nama">Wajib diisi</div>
+      <label>NIK / ID Karyawan</label>
+      <input type="text" id="nik" placeholder="Nomor induk karyawan"/>
+      <label>Section <span class="req">*</span></label>
+      <select id="dept">
+        <option value="">Pilih section...</option>
+        <option>CCR & Ordering NR Engine Sec</option>
+        <option>CCR Plant #2 Prod Indication & Admin Sec</option>
+        <option>CCR Vehicle Plant #1 Sec</option>
+        <option>Component Ordering & Inventory Mgt. Sec</option>
+        <option>Warehouse KRW Plant & Steel Opr Sec</option>
+        <option>Warehouse Ordering & Engineering Sec</option>
+        <option>Warehouse Plant #3 Sec</option>
+      </select>
+      <div class="err" id="err-dept">Wajib dipilih</div>
+      <label>No. HP / WhatsApp <span class="req">*</span></label>
+      <input type="tel" id="noHp" placeholder="08xxxxxxxxxx"/>
+      <div class="err" id="err-noHp">Wajib diisi</div>
+    </div>
+
+    <!-- Opsi Kehadiran -->
+    <div class="card">
+      <div class="card-title">🎫 OPSI KEHADIRAN</div>
+      <label>Kehadiran <span class="req">*</span></label>
+      <select id="tipeKehadiran" onchange="onKehadiranChange()">
+        <option value="">Pilih tipe kehadiran...</option>
+        <option>Sendiri</option>
+        <option>Bawa Keluarga</option>
+      </select>
+      <div class="err" id="err-kehadiran">Wajib dipilih</div>
+      <label>Pilihan Tour <span class="req">*</span></label>
+      <div class="check-option" id="tour-1" onclick="pilihTour('One Day Tour','tour-1','tour-2')">
+        <div class="check-box" id="box-tour-1"><div class="check-inner"></div></div>
+        <span class="check-label">One Day Tour</span>
+      </div>
+      <div class="check-option" id="tour-2" onclick="pilihTour('Menginap (2 Hari 1 Malam)','tour-2','tour-1')">
+        <div class="check-box" id="box-tour-2"><div class="check-inner"></div></div>
+        <span class="check-label">Menginap (2 Hari 1 Malam)</span>
+      </div>
+      <div class="err" id="err-tour">Wajib dipilih</div>
+    </div>
+
+    <!-- Kaos Karyawan -->
+    <div class="card">
+      <div class="card-title">👕 KAOS KARYAWAN</div>
+      <label>Model Lengan <span class="req">*</span></label>
+      <div class="toggle-wrap">
+        <div class="toggle-btn" id="lengan-k-1" onclick="pilihLengan('k','Lengan Pendek','lengan-k-1','lengan-k-2')">Lengan Pendek</div>
+        <div class="toggle-btn" id="lengan-k-2" onclick="pilihLengan('k','Lengan Panjang','lengan-k-2','lengan-k-1')">Lengan Panjang</div>
+      </div>
+      <div class="err" id="err-lengan-k">Wajib dipilih</div>
+      <label>Ukuran <span class="req">*</span></label>
+      <div class="size-wrap" id="size-k"></div>
+      <div class="err" id="err-size-k">Wajib dipilih</div>
+    </div>
+
+    <!-- Kaos Istri (hidden by default) -->
+    <div class="card hidden" id="card-istri">
+      <div class="card-title">👗 KAOS ISTRI / PASANGAN</div>
+      <label>Istri / Pasangan Ikut?</label>
+      <div class="toggle-wrap">
+        <div class="toggle-btn" id="istri-ya" onclick="pilihIstri('Ya')">Ya</div>
+        <div class="toggle-btn" id="istri-tidak" onclick="pilihIstri('Tidak')">Tidak</div>
+      </div>
+      <div id="kaos-istri-area" class="hidden">
+        <label>Model Lengan <span class="req">*</span></label>
+        <div class="toggle-wrap">
+          <div class="toggle-btn" id="lengan-i-1" onclick="pilihLengan('i','Lengan Pendek','lengan-i-1','lengan-i-2')">Lengan Pendek</div>
+          <div class="toggle-btn" id="lengan-i-2" onclick="pilihLengan('i','Lengan Panjang','lengan-i-2','lengan-i-1')">Lengan Panjang</div>
+        </div>
+        <div class="err" id="err-lengan-i">Wajib dipilih</div>
+        <label>Ukuran <span class="req">*</span></label>
+        <div class="size-wrap" id="size-i"></div>
+        <div class="err" id="err-size-i">Wajib dipilih</div>
+      </div>
+    </div>
+
+    <!-- Data Anak (hidden by default) -->
+    <div class="card gold hidden" id="card-anak">
+      <div class="card-title">👶 DATA ANAK (Belum Menikah)</div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6">Hanya daftarkan anak yang <strong style="color:#f0d080">belum menikah</strong>.</p>
+      <label>Jumlah Anak Belum Menikah yang Ikut</label>
+      <div class="num-wrap" id="num-anak"></div>
+      <div id="anak-list"></div>
+    </div>
+
+    <!-- Budget -->
+    <div class="card gold">
+      <div class="card-title">💰 BUDGET YANG DISANGGUPI</div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6">Berapa budget per orang yang Anda sanggup keluarkan?</p>
+      <div class="budget-option" onclick="pilihBudget(this,'< Rp 300.000')">⬜ &lt; Rp 300.000</div>
+      <div class="budget-option" onclick="pilihBudget(this,'Rp 300.000 – 500.000')">⬜ Rp 300.000 – 500.000</div>
+      <div class="budget-option" onclick="pilihBudget(this,'Rp 500.000 – 750.000')">⬜ Rp 500.000 – 750.000</div>
+      <div class="budget-option" onclick="pilihBudget(this,'Rp 750.000 – 1.000.000')">⬜ Rp 750.000 – 1.000.000</div>
+      <div class="budget-option" onclick="pilihBudget(this,'> Rp 1.000.000')">⬜ &gt; Rp 1.000.000</div>
+      <div class="err" id="err-budget">Wajib dipilih</div>
+    </div>
+
+    <!-- Catatan -->
+    <div class="card">
+      <div class="card-title">📝 CATATAN KHUSUS</div>
+      <textarea id="catatan" rows="3" placeholder="Alergi makanan, kebutuhan khusus, dll..."></textarea>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary" id="summary"></div>
+
+    <button class="btn-submit" onclick="submitForm()">DAFTAR SEKARANG 🚌</button>
+  </div>
+
+  <!-- Success -->
+  <div class="success" id="successArea">
+    <div style="font-size:52px;margin-bottom:12px">✅</div>
+    <h2>Pendaftaran Terkirim!</h2>
+    <p id="successDetail"></p>
+    <button class="btn-reset" onclick="resetForm()">Isi Form Baru</button>
+  </div>
+</div>
+
+<script>
+const sizes = ["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"];
+let state = { tour:"", kehadiran:"", lenganK:"", sizeK:"", istri:"", lenganI:"", sizeI:"", jumlahAnak:0, anak:[], budget:"" };
+
+// Build size pickers
+function buildSizes(id, key) {
+  const w = document.getElementById(id);
+  w.innerHTML = "";
+  sizes.forEach(s => {
+    const d = document.createElement("div");
+    d.className = "size-btn" + (state[key]===s?" active":"");
+    d.textContent = s;
+    d.onclick = () => { state[key]=s; buildSizes(id,key); showErr("err-"+id,""); updateSummary(); };
+    w.appendChild(d);
+  });
+}
+buildSizes("size-k","sizeK");
+buildSizes("size-i","sizeI");
+
+// Build num anak
+function buildNumAnak() {
+  const w = document.getElementById("num-anak");
+  w.innerHTML = "";
+  [0,1,2,3,4,5].forEach(n => {
+    const d = document.createElement("div");
+    d.className = "num-btn" + (state.jumlahAnak===n?" active":"");
+    d.textContent = n;
+    d.onclick = () => { state.jumlahAnak=n; state.anak=Array.from({length:n},(_,i)=>state.anak[i]||{nama:"",usia:"",lengan:"",size:""}); buildNumAnak(); buildAnakList(); updateSummary(); };
+    w.appendChild(d);
+  });
+}
+buildNumAnak();
+
+// Build anak list
+function buildAnakList() {
+  const w = document.getElementById("anak-list");
+  w.innerHTML = "";
+  state.anak.forEach((a,i) => {
+    const d = document.createElement("div");
+    d.className = "anak-card";
+    d.innerHTML = `
+      <div class="anak-title">Anak ke-${i+1}</div>
+      <label>Nama</label>
+      <input type="text" placeholder="Nama anak" value="${a.nama}" onchange="state.anak[${i}].nama=this.value;updateSummary()"/>
+      <label>Usia (tahun)</label>
+      <input type="number" placeholder="Usia" value="${a.usia}" onchange="state.anak[${i}].usia=this.value;updateSummary()"/>
+      <label>Model Lengan <span class="req">*</span></label>
+      <div class="toggle-wrap">
+        <div class="toggle-btn ${a.lengan==='Lengan Pendek'?'active':''}" onclick="state.anak[${i}].lengan='Lengan Pendek';buildAnakList()">Lengan Pendek</div>
+        <div class="toggle-btn ${a.lengan==='Lengan Panjang'?'active':''}" onclick="state.anak[${i}].lengan='Lengan Panjang';buildAnakList()">Lengan Panjang</div>
+      </div>
+      <label>Ukuran Kaos <span class="req">*</span></label>
+      <div class="size-wrap">${sizes.map(s=>`<div class="size-btn ${a.size===s?'active':''}" onclick="state.anak[${i}].size='${s}';buildAnakList()">${s}</div>`).join("")}</div>
+    `;
+    w.appendChild(d);
+  });
+}
+
+function pilihTour(val, on, off) {
+  state.tour = val;
+  document.getElementById(on).classList.add("active");
+  document.getElementById("box-"+on).classList.add("active");
+  document.getElementById(off).classList.remove("active");
+  document.getElementById("box-"+off).classList.remove("active");
+  showErr("err-tour","");
+  updateSummary();
+}
+
+function onKehadiranChange() {
+  state.kehadiran = document.getElementById("tipeKehadiran").value;
+  const keluarga = state.kehadiran === "Bawa Keluarga";
+  document.getElementById("card-istri").classList.toggle("hidden", !keluarga);
+  document.getElementById("card-anak").classList.toggle("hidden", !keluarga);
+  if (!keluarga) { state.istri=""; state.jumlahAnak=0; state.anak=[]; buildNumAnak(); buildAnakList(); }
+  showErr("err-kehadiran","");
+  updateSummary();
+}
+
+function pilihIstri(val) {
+  state.istri = val;
+  document.getElementById("istri-ya").classList.toggle("active", val==="Ya");
+  document.getElementById("istri-tidak").classList.toggle("active", val==="Tidak");
+  document.getElementById("kaos-istri-area").classList.toggle("hidden", val!=="Ya");
+  updateSummary();
+}
+
+function pilihLengan(who, val, on, off) {
+  if (who==="k") { state.lenganK=val; showErr("err-lengan-k",""); }
+  else { state.lenganI=val; showErr("err-lengan-i",""); }
+  document.getElementById(on).classList.add("active");
+  document.getElementById(off).classList.remove("active");
+  updateSummary();
+}
+
+function pilihBudget(el, val) {
+  state.budget = val;
+  document.querySelectorAll(".budget-option").forEach(b => { b.classList.remove("active"); b.innerHTML = "⬜ " + b.innerHTML.replace("✅ ",""); });
+  el.classList.add("active");
+  el.innerHTML = "✅ " + el.innerHTML.replace("⬜ ","");
+  showErr("err-budget","");
+  updateSummary();
+}
+
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg || "Wajib diisi";
+  el.style.display = msg===undefined||msg==="" ? "none" : "block";
+}
+
+function updateSummary() {
+  const s = document.getElementById("summary");
+  const nama = document.getElementById("nama").value;
+  if (!nama && !state.tour) { s.style.display="none"; return; }
+  s.style.display = "block";
+  let html = `📋 <strong>Ringkasan:</strong><br>`;
+  if (nama) html += `👤 ${nama}<br>`;
+  if (state.tour) html += `🏕️ <span>${state.tour}</span><br>`;
+  if (state.kehadiran) html += `🎫 <span>${state.kehadiran}</span><br>`;
+  if (state.sizeK) html += `👕 Kaos: ${state.lenganK} / Size <span>${state.sizeK}</span><br>`;
+  if (state.istri==="Ya" && state.sizeI) html += `👗 Kaos istri: ${state.lenganI} / Size <span>${state.sizeI}</span><br>`;
+  if (state.jumlahAnak>0) html += `👶 Anak: <span>${state.jumlahAnak} orang</span><br>`;
+  if (state.budget) html += `💰 Budget: <span>${state.budget}</span><br>`;
+  s.innerHTML = html;
+}
+
+function submitForm() {
+  let ok = true;
+  const nama = document.getElementById("nama").value;
+  const noHp = document.getElementById("noHp").value;
+  const dept = document.getElementById("dept").value;
+  if (!nama) { showErr("err-nama","Wajib diisi"); ok=false; } else showErr("err-nama","");
+  if (!noHp) { showErr("err-noHp","Wajib diisi"); ok=false; } else showErr("err-noHp","");
+  if (!dept) { showErr("err-dept","Wajib dipilih"); ok=false; } else showErr("err-dept","");
+  if (!state.kehadiran) { showErr("err-kehadiran","Wajib dipilih"); ok=false; } else showErr("err-kehadiran","");
+  if (!state.tour) { showErr("err-tour","Wajib dipilih"); ok=false; } else showErr("err-tour","");
+  if (!state.lenganK) { showErr("err-lengan-k","Wajib dipilih"); ok=false; } else showErr("err-lengan-k","");
+  if (!state.sizeK) { showErr("err-size-k","Wajib dipilih"); ok=false; } else showErr("err-size-k","");
+  if (!state.budget) { showErr("err-budget","Wajib dipilih"); ok=false; } else showErr("err-budget","");
+  if (state.istri==="Ya") {
+    if (!state.lenganI) { showErr("err-lengan-i","Wajib dipilih"); ok=false; } else showErr("err-lengan-i","");
+    if (!state.sizeI) { showErr("err-size-i","Wajib dipilih"); ok=false; } else showErr("err-size-i","");
+  }
+  if (!ok) return;
+  const total = 1 + (state.istri==="Ya"?1:0) + state.jumlahAnak;
+  document.getElementById("formArea").style.display = "none";
+  const sd = document.getElementById("successDetail");
+  sd.innerHTML = `Nama: <strong style="color:white">${nama}</strong><br>Tour: <strong style="color:#f0d080">${state.tour}</strong><br>Kehadiran: <strong style="color:#f0d080">${state.kehadiran}</strong><br>Total peserta: <strong style="color:#f0d080">${total} orang</strong><br>Kaos: <strong style="color:#f0d080">${state.lenganK} / Size ${state.sizeK}</strong><br>Budget: <strong style="color:#f0d080">${state.budget}</strong>`;
+  document.getElementById("successArea").style.display = "block";
+}
+
+function resetForm() {
+  state = { tour:"", kehadiran:"", lenganK:"", sizeK:"", istri:"", lenganI:"", sizeI:"", jumlahAnak:0, anak:[], budget:"" };
+  document.getElementById("formArea").style.display = "block";
+  document.getElementById("successArea").style.display = "none";
+  document.getElementById("nama").value = "";
+  document.getElementById("nik").value = "";
+  document.getElementById("dept").value = "";
+  document.getElementById("noHp").value = "";
+  document.getElementById("tipeKehadiran").value = "";
+  document.getElementById("catatan").value = "";
+  document.getElementById("card-istri").classList.add("hidden");
+  document.getElementById("card-anak").classList.add("hidden");
+  buildSizes("size-k","sizeK");
+  buildSizes("size-i","sizeI");
+  buildNumAnak();
+  buildAnakList();
+  document.querySelectorAll(".toggle-btn,.check-option,.check-box,.budget-option").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".check-inner").forEach(el=>el.style.display="none");
+  document.querySelectorAll(".budget-option").forEach(el=>{ el.innerHTML = "⬜ " + el.innerHTML.replace("✅ ",""); });
+  document.getElementById("summary").style.display = "none";
+}
+</script>
+</body>
+</html>
