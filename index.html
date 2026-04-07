@@ -3,22 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Form Pendaftaran Company Tour 2026</title>
+<title>Form Pendaftaran Tour PPIC & Warehouse 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:linear-gradient(135deg,#0a2010,#1a4020); min-height:100vh; font-family:'Poppins',sans-serif; padding:20px; }
+body {
+  background: linear-gradient(160deg, #0f0c29, #302b63, #24243e);
+  min-height:100vh; font-family:'Poppins',sans-serif; padding:20px;
+}
 .wrap { max-width:460px; margin:0 auto; }
-.header { text-align:center; margin-bottom:20px; }
-.header h1 { font-size:22px; font-weight:900; color:white; }
-.header .sub { font-size:13px; color:#a8e6aa; font-weight:700; letter-spacing:1px; }
-.notice { margin-top:8px; background:rgba(200,168,75,0.15); border:1px solid rgba(200,168,75,0.3); border-radius:10px; padding:8px 16px; font-size:11px; color:rgba(255,255,255,0.5); line-height:1.6; }
-.notice strong { color:#f0d080; }
-.card { background:rgba(255,255,255,0.05); border:1px solid rgba(76,175,80,0.2); border-radius:16px; padding:20px; margin-bottom:14px; }
-.card.gold { border-color:rgba(200,168,75,0.25); }
-.card-title { font-size:12px; font-weight:800; color:#a8e6aa; letter-spacing:1px; margin-bottom:14px; }
-.card.gold .card-title { color:#f0d080; }
-label { font-size:11px; font-weight:700; color:rgba(255,255,255,0.45); letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:5px; }
+
+/* Header */
+.header { text-align:center; margin-bottom:24px; position:relative; }
+.header-bg {
+  background: linear-gradient(135deg, #f7c948, #ff6b35, #e94560, #a855f7, #3b82f6);
+  border-radius: 20px; padding: 24px 20px; margin-bottom: 0;
+  position: relative; overflow: hidden;
+}
+.header-bg::before {
+  content:''; position:absolute; inset:0;
+  background: rgba(0,0,0,0.3); border-radius:20px;
+}
+.header-bg * { position:relative; z-index:1; }
+.header-icon { font-size:40px; margin-bottom:6px; display:block; }
+.header-bg h1 { font-size:20px; font-weight:900; color:white; letter-spacing:-0.5px; }
+.header-bg .sub { font-size:12px; color:rgba(255,255,255,0.8); font-weight:700; letter-spacing:2px; margin-top:2px; }
+.notice {
+  margin-top:10px; background:rgba(247,201,72,0.15);
+  border:1px solid rgba(247,201,72,0.4); border-radius:10px;
+  padding:8px 16px; font-size:11px; color:rgba(255,255,255,0.6); line-height:1.6;
+}
+.notice strong { color:#f7c948; }
+
+/* Cards */
+.card {
+  border-radius:16px; padding:20px; margin-bottom:14px;
+  backdrop-filter: blur(10px);
+}
+.card-1 { background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); }
+.card-2 { background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.3); }
+.card-3 { background:rgba(30,144,255,0.12); border:1px solid rgba(30,144,255,0.3); }
+.card-4 { background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); }
+.card-5 { background:rgba(247,201,72,0.10); border:1px solid rgba(247,201,72,0.3); }
+.card-6 { background:rgba(233,69,96,0.10); border:1px solid rgba(233,69,96,0.3); }
+.card-7 { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); }
+
+.card-title { font-size:12px; font-weight:800; letter-spacing:1px; margin-bottom:14px; }
+.card-1 .card-title { color:#7ecfff; }
+.card-2 .card-title { color:#c084fc; }
+.card-3 .card-title { color:#60a5fa; }
+.card-4 .card-title { color:#6ee7b7; }
+.card-5 .card-title { color:#f7c948; }
+.card-6 .card-title { color:#fb7185; }
+.card-7 .card-title { color:rgba(255,255,255,0.6); }
+
+label {
+  font-size:11px; font-weight:700; color:rgba(255,255,255,0.45);
+  letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:5px;
+}
 label .req { color:#ff8a8a; }
 input, select, textarea {
   width:100%; padding:10px 14px; border-radius:10px;
@@ -26,74 +68,114 @@ input, select, textarea {
   background:rgba(255,255,255,0.07); color:white; font-size:13px;
   font-family:'Poppins',sans-serif; outline:none; margin-bottom:12px;
 }
-select { background:#1a3a20; }
-select option { background:#1a3a20; color:white; }
+select { background:#1a1035; }
+select option { background:#1a1035; color:white; }
 textarea { resize:none; }
 input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
-.toggle-wrap { display:flex; gap:8px; margin-bottom:12px; }
+
+.toggle-wrap { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
 .toggle-btn {
   flex:1; padding:9px 10px; border-radius:10px; text-align:center;
   cursor:pointer; font-size:12px; font-weight:700;
   border:1px solid rgba(255,255,255,0.12);
   background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.5);
-  transition:all 0.15s; user-select:none;
+  transition:all 0.15s; user-select:none; min-width:80px;
 }
-.toggle-btn.active { border-color:#4caf50; background:rgba(76,175,80,0.2); color:#a8e6aa; }
+.toggle-btn.active-green { border-color:#10b981; background:rgba(16,185,129,0.2); color:#6ee7b7; }
+.toggle-btn.active-blue { border-color:#3b82f6; background:rgba(59,130,246,0.2); color:#93c5fd; }
+.toggle-btn.active-purple { border-color:#a855f7; background:rgba(168,85,247,0.2); color:#c084fc; }
+.toggle-btn.active-pink { border-color:#e94560; background:rgba(233,69,96,0.2); color:#fda4af; }
+
 .check-option {
   display:flex; align-items:center; gap:10px; padding:11px 14px;
   border-radius:10px; margin-bottom:8px; cursor:pointer;
   border:1px solid rgba(255,255,255,0.12);
   background:rgba(255,255,255,0.04); transition:all 0.15s;
 }
-.check-option.active { border-color:#4caf50; background:rgba(76,175,80,0.15); }
+.check-option.active { border-color:#a855f7; background:rgba(168,85,247,0.15); }
 .check-box {
   width:16px; height:16px; border-radius:3px; flex-shrink:0;
   border:2px solid rgba(255,255,255,0.3); background:transparent;
   display:flex; align-items:center; justify-content:center;
 }
-.check-box.active { border-color:#4caf50; background:#4caf50; }
+.check-box.active { border-color:#a855f7; background:#a855f7; }
 .check-inner { width:8px; height:8px; background:white; border-radius:1px; display:none; }
 .check-box.active .check-inner { display:block; }
 .check-label { font-size:13px; color:rgba(255,255,255,0.6); }
 .check-option.active .check-label { color:white; font-weight:700; }
+
 .size-wrap { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
 .size-btn {
   padding:6px 12px; border-radius:8px; cursor:pointer; font-size:12px; font-weight:700;
   border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05);
   color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none;
 }
-.size-btn.active { border-color:#4caf50; background:rgba(76,175,80,0.25); color:#a8e6aa; }
+.size-btn.active { border-color:#10b981; background:rgba(16,185,129,0.25); color:#6ee7b7; }
+
 .num-wrap { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
 .num-btn {
   padding:7px 14px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:700;
   border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05);
   color:rgba(255,255,255,0.5); transition:all 0.15s; user-select:none;
 }
-.num-btn.active { border-color:#4caf50; background:rgba(76,175,80,0.25); color:#a8e6aa; }
-.anak-card { background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.2); border-radius:10px; padding:14px; margin-bottom:10px; }
-.anak-title { font-size:11px; font-weight:800; color:#f0d080; margin-bottom:10px; }
+.num-btn.active { border-color:#f7c948; background:rgba(247,201,72,0.2); color:#f7c948; }
+
+.anak-card {
+  background:rgba(247,201,72,0.08); border:1px solid rgba(247,201,72,0.2);
+  border-radius:10px; padding:14px; margin-bottom:10px;
+}
+.anak-title { font-size:11px; font-weight:800; color:#f7c948; margin-bottom:10px; }
+
 .err { color:#ff8a8a; font-size:11px; margin-top:-8px; margin-bottom:8px; display:none; }
-.summary { background:rgba(255,255,255,0.05); border:1px solid rgba(76,175,80,0.2); border-radius:16px; padding:16px; margin-bottom:14px; font-size:12px; color:rgba(255,255,255,0.6); line-height:2; display:none; }
-.summary strong { color:white; }
-.summary span { color:#f0d080; font-weight:700; }
+
+.transport-info {
+  background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25);
+  border-radius:10px; padding:12px 14px; margin-top:4px; margin-bottom:4px;
+  font-size:11px; color:rgba(255,255,255,0.5); line-height:1.8;
+}
+.transport-info strong { color:#7ecfff; }
+
 .budget-option {
   padding:10px 14px; border-radius:10px; margin-bottom:8px; cursor:pointer; font-size:13px;
   border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04);
   color:rgba(255,255,255,0.6); transition:all 0.2s; user-select:none;
 }
-.budget-option.active { border-color:#f0d080; background:rgba(200,168,75,0.2); color:#f0d080; font-weight:700; }
+.budget-option.active { border-color:#f7c948; background:rgba(247,201,72,0.15); color:#f7c948; font-weight:700; }
+
+.summary {
+  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(168,85,247,0.1));
+  border:1px solid rgba(168,85,247,0.3); border-radius:16px;
+  padding:16px; margin-bottom:14px; font-size:12px;
+  color:rgba(255,255,255,0.6); line-height:2; display:none;
+}
+.summary strong { color:white; }
+.summary span { color:#f7c948; font-weight:700; }
+
 .btn-submit {
   width:100%; padding:14px; border-radius:12px; border:none;
-  background:linear-gradient(90deg,#2e7d32,#4caf50); color:white;
-  font-size:15px; font-weight:900; cursor:pointer; letter-spacing:1px;
-  font-family:'Poppins',sans-serif; margin-bottom:30px;
+  background: linear-gradient(90deg, #f7c948, #ff6b35, #e94560, #a855f7);
+  background-size: 200%;
+  color:white; font-size:15px; font-weight:900; cursor:pointer;
+  letter-spacing:1px; font-family:'Poppins',sans-serif; margin-bottom:30px;
+  animation: shimmer 3s linear infinite;
 }
-.divider { height:1px; background:rgba(255,255,255,0.08); margin:12px 0; }
+@keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+
 .hidden { display:none; }
-.success { text-align:center; background:rgba(255,255,255,0.07); border:1px solid rgba(76,175,80,0.4); border-radius:16px; padding:32px; color:white; display:none; }
-.success h2 { color:#a8e6aa; margin-bottom:8px; }
+
+.success {
+  text-align:center;
+  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(168,85,247,0.15));
+  border:1px solid rgba(168,85,247,0.4); border-radius:16px;
+  padding:32px; color:white; display:none;
+}
+.success h2 { color:#c084fc; margin-bottom:8px; }
 .success p { font-size:13px; color:rgba(255,255,255,0.6); line-height:2; margin-bottom:20px; }
-.btn-reset { background:linear-gradient(90deg,#4caf50,#2e7d32); color:white; border:none; border-radius:10px; padding:10px 24px; font-weight:800; cursor:pointer; font-size:13px; font-family:'Poppins',sans-serif; }
+.btn-reset {
+  background: linear-gradient(90deg,#a855f7,#3b82f6);
+  color:white; border:none; border-radius:10px; padding:10px 24px;
+  font-weight:800; cursor:pointer; font-size:13px; font-family:'Poppins',sans-serif;
+}
 </style>
 </head>
 <body>
@@ -101,20 +183,21 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
 
   <!-- Header -->
   <div class="header">
-    <div style="font-size:32px;margin-bottom:4px">🚌</div>
-    <h1>Form Pendaftaran</h1>
-    <div class="sub">COMPANY TOUR 2026</div>
+    <div class="header-bg">
+      <span class="header-icon">🚌</span>
+      <h1>Form Pendaftaran Tour</h1>
+      <div class="sub">PPIC & WAREHOUSE 2026</div>
+    </div>
     <div class="notice">Anak yang didaftarkan adalah yang <strong>belum menikah</strong></div>
   </div>
 
-  <!-- Form -->
   <div id="formArea">
 
     <!-- Data Peserta -->
-    <div class="card">
+    <div class="card card-1">
       <div class="card-title">👤 DATA PESERTA</div>
       <label>Nama Lengkap <span class="req">*</span></label>
-      <input type="text" id="nama" placeholder="Nama lengkap"/>
+      <input type="text" id="nama" placeholder="Nama lengkap" oninput="updateSummary()"/>
       <div class="err" id="err-nama">Wajib diisi</div>
       <label>NIK / ID Karyawan</label>
       <input type="text" id="nik" placeholder="Nomor induk karyawan"/>
@@ -136,7 +219,7 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
     </div>
 
     <!-- Opsi Kehadiran -->
-    <div class="card">
+    <div class="card card-2">
       <div class="card-title">🎫 OPSI KEHADIRAN</div>
       <label>Kehadiran <span class="req">*</span></label>
       <select id="tipeKehadiran" onchange="onKehadiranChange()">
@@ -148,22 +231,39 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
       <label>Pilihan Tour <span class="req">*</span></label>
       <div class="check-option" id="tour-1" onclick="pilihTour('One Day Tour','tour-1','tour-2')">
         <div class="check-box" id="box-tour-1"><div class="check-inner"></div></div>
-        <span class="check-label">One Day Tour</span>
+        <span class="check-label">🌤️ One Day Tour</span>
       </div>
       <div class="check-option" id="tour-2" onclick="pilihTour('Menginap (2 Hari 1 Malam)','tour-2','tour-1')">
         <div class="check-box" id="box-tour-2"><div class="check-inner"></div></div>
-        <span class="check-label">Menginap (2 Hari 1 Malam)</span>
+        <span class="check-label">🏕️ Menginap (2 Hari 1 Malam)</span>
       </div>
       <div class="err" id="err-tour">Wajib dipilih</div>
     </div>
 
-    <!-- Kaos Karyawan -->
-    <div class="card">
+    <!-- Transportasi -->
+    <div class="card card-3">
+      <div class="card-title">🚗 TRANSPORTASI</div>
+      <div class="transport-info">
+        📍 <strong>Referensi area tujuan tour:</strong><br>
+        Jabodetabek · Sentul · Bogor · Purwakarta · Bandung<br>
+        <span style="color:rgba(255,255,255,0.35)">Pertimbangkan jarak tujuan sebelum memilih transportasi.</span>
+      </div>
+      <div style="margin-bottom:10px"/>
+      <label>Cara Berangkat <span class="req">*</span></label>
+      <div class="toggle-wrap">
+        <div class="toggle-btn" id="trans-bus" onclick="pilihTransport('Ikut Bus Panitia','trans-bus','trans-mandiri','active-blue')">🚌 Ikut Bus Panitia</div>
+        <div class="toggle-btn" id="trans-mandiri" onclick="pilihTransport('Kendaraan Sendiri','trans-mandiri','trans-bus','active-pink')">🚗 Kendaraan Sendiri</div>
+      </div>
+      <div class="err" id="err-transport">Wajib dipilih</div>
+    </div>
+
+    <!-- Kaos -->
+    <div class="card card-4">
       <div class="card-title">👕 KAOS KARYAWAN</div>
       <label>Model Lengan <span class="req">*</span></label>
       <div class="toggle-wrap">
-        <div class="toggle-btn" id="lengan-k-1" onclick="pilihLengan('k','Lengan Pendek','lengan-k-1','lengan-k-2')">Lengan Pendek</div>
-        <div class="toggle-btn" id="lengan-k-2" onclick="pilihLengan('k','Lengan Panjang','lengan-k-2','lengan-k-1')">Lengan Panjang</div>
+        <div class="toggle-btn" id="lengan-k-1" onclick="pilihLengan('Lengan Pendek','lengan-k-1','lengan-k-2')">👕 Lengan Pendek</div>
+        <div class="toggle-btn" id="lengan-k-2" onclick="pilihLengan('Lengan Panjang','lengan-k-2','lengan-k-1')">🧥 Lengan Panjang</div>
       </div>
       <div class="err" id="err-lengan-k">Wajib dipilih</div>
       <label>Ukuran <span class="req">*</span></label>
@@ -171,38 +271,17 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
       <div class="err" id="err-size-k">Wajib dipilih</div>
     </div>
 
-    <!-- Kaos Istri (hidden by default) -->
-    <div class="card hidden" id="card-istri">
-      <div class="card-title">👗 KAOS ISTRI / PASANGAN</div>
-      <label>Istri / Pasangan Ikut?</label>
-      <div class="toggle-wrap">
-        <div class="toggle-btn" id="istri-ya" onclick="pilihIstri('Ya')">Ya</div>
-        <div class="toggle-btn" id="istri-tidak" onclick="pilihIstri('Tidak')">Tidak</div>
-      </div>
-      <div id="kaos-istri-area" class="hidden">
-        <label>Model Lengan <span class="req">*</span></label>
-        <div class="toggle-wrap">
-          <div class="toggle-btn" id="lengan-i-1" onclick="pilihLengan('i','Lengan Pendek','lengan-i-1','lengan-i-2')">Lengan Pendek</div>
-          <div class="toggle-btn" id="lengan-i-2" onclick="pilihLengan('i','Lengan Panjang','lengan-i-2','lengan-i-1')">Lengan Panjang</div>
-        </div>
-        <div class="err" id="err-lengan-i">Wajib dipilih</div>
-        <label>Ukuran <span class="req">*</span></label>
-        <div class="size-wrap" id="size-i"></div>
-        <div class="err" id="err-size-i">Wajib dipilih</div>
-      </div>
-    </div>
-
-    <!-- Data Anak (hidden by default) -->
-    <div class="card gold hidden" id="card-anak">
+    <!-- Data Anak -->
+    <div class="card card-5 hidden" id="card-anak">
       <div class="card-title">👶 DATA ANAK (Belum Menikah)</div>
-      <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6">Hanya daftarkan anak yang <strong style="color:#f0d080">belum menikah</strong>.</p>
-      <label>Jumlah Anak Belum Menikah yang Ikut</label>
+      <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6">Hanya daftarkan anak yang <strong style="color:#f7c948">belum menikah</strong>.</p>
+      <label>Jumlah Anak yang Ikut</label>
       <div class="num-wrap" id="num-anak"></div>
       <div id="anak-list"></div>
     </div>
 
     <!-- Budget -->
-    <div class="card gold">
+    <div class="card card-6">
       <div class="card-title">💰 BUDGET YANG DISANGGUPI</div>
       <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6">Berapa budget per orang yang Anda sanggup keluarkan?</p>
       <div class="budget-option" onclick="pilihBudget(this,'< Rp 300.000')">⬜ &lt; Rp 300.000</div>
@@ -214,18 +293,16 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
     </div>
 
     <!-- Catatan -->
-    <div class="card">
+    <div class="card card-7">
       <div class="card-title">📝 CATATAN KHUSUS</div>
       <textarea id="catatan" rows="3" placeholder="Alergi makanan, kebutuhan khusus, dll..."></textarea>
     </div>
 
-    <!-- Summary -->
     <div class="summary" id="summary"></div>
 
     <button class="btn-submit" onclick="submitForm()">DAFTAR SEKARANG 🚌</button>
   </div>
 
-  <!-- Success -->
   <div class="success" id="successArea">
     <div style="font-size:52px;margin-bottom:12px">✅</div>
     <h2>Pendaftaran Terkirim!</h2>
@@ -236,9 +313,8 @@ input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.3); }
 
 <script>
 const sizes = ["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"];
-let state = { tour:"", kehadiran:"", lenganK:"", sizeK:"", istri:"", lenganI:"", sizeI:"", jumlahAnak:0, anak:[], budget:"" };
+let state = { tour:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahAnak:0, anak:[], budget:"" };
 
-// Build size pickers
 function buildSizes(id, key) {
   const w = document.getElementById(id);
   w.innerHTML = "";
@@ -251,9 +327,7 @@ function buildSizes(id, key) {
   });
 }
 buildSizes("size-k","sizeK");
-buildSizes("size-i","sizeI");
 
-// Build num anak
 function buildNumAnak() {
   const w = document.getElementById("num-anak");
   w.innerHTML = "";
@@ -267,7 +341,6 @@ function buildNumAnak() {
 }
 buildNumAnak();
 
-// Build anak list
 function buildAnakList() {
   const w = document.getElementById("anak-list");
   w.innerHTML = "";
@@ -282,8 +355,8 @@ function buildAnakList() {
       <input type="number" placeholder="Usia" value="${a.usia}" onchange="state.anak[${i}].usia=this.value;updateSummary()"/>
       <label>Model Lengan <span class="req">*</span></label>
       <div class="toggle-wrap">
-        <div class="toggle-btn ${a.lengan==='Lengan Pendek'?'active':''}" onclick="state.anak[${i}].lengan='Lengan Pendek';buildAnakList()">Lengan Pendek</div>
-        <div class="toggle-btn ${a.lengan==='Lengan Panjang'?'active':''}" onclick="state.anak[${i}].lengan='Lengan Panjang';buildAnakList()">Lengan Panjang</div>
+        <div class="toggle-btn ${a.lengan==='Lengan Pendek'?'active-green':''}" onclick="state.anak[${i}].lengan='Lengan Pendek';buildAnakList()">👕 Lengan Pendek</div>
+        <div class="toggle-btn ${a.lengan==='Lengan Panjang'?'active-green':''}" onclick="state.anak[${i}].lengan='Lengan Panjang';buildAnakList()">🧥 Lengan Panjang</div>
       </div>
       <label>Ukuran Kaos <span class="req">*</span></label>
       <div class="size-wrap">${sizes.map(s=>`<div class="size-btn ${a.size===s?'active':''}" onclick="state.anak[${i}].size='${s}';buildAnakList()">${s}</div>`).join("")}</div>
@@ -298,34 +371,30 @@ function pilihTour(val, on, off) {
   document.getElementById("box-"+on).classList.add("active");
   document.getElementById(off).classList.remove("active");
   document.getElementById("box-"+off).classList.remove("active");
-  showErr("err-tour","");
-  updateSummary();
+  showErr("err-tour",""); updateSummary();
 }
 
 function onKehadiranChange() {
   state.kehadiran = document.getElementById("tipeKehadiran").value;
-  const keluarga = state.kehadiran === "Bawa Keluarga";
-  document.getElementById("card-istri").classList.toggle("hidden", !keluarga);
-  document.getElementById("card-anak").classList.toggle("hidden", !keluarga);
-  if (!keluarga) { state.istri=""; state.jumlahAnak=0; state.anak=[]; buildNumAnak(); buildAnakList(); }
-  showErr("err-kehadiran","");
-  updateSummary();
+  document.getElementById("card-anak").classList.toggle("hidden", state.kehadiran !== "Bawa Keluarga");
+  if (state.kehadiran !== "Bawa Keluarga") { state.jumlahAnak=0; state.anak=[]; buildNumAnak(); buildAnakList(); }
+  showErr("err-kehadiran",""); updateSummary();
 }
 
-function pilihIstri(val) {
-  state.istri = val;
-  document.getElementById("istri-ya").classList.toggle("active", val==="Ya");
-  document.getElementById("istri-tidak").classList.toggle("active", val==="Tidak");
-  document.getElementById("kaos-istri-area").classList.toggle("hidden", val!=="Ya");
-  updateSummary();
+function pilihTransport(val, on, off, cls) {
+  state.transport = val;
+  document.getElementById(on).classList.add(cls);
+  document.getElementById(on).classList.remove("active-blue","active-pink");
+  document.getElementById(on).classList.add(cls);
+  document.getElementById(off).classList.remove("active-blue","active-pink","active-green","active-purple");
+  showErr("err-transport",""); updateSummary();
 }
 
-function pilihLengan(who, val, on, off) {
-  if (who==="k") { state.lenganK=val; showErr("err-lengan-k",""); }
-  else { state.lenganI=val; showErr("err-lengan-i",""); }
-  document.getElementById(on).classList.add("active");
-  document.getElementById(off).classList.remove("active");
-  updateSummary();
+function pilihLengan(val, on, off) {
+  state.lenganK = val;
+  document.getElementById(on).classList.add("active-green");
+  document.getElementById(off).classList.remove("active-green");
+  showErr("err-lengan-k",""); updateSummary();
 }
 
 function pilihBudget(el, val) {
@@ -333,15 +402,14 @@ function pilihBudget(el, val) {
   document.querySelectorAll(".budget-option").forEach(b => { b.classList.remove("active"); b.innerHTML = "⬜ " + b.innerHTML.replace("✅ ",""); });
   el.classList.add("active");
   el.innerHTML = "✅ " + el.innerHTML.replace("⬜ ","");
-  showErr("err-budget","");
-  updateSummary();
+  showErr("err-budget",""); updateSummary();
 }
 
 function showErr(id, msg) {
   const el = document.getElementById(id);
   if (!el) return;
   el.textContent = msg || "Wajib diisi";
-  el.style.display = msg===undefined||msg==="" ? "none" : "block";
+  el.style.display = !msg ? "none" : "block";
 }
 
 function updateSummary() {
@@ -353,8 +421,8 @@ function updateSummary() {
   if (nama) html += `👤 ${nama}<br>`;
   if (state.tour) html += `🏕️ <span>${state.tour}</span><br>`;
   if (state.kehadiran) html += `🎫 <span>${state.kehadiran}</span><br>`;
+  if (state.transport) html += `🚗 <span>${state.transport}</span><br>`;
   if (state.sizeK) html += `👕 Kaos: ${state.lenganK} / Size <span>${state.sizeK}</span><br>`;
-  if (state.istri==="Ya" && state.sizeI) html += `👗 Kaos istri: ${state.lenganI} / Size <span>${state.sizeI}</span><br>`;
   if (state.jumlahAnak>0) html += `👶 Anak: <span>${state.jumlahAnak} orang</span><br>`;
   if (state.budget) html += `💰 Budget: <span>${state.budget}</span><br>`;
   s.innerHTML = html;
@@ -372,83 +440,67 @@ async function submitForm() {
   if (!dept) { showErr("err-dept","Wajib dipilih"); ok=false; } else showErr("err-dept","");
   if (!state.kehadiran) { showErr("err-kehadiran","Wajib dipilih"); ok=false; } else showErr("err-kehadiran","");
   if (!state.tour) { showErr("err-tour","Wajib dipilih"); ok=false; } else showErr("err-tour","");
+  if (!state.transport) { showErr("err-transport","Wajib dipilih"); ok=false; } else showErr("err-transport","");
   if (!state.lenganK) { showErr("err-lengan-k","Wajib dipilih"); ok=false; } else showErr("err-lengan-k","");
   if (!state.sizeK) { showErr("err-size-k","Wajib dipilih"); ok=false; } else showErr("err-size-k","");
   if (!state.budget) { showErr("err-budget","Wajib dipilih"); ok=false; } else showErr("err-budget","");
-  if (state.istri==="Ya") {
-    if (!state.lenganI) { showErr("err-lengan-i","Wajib dipilih"); ok=false; } else showErr("err-lengan-i","");
-    if (!state.sizeI) { showErr("err-size-i","Wajib dipilih"); ok=false; } else showErr("err-size-i","");
-  }
   if (!ok) return;
 
-  // Build anak summary
-  const anakSummary = state.anak.map((a,i) => `Anak ${i+1}: ${a.nama} (${a.usia} th) - ${a.lengan} Size ${a.size}`).join(" | ");
-
-  // Kirim ke Formspree
+  const anakSummary = state.anak.map((a,i)=>`Anak ${i+1}: ${a.nama} (${a.usia} th) - ${a.lengan} Size ${a.size}`).join(" | ");
   const btn = document.querySelector(".btn-submit");
-  btn.textContent = "Mengirim...";
-  btn.disabled = true;
+  btn.textContent = "Mengirim... ⏳"; btn.disabled = true;
 
   try {
     const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
       body: JSON.stringify({
         "access_key": "d1928f4a-7e6c-49f0-943f-5e8a2b6b0311",
         "subject": "Pendaftaran Tour Baru - " + nama,
-        "Nama": nama,
-        "NIK": nik || "-",
-        "Section": dept,
-        "No HP": noHp,
-        "Pilihan Tour": state.tour,
-        "Kehadiran": state.kehadiran,
+        "Nama": nama, "NIK": nik||"-", "Section": dept, "No HP": noHp,
+        "Pilihan Tour": state.tour, "Kehadiran": state.kehadiran,
+        "Transportasi": state.transport,
         "Kaos Karyawan": `${state.lenganK} / Size ${state.sizeK}`,
-        "Istri Ikut": state.istri || "Tidak",
-        "Kaos Istri": state.istri==="Ya" ? `${state.lenganI} / Size ${state.sizeI}` : "-",
         "Jumlah Anak": state.jumlahAnak,
-        "Data Anak": anakSummary || "-",
-        "Budget": state.budget,
-        "Catatan": catatan || "-"
+        "Data Anak": anakSummary||"-",
+        "Budget": state.budget, "Catatan": catatan||"-"
       })
     });
-
     if (res.ok) {
-      const total = 1 + (state.istri==="Ya"?1:0) + state.jumlahAnak;
       document.getElementById("formArea").style.display = "none";
-      const sd = document.getElementById("successDetail");
-      sd.innerHTML = `Nama: <strong style="color:white">${nama}</strong><br>Tour: <strong style="color:#f0d080">${state.tour}</strong><br>Kehadiran: <strong style="color:#f0d080">${state.kehadiran}</strong><br>Total peserta: <strong style="color:#f0d080">${total} orang</strong><br>Kaos: <strong style="color:#f0d080">${state.lenganK} / Size ${state.sizeK}</strong><br>Budget: <strong style="color:#f0d080">${state.budget}</strong>`;
+      const total = 1 + state.jumlahAnak;
+      document.getElementById("successDetail").innerHTML =
+        `Nama: <strong style="color:white">${nama}</strong><br>
+         Tour: <strong style="color:#c084fc">${state.tour}</strong><br>
+         Kehadiran: <strong style="color:#c084fc">${state.kehadiran}</strong><br>
+         Transportasi: <strong style="color:#c084fc">${state.transport}</strong><br>
+         Total peserta: <strong style="color:#f7c948">${total} orang</strong><br>
+         Kaos: <strong style="color:#6ee7b7">${state.lenganK} / Size ${state.sizeK}</strong><br>
+         Budget: <strong style="color:#f7c948">${state.budget}</strong>`;
       document.getElementById("successArea").style.display = "block";
     } else {
       alert("Gagal mengirim. Coba lagi ya!");
-      btn.textContent = "DAFTAR SEKARANG 🚌";
-      btn.disabled = false;
+      btn.textContent = "DAFTAR SEKARANG 🚌"; btn.disabled = false;
     }
   } catch(e) {
     alert("Gagal mengirim. Periksa koneksi internet.");
-    btn.textContent = "DAFTAR SEKARANG 🚌";
-    btn.disabled = false;
+    btn.textContent = "DAFTAR SEKARANG 🚌"; btn.disabled = false;
   }
 }
 
 function resetForm() {
-  state = { tour:"", kehadiran:"", lenganK:"", sizeK:"", istri:"", lenganI:"", sizeI:"", jumlahAnak:0, anak:[], budget:"" };
+  state = { tour:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahAnak:0, anak:[], budget:"" };
   document.getElementById("formArea").style.display = "block";
   document.getElementById("successArea").style.display = "none";
-  document.getElementById("nama").value = "";
-  document.getElementById("nik").value = "";
+  ["nama","nik","noHp","catatan"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("dept").value = "";
-  document.getElementById("noHp").value = "";
   document.getElementById("tipeKehadiran").value = "";
-  document.getElementById("catatan").value = "";
-  document.getElementById("card-istri").classList.add("hidden");
   document.getElementById("card-anak").classList.add("hidden");
-  buildSizes("size-k","sizeK");
-  buildSizes("size-i","sizeI");
-  buildNumAnak();
-  buildAnakList();
-  document.querySelectorAll(".toggle-btn,.check-option,.check-box,.budget-option").forEach(el=>el.classList.remove("active"));
+  buildSizes("size-k","sizeK"); buildNumAnak(); buildAnakList();
+  document.querySelectorAll(".toggle-btn").forEach(el=>el.classList.remove("active-green","active-blue","active-purple","active-pink"));
+  document.querySelectorAll(".check-option,.check-box").forEach(el=>el.classList.remove("active"));
   document.querySelectorAll(".check-inner").forEach(el=>el.style.display="none");
-  document.querySelectorAll(".budget-option").forEach(el=>{ el.innerHTML = "⬜ " + el.innerHTML.replace("✅ ",""); });
+  document.querySelectorAll(".budget-option").forEach(el=>{ el.classList.remove("active"); el.innerHTML="⬜ "+el.innerHTML.replace("✅ ",""); });
   document.getElementById("summary").style.display = "none";
 }
 </script>
