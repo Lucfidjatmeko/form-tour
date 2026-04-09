@@ -301,7 +301,7 @@ function onKehadiranChange() {
   state.kehadiran = document.getElementById("tipeKehadiran").value;
   const keluarga = state.kehadiran === "Bawa Keluarga";
   document.getElementById("card-keluarga").classList.toggle("hidden", !keluarga);
-  if (!keluarga) { state.jumlahIstri=0; state.jumlahAnak=0; state.anak=[]; renderIstri(); renderAnak(); }
+  if (!keluarga) { state.jumlahIstri=0; state.jumlahAnak=0; state.anak=[]; renderIstri(); buildAnakList(); }
   showErr("err-kehadiran",""); updateSummary();
 }
 
