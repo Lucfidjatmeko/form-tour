@@ -415,7 +415,7 @@ async function submitForm() {
   btn.textContent = "Mengirim... ⏳"; btn.disabled = true;
 
   try {
-    const res = await fetch("https://default47c7b16bd4824147b21a04936dd898.75.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/3394c543deb645f2b939e7c51b684e12/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=uM2ScLwpqPVdmnZMM3bLhuAeu0ln9QqaV9T3hJnhf3E", {
+    const res = await fetch("https://api.web3forms.com/submit", {
       method:"POST",
       headers:{"Content-Type":"application/json","Accept":"application/json"},
       body: JSON.stringify({
