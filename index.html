@@ -320,9 +320,12 @@ function ubahAnak(d) {
   const n = Math.max(0, Math.min(8, state.jumlahAnak + d));
   state.jumlahAnak = n;
   state.anak = Array.from({length:n}, (_,i) => state.anak[i] || {nama:"", usia:""});
-  document.getElementById("val-anak").textContent = n;
+  const valEl = document.getElementById("val-anak");
+  if (valEl) valEl.textContent = n;
   buildAnakList(); updateSummary();
 }
+
+function renderAnak() { buildAnakList(); }
 
 function buildAnakList() {
   const w = document.getElementById("anak-list");
