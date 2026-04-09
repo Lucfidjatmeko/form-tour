@@ -94,12 +94,12 @@ async function loadData() {
     const txt = await res.text();
     const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
     const rows = json.table.rows;
-    if (!rows || rows.length <= 1) {
+    if (!rows || rows.length === 0) {
       document.getElementById("content").innerHTML = `<div class="loading">📭 Belum ada data pendaftaran.</div>`;
       return;
     }
-    // Skip header row
-    const data = rows.slice(1).map(r => r.c.map(c => c ? (c.f || c.v || "-") : "-"));
+    // Ambil semua rows tanpa skip header (header sudah di cols)
+    const data = rows.map(r => r.c.map(c => c ? (c.f || c.v || "-") : "-"));
     render(data);
     document.getElementById("lastUpdate").textContent = "Terakhir diperbarui: " + new Date().toLocaleTimeString("id-ID");
   } catch(e) {
