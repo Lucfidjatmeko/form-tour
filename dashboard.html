@@ -143,106 +143,106 @@ const TARGETS = {
 };
 const CLR=["#7ecfff","#6ee7b7","#f7c948","#c084fc","#fda4af","#ffb347","#60a5fa","#a78bfa"];
 
-// ── MASTER LIST semua karyawan (noreg) ───────────────────────────────────
+// ── MASTER LIST semua karyawan (noreg 7 digit, tanpa leading zero) ────────
 const MASTER_RAW=[
-  {name:"CAHYA TRI KARTIKA L.",noreg:"09709655",sec:"Dept. Head"},
-  {name:"IWAN KUSTIAWAN",noreg:"09305558",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"HENDRO SUJATMIKO",noreg:"00313690",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"MUHAMMAD IQBAL AWALUDIN",noreg:"02335761",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"DAYUDYA LUTHFIARASTY",noreg:"02132735",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"ERWIN WIJAYA",noreg:"01527966",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"AGUS NURCAHYO",noreg:"01324345",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"AMRI FEBRIANSYAH",noreg:"00819022",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"SUHARDI",noreg:"00313792",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"DIKRY FUZI RAHMAN",noreg:"02537991",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"MUHAMMAD LATIFUL ANAM",noreg:"02437275",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"RISYAD MALADI",noreg:"01931364",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"HAMBZAH MUBAROQ",noreg:"01628898",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"DEDE SURYADI",noreg:"00718509",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"SUSI APSARI",noreg:"01931369",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"SUDIRMAN",noreg:"01222792",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"ARIZAL RAMADHANA SETYA DEWA",noreg:"01629079",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"LUCFI DJATMEKO",noreg:"00414482",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"BENNY HIDAYAT",noreg:"09506928",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"PURWANTO",noreg:"00011101",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"RESTU BENI PAMUNGKAS",noreg:"02335940",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"PURWAJI",noreg:"01324291",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"RENDY AGUSTIAN FAHMI",noreg:"01222865",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"EKA DARMAWAN",noreg:"01021334",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"BABAM HADI PERMANA",noreg:"00415367",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"TOTO SUGIARTO",noreg:"00010339",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"MOHAMAD ALI AKBAR",noreg:"02537982",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"EGI NUGRAHA",noreg:"01223214",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"DENI PRATAMA",noreg:"01020968",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"PURNOMO",noreg:"01222867",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"HENDARTO",noreg:"00414839",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"ALEX KURNIAWAN",noreg:"01223194",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"PONCO PRAYITNO",noreg:"09305547",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"ANIES SAMURENDA",noreg:"02437266",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"ARIF PRIHASTANTO",noreg:"01221927",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"MUHAMAD NURSALIM",noreg:"01324109",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"IKHSAN SAPUTRA",noreg:"01020932",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"AHMAD YANI",noreg:"00414443",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"EMDI ERWIN",noreg:"00010015",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"I S M A I L",noreg:"09305614",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"IMAM BAEDOWI",noreg:"01221928",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"WALUYO",noreg:"01020636",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"CHAIRUL AMAN PUJAKESUMA",noreg:"01020967",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"DRIGA SUKOCO",noreg:"00010039",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"ALDO REFAIZA AISDYA",noreg:"01931375",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"LOQMAN ARIFIN",noreg:"01424951",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"YANYAN MULYANA",noreg:"01324157",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"DONI ARIYONARTA",noreg:"00415152",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"MOCHAMAD SOLEH",noreg:"00212808",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"ARI HERYAWAN",noreg:"00010684",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"R. SENJA SONIA NUR ASYIAH",noreg:"01223279",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"RIZZAL FIRDAUS",noreg:"00516498",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"HERU FARDYANTO",noreg:"09709390",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ADNAN KOHAR",noreg:"00415766",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"MASRIYO",noreg:"02335743",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"RIYAN ARIF MUSTOFA",noreg:"01425685",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"MOHAMAD SAEFULLOH",noreg:"00010341",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"DAFA RIZKIDA HERDIAN",noreg:"02336205",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"FUAD HABIB",noreg:"02538145",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"DODY KURNIAWAN",noreg:"01425792",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ARYO BIMANTORO",noreg:"01020499",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ZULPENDI",noreg:"00010036",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"A. FATKHU SURUR",noreg:"02234560",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ARIS FIRDAUS",noreg:"01324660",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"BIAN DWI GUSTAMA",noreg:"02336492",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"FIXNU SEBRIYANTO",noreg:"02538165",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"M.IBNU FAJAR",noreg:"02335970",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"NASRUL",noreg:"01222864",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"AHMAD MUHARAM",noreg:"00414843",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ADE SUNARYA",noreg:"00415099",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"JAELANI",noreg:"09709148",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"RAHMAT GALIH PRIYONO",noreg:"01221926",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"MAGHFIROTUN KHASANAH",noreg:"01121612",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"DADANG",noreg:"09406307",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"MOESTAFA ABADI",noreg:"09405759",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"SUTARNO",noreg:"00818979",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"KUSWANDI",noreg:"00414713",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"GALIH PRIBADI",noreg:"02538241",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"KHOERUL ANAM",noreg:"02537981",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"MUHAMMAD HERI FAUZI",noreg:"02639294",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"RIFKA PANJI YOGA PRASETYO",noreg:"02538242",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"ANDIKA ADITIA",noreg:"02335668",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"AMIR",noreg:"01021225",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"TOMY SAPUTRA",noreg:"01020469",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"BAGUS USWANTO",noreg:"02132168",sec:"Warehouse Plant #3 Sec"},
-  {name:"JHAMES ANDERSON",noreg:"02336020",sec:"Warehouse Plant #3 Sec"},
-  {name:"SEPTI SETYANINGSIH",noreg:"01527153",sec:"Warehouse Plant #3 Sec"},
-  {name:"ARIEF KURNIAWAN",noreg:"00010813",sec:"Warehouse Plant #3 Sec"},
-  {name:"HERU FARDYANTO",noreg:"09709390",sec:"Warehouse Plant #3 Sec"},
-  {name:"MAEZAROFI",noreg:"00414549",sec:"Warehouse Plant #3 Sec"},
-  {name:"BIN BINTANG PINAYUNGAN",noreg:"01527796",sec:"Warehouse Plant #3 Sec"},
-  {name:"SURAHMAN",noreg:"01527798",sec:"Warehouse Plant #3 Sec"},
-  {name:"JAENUN",noreg:"01426724",sec:"Warehouse Plant #3 Sec"},
-  {name:"ANDY RIYATNO",noreg:"00212749",sec:"Warehouse Plant #3 Sec"},
-  {name:"PUJI PANGESTU",noreg:"01930783",sec:"Warehouse Plant #3 Sec"},
-  {name:"MUHAMAD RASWA",noreg:"01426744",sec:"Warehouse Plant #3 Sec"},
-  {name:"MURDIYANTO",noreg:"01323859",sec:"Warehouse Plant #3 Sec"},
-  {name:"MOHAMAD ROHMAT",noreg:"01020113",sec:"Warehouse Plant #3 Sec"},
+  {name:"CAHYA TRI KARTIKA L.",noreg:"9709655",sec:"Dept. Head"},
+  {name:"IWAN KUSTIAWAN",noreg:"9305558",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"HENDRO SUJATMIKO",noreg:"0313690",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"MUHAMMAD IQBAL AWALUDIN",noreg:"2335761",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"DAYUDYA LUTHFIARASTY",noreg:"2132735",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"ERWIN WIJAYA",noreg:"1527966",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"AGUS NURCAHYO",noreg:"1324345",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"AMRI FEBRIANSYAH",noreg:"0819022",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"SUHARDI",noreg:"0313792",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"DIKRY FUZI RAHMAN",noreg:"2537991",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"MUHAMMAD LATIFUL ANAM",noreg:"2437275",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"RISYAD MALADI",noreg:"1931364",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"HAMBZAH MUBAROQ",noreg:"1628898",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"DEDE SURYADI",noreg:"0718509",sec:"CCR & Ordering NR Engine Sec"},
+  {name:"SUSI APSARI",noreg:"1931369",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"SUDIRMAN",noreg:"1222792",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"ARIZAL RAMADHANA SETYA DEWA",noreg:"1629079",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"LUCFI DJATMEKO",noreg:"0414482",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"BENNY HIDAYAT",noreg:"9506928",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"PURWANTO",noreg:"0011101",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"RESTU BENI PAMUNGKAS",noreg:"2335940",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"PURWAJI",noreg:"1324291",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"RENDY AGUSTIAN FAHMI",noreg:"1222865",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"EKA DARMAWAN",noreg:"1021334",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"BABAM HADI PERMANA",noreg:"0415367",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"TOTO SUGIARTO",noreg:"0010339",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"MOHAMAD ALI AKBAR",noreg:"2537982",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"EGI NUGRAHA",noreg:"1223214",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"DENI PRATAMA",noreg:"1020968",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"PURNOMO",noreg:"1222867",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"HENDARTO",noreg:"0414839",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
+  {name:"ALEX KURNIAWAN",noreg:"1223194",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"PONCO PRAYITNO",noreg:"9305547",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"ANIES SAMURENDA",noreg:"2437266",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"ARIF PRIHASTANTO",noreg:"1221927",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"MUHAMAD NURSALIM",noreg:"1324109",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"IKHSAN SAPUTRA",noreg:"1020932",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"AHMAD YANI",noreg:"0414443",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"EMDI ERWIN",noreg:"0010015",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"I S M A I L",noreg:"9305614",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"IMAM BAEDOWI",noreg:"1221928",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"WALUYO",noreg:"1020636",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"CHAIRUL AMAN PUJAKESUMA",noreg:"1020967",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"DRIGA SUKOCO",noreg:"0010039",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"ALDO REFAIZA AISDYA",noreg:"1931375",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"LOQMAN ARIFIN",noreg:"1424951",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"YANYAN MULYANA",noreg:"1324157",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"DONI ARIYONARTA",noreg:"0415152",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"MOCHAMAD SOLEH",noreg:"0212808",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"ARI HERYAWAN",noreg:"0010684",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"R. SENJA SONIA NUR ASYIAH",noreg:"1223279",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"RIZZAL FIRDAUS",noreg:"0516498",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"HERU FARDYANTO",noreg:"9709390",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ADNAN KOHAR",noreg:"0415766",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"MASRIYO",noreg:"2335743",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"RIYAN ARIF MUSTOFA",noreg:"1425685",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"MOHAMAD SAEFULLOH",noreg:"0010341",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"DAFA RIZKIDA HERDIAN",noreg:"2336205",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"FUAD HABIB",noreg:"2538145",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"DODY KURNIAWAN",noreg:"1425792",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ARYO BIMANTORO",noreg:"1020499",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ZULPENDI",noreg:"0010036",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"A. FATKHU SURUR",noreg:"2234560",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ARIS FIRDAUS",noreg:"1324660",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"BIAN DWI GUSTAMA",noreg:"2336492",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"FIXNU SEBRIYANTO",noreg:"2538165",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"M.IBNU FAJAR",noreg:"2335970",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"NASRUL",noreg:"1222864",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"AHMAD MUHARAM",noreg:"0414843",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ADE SUNARYA",noreg:"0415099",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"JAELANI",noreg:"9709148",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"RAHMAT GALIH PRIYONO",noreg:"1221926",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"MAGHFIROTUN KHASANAH",noreg:"1121612",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"DADANG",noreg:"9406307",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"MOESTAFA ABADI",noreg:"9405759",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"SUTARNO",noreg:"0818979",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"KUSWANDI",noreg:"0414713",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"GALIH PRIBADI",noreg:"2538241",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"KHOERUL ANAM",noreg:"2537981",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"MUHAMMAD HERI FAUZI",noreg:"2639294",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"RIFKA PANJI YOGA PRASETYO",noreg:"2538242",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"ANDIKA ADITIA",noreg:"2335668",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"AMIR",noreg:"1021225",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"TOMY SAPUTRA",noreg:"1020469",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"BAGUS USWANTO",noreg:"2132168",sec:"Warehouse Plant #3 Sec"},
+  {name:"JHAMES ANDERSON",noreg:"2336020",sec:"Warehouse Plant #3 Sec"},
+  {name:"SEPTI SETYANINGSIH",noreg:"1527153",sec:"Warehouse Plant #3 Sec"},
+  {name:"ARIEF KURNIAWAN",noreg:"0010813",sec:"Warehouse Plant #3 Sec"},
+  {name:"HERU FARDYANTO",noreg:"9709390",sec:"Warehouse Plant #3 Sec"},
+  {name:"MAEZAROFI",noreg:"0414549",sec:"Warehouse Plant #3 Sec"},
+  {name:"BIN BINTANG PINAYUNGAN",noreg:"1527796",sec:"Warehouse Plant #3 Sec"},
+  {name:"SURAHMAN",noreg:"1527798",sec:"Warehouse Plant #3 Sec"},
+  {name:"JAENUN",noreg:"1426724",sec:"Warehouse Plant #3 Sec"},
+  {name:"ANDY RIYATNO",noreg:"0212749",sec:"Warehouse Plant #3 Sec"},
+  {name:"PUJI PANGESTU",noreg:"1930783",sec:"Warehouse Plant #3 Sec"},
+  {name:"MUHAMAD RASWA",noreg:"1426744",sec:"Warehouse Plant #3 Sec"},
+  {name:"MURDIYANTO",noreg:"1323859",sec:"Warehouse Plant #3 Sec"},
+  {name:"MOHAMAD ROHMAT",noreg:"1020113",sec:"Warehouse Plant #3 Sec"},
 ];
 // Deduplikasi by noreg
 const MASTER=Object.values(MASTER_RAW.reduce((m,k)=>{if(!m[k.noreg])m[k.noreg]=k;return m},{}));
@@ -414,19 +414,39 @@ function render(data){
       const daftar=perSection[sec]||0;
       const p=Math.min(pct(daftar,target),100);
       const color=p>=100?"#6ee7b7":p>=60?"#f7c948":"#fda4af";
-      // Daftar orang per section (drill-down)
+      const normNik=v=>String(v).replace(/^0+/,'').trim();
+      const sudahNikSet=new Set(data.map(r=>normNik(r[2])));
+      // Sudah daftar di section ini
       const orang=data.filter(r=>r[3]===sec);
+      // Belum daftar di section ini (dari MASTER)
+      const belumSec=MASTER.filter(k=>k.sec===sec&&!sudahNikSet.has(normNik(k.noreg)));
       const secId='sec-'+sec.replace(/\W/g,'');
-      const detailBody=orang.length===0?`<div class="empty">Belum ada pendaftar</div>`:
+
+      const sudahRows=orang.length===0?`<div class="empty">Belum ada pendaftar</div>`:
         orang.map((r,i)=>`
           <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-            <span style="font-size:10px;color:rgba(255,255,255,0.25);width:18px">${i+1}</span>
+            <span style="font-size:10px;color:rgba(255,255,255,0.22);width:18px">${i+1}</span>
             <div style="flex:1">
               <div style="font-size:12px;font-weight:700">${r[1]}</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px">${r[28]} · ${r[29]}/${r[30]} · ${r[11]} orang</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px">${r[28]} · ${r[29]}/${r[30]} · ${r[11]} org</div>
             </div>
-            <span class="badge" style="${(kamarMap[r[1]]?bStyle[kamarMap[r[1]].tipe]:bStyle['k'])}">${kamarMap[r[1]]?kamarMap[r[1]].lbl:'—'}</span>
+            <span class="badge" style="${kamarMap[r[1]]?bStyle[kamarMap[r[1]].tipe]:bStyle['k']}">${kamarMap[r[1]]?kamarMap[r[1]].lbl:'—'}</span>
           </div>`).join('');
+
+      const belumRows=belumSec.length===0?'':
+        `<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(233,69,96,0.2)">
+          <div style="font-size:10px;font-weight:700;color:#fda4af;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">❌ Belum isi form (${belumSec.length})</div>
+          ${belumSec.map((k,i)=>`
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(233,69,96,0.08)">
+              <span style="font-size:10px;color:rgba(255,255,255,0.22);width:18px">${i+1}</span>
+              <div style="flex:1">
+                <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.7)">${k.name}</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px">NIK: ${k.noreg}</div>
+              </div>
+              <span class="badge" style="background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);color:#fda4af">Belum</span>
+            </div>`).join('')}
+        </div>`;
+
       return `
         <div class="bar-wrap">
           <div class="bar-top">
@@ -435,13 +455,23 @@ function render(data){
           </div>
           <div class="bar-track" style="margin-bottom:6px"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div>
         </div>
-        <div class="acc-item orang-acc" style="margin-bottom:10px">
+        <div class="acc-item orang-acc" style="margin-bottom:10px;${belumSec.length>0?'border-color:rgba(233,69,96,0.2)':''}">
           <div class="acc-header" id="h-${secId}" onclick="tog('${secId}')">
             <span style="font-size:13px">👤</span>
-            <span style="font-size:12px;font-weight:700;flex:1;color:rgba(255,255,255,0.6)">${daftar} pendaftar — tap untuk lihat</span>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6)">Tap untuk lihat detail</div>
+              <div style="font-size:10px;margin-top:2px">
+                <span style="color:#6ee7b7">✅ ${daftar} daftar</span>
+                ${belumSec.length>0?`<span style="color:rgba(255,255,255,0.25)"> · </span><span style="color:#fda4af">❌ ${belumSec.length} belum</span>`:''}
+              </div>
+            </div>
             <span class="acc-chevron">▼</span>
           </div>
-          <div class="acc-body" id="b-${secId}">${detailBody}</div>
+          <div class="acc-body" id="b-${secId}">
+            ${orang.length>0?`<div style="font-size:10px;font-weight:700;color:#6ee7b7;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">✅ Sudah daftar (${orang.length})</div>`:''}
+            ${sudahRows}
+            ${belumRows}
+          </div>
         </div>`;
     }).join('')}
     <div style="padding:10px 14px;background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.25);border-radius:10px;display:flex;justify-content:space-between;align-items:center">
@@ -556,77 +586,7 @@ function render(data){
     ${Object.entries(perSize).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">Size ${k}</span><span class="bv" style="color:${CLR[i%CLR.length]}">${v} orang (${pct(v,total)}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,maxSize)}%;background:${CLR[i%CLR.length]}"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>'}
   `)}
 
-  <!-- ══ F. BELUM ISI FORM ══ -->
-  ${(()=>{
-    // Kumpulkan noreg yang sudah daftar dari sheet (kolom r[1]=nama, tidak ada noreg di sheet)
-    // Cocokkan via nama (normalize: uppercase trim)
-    const sudahNama=new Set(data.map(r=>r[1].trim().toUpperCase()));
-    // Karyawan yang belum daftar = ada di MASTER tapi namanya tidak ada di sheet
-    const belum=MASTER.filter(k=>!sudahNama.has(k.name.trim().toUpperCase()));
-    const totalBelum=belum.length;
-    // Kelompokkan per section
-    const bySec={};
-    belum.forEach(k=>{if(!bySec[k.sec])bySec[k.sec]=[];bySec[k.sec].push(k);});
-    const totalMaster=MASTER.length;
-
-    const sectionBlocks=Object.entries(TARGETS).map(([sec])=>{
-      const list=bySec[sec]||[];
-      if(list.length===0) return `
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:9px;margin-bottom:7px">
-          <span style="font-size:12px;color:rgba(255,255,255,0.6)">${sec}</span>
-          <span class="badge" style="background:rgba(16,185,129,0.18);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7">✓ Semua daftar</span>
-        </div>`;
-      const secId='belum-'+sec.replace(/\W/g,'');
-      return `
-        <div class="acc-item" style="background:rgba(233,69,96,0.07);border:1px solid rgba(233,69,96,0.2);margin-bottom:7px">
-          <div class="acc-header" id="h-${secId}" onclick="tog('${secId}')">
-            <span style="font-size:15px">⚠️</span>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:12px;font-weight:800;line-height:1.2">${sec}</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:2px">${list.length} orang belum isi form</div>
-            </div>
-            <span class="badge" style="background:rgba(233,69,96,0.18);border:1px solid rgba(233,69,96,0.35);color:#fda4af;margin-right:6px">${list.length} orang</span>
-            <span class="acc-chevron">▼</span>
-          </div>
-          <div class="acc-body" id="b-${secId}">
-            ${list.map((k,i)=>`
-              <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-                <span style="font-size:10px;color:rgba(255,255,255,0.22);width:18px">${i+1}</span>
-                <div style="flex:1">
-                  <div style="font-size:12px;font-weight:700">${k.name}</div>
-                  <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px">Noreg: ${k.noreg}</div>
-                </div>
-                <span class="badge" style="background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);color:#fda4af">Belum</span>
-              </div>`).join('')}
-          </div>
-        </div>`;
-    }).join('');
-
-    return `
-    <div class="sec-div">Belum Isi Form</div>
-    <div class="card" style="background:rgba(233,69,96,0.07);border-color:rgba(233,69,96,0.25)">
-      <div class="card-title" style="color:#fda4af">⚠️ Karyawan Belum Isi Form</div>
-      <div class="mini-grid" style="margin-bottom:14px">
-        <div class="mini-card" style="background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3)">
-          <div class="mn" style="color:#fda4af">${totalBelum}</div>
-          <div class="ml">Belum Isi Form</div>
-          <div class="mp" style="color:#fda4af">${pct(totalBelum,totalMaster)}% dari total</div>
-        </div>
-        <div class="mini-card" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25)">
-          <div class="mn" style="color:#6ee7b7">${totalMaster-totalBelum}</div>
-          <div class="ml">Sudah Isi Form</div>
-          <div class="mp" style="color:#6ee7b7">${pct(totalMaster-totalBelum,totalMaster)}% dari total</div>
-        </div>
-      </div>
-      <div style="height:12px;border-radius:8px;overflow:hidden;display:flex;margin-bottom:16px">
-        <div style="width:${pct(totalMaster-totalBelum,totalMaster)}%;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div>
-        <div style="width:${pct(totalBelum,totalMaster)}%;background:linear-gradient(90deg,#e94560,#fda4af)"></div>
-      </div>
-      ${sectionBlocks}
-    </div>`;
-  })()}
-
-  <!-- ══ G. DATA PENDAFTAR ══ -->
+  <!-- ══ F. DATA PENDAFTAR ══ -->
   <div class="sec-div">Data Pendaftar</div>
 
   ${acc('all-pendaftar','sec-acc','📋',`Semua Pendaftar`,`${total} orang terdaftar · tap untuk expand`,
