@@ -41,7 +41,6 @@ body{background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);min-height:100vh
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;color:rgba(255,255,255,0.3);font-size:13px;padding:20px;font-style:italic}
 .mini-card{text-align:center;border-radius:12px;padding:14px}
-/* Kamar detail table */
 .kamar-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
 .kamar-tbl th{color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.1);text-align:left}
 .kamar-tbl td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.8);font-size:11px}
@@ -62,10 +61,12 @@ body{background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);min-height:100vh
 </div>
 
 <script>
-const SHEET_ID = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
-const BUS_CAPACITY = 59;
-const GRAND_TOTAL = 97;
-const ROOM_CAPACITY = 4; // kapasitas kamar sharing
+const SHEET_ID       = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
+const BUS_CAPACITY   = 59;
+const GRAND_TOTAL    = 97;
+const ROOM_CAPACITY  = 4;
+const SOLO_NAME      = "Dayudya Luthfiarasty"; // kamar sendiri, tidak digabung
+
 const TARGETS = {
   "Dept. Head":1,
   "CCR & Ordering NR Engine Sec":13,
@@ -81,104 +82,166 @@ const colors = ["#7ecfff","#6ee7b7","#f7c948","#c084fc","#fda4af","#ffb347","#60
 function count(arr){const m={};arr.forEach(v=>{m[v]=(m[v]||0)+1});return m}
 function sum(arr){return arr.reduce((a,b)=>a+(parseFloat(b)||0),0)}
 
-// ── KALKULASI KAMAR ──────────────────────────────────────────────
-// Kamar Keluarga : dewasa > 1 ATAU ada anak (> 0), 1 karyawan = 1 kamar
-// Kamar Sharing  : dewasa = 1 & anak = 0, dikumpulkan 4 orang per kamar
+// ── KALKULASI KAMAR ──────────────────────────────────────────────────────────
+// Kamar Keluarga : dewasa > 1 ATAU ada anak — 1 karyawan = 1 kamar
+// Kamar Solo     : Dayudya Luthfiarasty — 1 kamar sendiri (wanita)
+// Kamar Sharing  : sisanya, dikelompokkan per section dulu,
+//                  lalu sisa yang kurang 4 digabung lintas section sampai genap 4
 function hitungKamar(data) {
   const keluarga = data.filter(r => parseInt(r[9]) > 1 || parseInt(r[10]) > 0);
-  const sharing  = data.filter(r => parseInt(r[9]) <= 1 && parseInt(r[10]) === 0);
 
-  // Kamar keluarga: 1 karyawan = 1 kamar
-  // Tapi kelompokkan per jumlah peserta untuk info detail
-  const kamarKeluarga = keluarga.length; // 1 kamar per karyawan keluarga
+  // Pisahkan karyawan solo dari pool sharing
+  const soloFixed  = data.filter(r =>
+    r[1].trim().toLowerCase() === SOLO_NAME.toLowerCase() &&
+    parseInt(r[9]) <= 1 && parseInt(r[10]) === 0
+  );
+  const sharingPool = data.filter(r =>
+    r[1].trim().toLowerCase() !== SOLO_NAME.toLowerCase() &&
+    parseInt(r[9]) <= 1 && parseInt(r[10]) === 0
+  );
 
-  // Kamar sharing: gabung 4 orang per kamar
-  const kamarSharing = Math.ceil(sharing.length / ROOM_CAPACITY);
-  const sharingTerisi = sharing.length % ROOM_CAPACITY || (sharing.length > 0 ? ROOM_CAPACITY : 0);
-  const sharingKosong = kamarSharing * ROOM_CAPACITY - sharing.length;
+  // ── Algoritma pengelompokan sharing ────────────────────────────────────────
+  // 1. Kelompokkan per section
+  // 2. Section yang >= 4 → bikin kamar penuh (pakai kelipatan 4), sisa masuk antrian
+  // 3. Antrian gabungan (sisa dari semua section) → diisi 4-4 sampai habis
+  const bySection = {};
+  sharingPool.forEach(r => {
+    const sec = r[3] || "Unknown";
+    if (!bySection[sec]) bySection[sec] = [];
+    bySection[sec].push(r);
+  });
 
-  const totalKamar = kamarKeluarga + kamarSharing;
+  const sharingRooms  = []; // array of { label, members[] }
+  const overflow      = []; // orang-orang sisa yang belum dapat kamar
 
-  // Breakdown kamar keluarga berdasarkan komposisi
+  Object.entries(bySection).forEach(([sec, members]) => {
+    let idx = 0;
+    // Ambil kelipatan 4 terlebih dulu → buat kamar penuh 1 section
+    while (idx + ROOM_CAPACITY <= members.length) {
+      sharingRooms.push({
+        label: sec,
+        sameSection: true,
+        members: members.slice(idx, idx + ROOM_CAPACITY)
+      });
+      idx += ROOM_CAPACITY;
+    }
+    // Sisa (< 4) masuk overflow
+    while (idx < members.length) {
+      overflow.push(members[idx]);
+      idx++;
+    }
+  });
+
+  // Gabungkan overflow lintas section, 4 per kamar
+  for (let i = 0; i < overflow.length; i += ROOM_CAPACITY) {
+    const chunk = overflow.slice(i, i + ROOM_CAPACITY);
+    // Label kamar: sebutkan section yang ada di dalamnya
+    const secs  = [...new Set(chunk.map(r => r[3]))];
+    sharingRooms.push({
+      label: secs.join(" + "),
+      sameSection: false,
+      members: chunk
+    });
+  }
+
+  const kamarKeluarga = keluarga.length;
+  const kamarSolo     = soloFixed.length;   // max 1 (Dayudya)
+  const kamarSharing  = sharingRooms.length;
+  const totalKamar    = kamarKeluarga + kamarSolo + kamarSharing;
+
+  // Slot kosong kamar sharing (kamar terakhir mungkin tidak penuh)
+  const totalSlotSharing  = kamarSharing * ROOM_CAPACITY;
+  const terisiSharing     = sharingPool.length;
+  const kosongSharing     = totalSlotSharing - terisiSharing;
+
+  // Breakdown keluarga
   const breakdown = {};
   keluarga.forEach(r => {
-    const dewasa = parseInt(r[9]) || 1;
-    const anak   = parseInt(r[10]) || 0;
-    const key    = `${dewasa} Dewasa${anak > 0 ? ` + ${anak} Anak` : ''}`;
-    breakdown[key] = (breakdown[key] || 0) + 1;
+    const d = parseInt(r[9]) || 1;
+    const a = parseInt(r[10]) || 0;
+    const k = `${d} Dewasa${a > 0 ? ` + ${a} Anak` : ''}`;
+    breakdown[k] = (breakdown[k] || 0) + 1;
   });
 
   return {
-    keluarga, sharing,
-    kamarKeluarga, kamarSharing,
-    sharingTerisi, sharingKosong,
-    totalKamar, breakdown
+    keluarga, soloFixed, sharingPool, sharingRooms,
+    kamarKeluarga, kamarSolo, kamarSharing, totalKamar,
+    terisiSharing, kosongSharing, breakdown
   };
 }
 
 async function loadData() {
-  document.getElementById("content").innerHTML=`<div class="loading"><div class="spinner"></div>Memuat data...</div>`;
+  document.getElementById("content").innerHTML =
+    `<div class="loading"><div class="spinner"></div>Memuat data...</div>`;
   try {
-    const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`);
-    const txt = await res.text();
+    const res  = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`);
+    const txt  = await res.text();
     const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const rows = json.table.rows||[];
-    if(!rows||rows.length===0){
-      document.getElementById("content").innerHTML=`<div class="loading">📭 Belum ada data pendaftaran.</div>`;
+    const rows = json.table.rows || [];
+    if (!rows || rows.length === 0) {
+      document.getElementById("content").innerHTML =
+        `<div class="loading">📭 Belum ada data pendaftaran.</div>`;
       return;
     }
-    const data = rows.map(r=>r.c.map(c=>c?(c.f||c.v||"-"):"-"));
+    const data = rows.map(r => r.c.map(c => c ? (c.f || c.v || "-") : "-"));
     render(data);
-    document.getElementById("lastUpdate").textContent="Terakhir diperbarui: "+new Date().toLocaleTimeString("id-ID");
+    document.getElementById("lastUpdate").textContent =
+      "Terakhir diperbarui: " + new Date().toLocaleTimeString("id-ID");
   } catch(e) {
-    document.getElementById("content").innerHTML=`<div class="loading">❌ Gagal memuat data. Cek koneksi atau SHEET_ID.</div>`;
+    document.getElementById("content").innerHTML =
+      `<div class="loading">❌ Gagal memuat data.</div>`;
   }
 }
 
 function render(data) {
-  const total = data.length;
-  const totalPeserta = sum(data.map(r=>r[11]));
-  const totalDewasa  = sum(data.map(r=>r[9]));
-  const totalAnak    = sum(data.map(r=>r[10]));
-  const totalBus     = data.filter(r=>r[28]==="Ikut Bus Panitia").length;
-  const totalMobil   = data.filter(r=>r[28]==="Kendaraan Sendiri").length;
-  const pesertaBus   = sum(data.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>parseInt(r[11])||1));
-  const busCount     = Math.ceil(pesertaBus/BUS_CAPACITY)||0;
-  const kursiKosong  = busCount*BUS_CAPACITY - pesertaBus;
-  const perSection   = count(data.map(r=>r[3]));
-  const perTanggal   = count(data.map(r=>r[5]));
-  const perKehadiran = count(data.map(r=>r[6]));
-  const perSize      = count(data.map(r=>r[30]));
-  const perLengan    = count(data.map(r=>r[29]));
+  const total        = data.length;
+  const totalPeserta = sum(data.map(r => r[11]));
+  const totalDewasa  = sum(data.map(r => r[9]));
+  const totalAnak    = sum(data.map(r => r[10]));
+  const totalBus     = data.filter(r => r[28] === "Ikut Bus Panitia").length;
+  const totalMobil   = data.filter(r => r[28] === "Kendaraan Sendiri").length;
+  const pesertaBus   = sum(data.filter(r => r[28] === "Ikut Bus Panitia").map(r => parseInt(r[11]) || 1));
+  const busCount     = Math.ceil(pesertaBus / BUS_CAPACITY) || 0;
+  const kursiKosong  = busCount * BUS_CAPACITY - pesertaBus;
+  const perSection   = count(data.map(r => r[3]));
+  const perTanggal   = count(data.map(r => r[5]));
+  const perKehadiran = count(data.map(r => r[6]));
+  const perSize      = count(data.map(r => r[30]));
+  const perLengan    = count(data.map(r => r[29]));
 
-  const anakRanges={"0-5":0,"6-12":0,"13-17":0};
-  data.forEach(r=>{
-    for(let i=0;i<8;i++){
-      const nama=r[12+i*2], usia=parseInt(r[13+i*2]);
-      if(nama&&nama!=="-"&&!isNaN(usia)){
-        if(usia<=5)anakRanges["0-5"]++;
-        else if(usia<=12)anakRanges["6-12"]++;
+  const anakRanges = {"0-5":0,"6-12":0,"13-17":0};
+  data.forEach(r => {
+    for (let i = 0; i < 8; i++) {
+      const nama = r[12+i*2], usia = parseInt(r[13+i*2]);
+      if (nama && nama !== "-" && !isNaN(usia)) {
+        if (usia <= 5) anakRanges["0-5"]++;
+        else if (usia <= 12) anakRanges["6-12"]++;
         else anakRanges["13-17"]++;
       }
     }
   });
 
-  const maxTanggal = Math.max(...Object.values(perTanggal),1);
-  const maxSize    = Math.max(...Object.values(perSize),1);
-  const pctTotal   = Math.round(total/GRAND_TOTAL*100);
+  const maxTanggal = Math.max(...Object.values(perTanggal), 1);
+  const maxSize    = Math.max(...Object.values(perSize), 1);
+  const pctTotal   = Math.round(total / GRAND_TOTAL * 100);
 
   // Hitung kamar
   const km = hitungKamar(data);
-  const pctKamarKeluarga = km.totalKamar > 0 ? Math.round(km.kamarKeluarga / km.totalKamar * 100) : 0;
-  const pctKamarSharing  = km.totalKamar > 0 ? Math.round(km.kamarSharing  / km.totalKamar * 100) : 0;
+  const pctKK = km.totalKamar > 0 ? Math.round(km.kamarKeluarga / km.totalKamar * 100) : 0;
+  const pctKS = km.totalKamar > 0 ? Math.round(km.kamarSharing  / km.totalKamar * 100) : 0;
+  const pctKSolo = km.totalKamar > 0 ? Math.round(km.kamarSolo / km.totalKamar * 100) : 0;
 
-  // Buat daftar kamar sharing (siapa saja di tiap kamar)
-  const sharingRooms = [];
-  for(let i=0;i<km.kamarSharing;i++){
-    sharingRooms.push(km.sharing.slice(i*ROOM_CAPACITY, i*ROOM_CAPACITY+ROOM_CAPACITY));
-  }
+  // Penanda kamar per karyawan (untuk tabel bawah)
+  const kamarMap = {};
+  km.keluarga.forEach(r  => { kamarMap[r[1]] = {tipe:'keluarga', label:'👨‍👩‍👧 Keluarga'} });
+  km.soloFixed.forEach(r => { kamarMap[r[1]] = {tipe:'solo', label:'👩 Solo'} });
+  km.sharingRooms.forEach((room, i) => {
+    room.members.forEach(r => {
+      kamarMap[r[1]] = {tipe:'sharing', label:`👥 Sharing #${i+1}`};
+    });
+  });
 
-  document.getElementById("content").innerHTML=`
+  document.getElementById("content").innerHTML = `
 
     <!-- 1. RINGKASAN UTAMA -->
     <div class="stat-grid">
@@ -208,10 +271,10 @@ function render(data) {
     <!-- 3. PROGRESS PER SECTION -->
     <div class="card" style="margin-bottom:20px;background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3)">
       <div class="card-title" style="color:#c084fc">🏢 Progress Pendaftaran per Section</div>
-      ${Object.entries(TARGETS).map(([sec,target])=>{
-        const daftar=perSection[sec]||0;
-        const pct=Math.min(Math.round(daftar/target*100),100);
-        const color=pct>=100?"#6ee7b7":pct>=60?"#f7c948":"#fda4af";
+      ${Object.entries(TARGETS).map(([sec, target]) => {
+        const daftar = perSection[sec] || 0;
+        const pct    = Math.min(Math.round(daftar / target * 100), 100);
+        const color  = pct >= 100 ? "#6ee7b7" : pct >= 60 ? "#f7c948" : "#fda4af";
         return `<div class="bar-row">
           <div class="bar-label">
             <span style="max-width:70%">${sec}</span>
@@ -243,26 +306,26 @@ function render(data) {
           <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🪑 Kursi Kosong</div>
         </div>
         <div class="mini-card" style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#c084fc">${busCount*BUS_CAPACITY}</div>
+          <div style="font-size:28px;font-weight:900;color:#c084fc">${busCount * BUS_CAPACITY}</div>
           <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">💺 Total Kursi</div>
         </div>
       </div>
-      ${Array.from({length:busCount},(_,i)=>{
-        const terisi=i<Math.floor(pesertaBus/BUS_CAPACITY)?BUS_CAPACITY:(pesertaBus%BUS_CAPACITY||BUS_CAPACITY);
-        const pct=Math.round(terisi/BUS_CAPACITY*100);
+      ${Array.from({length:busCount}, (_, i) => {
+        const terisi = i < Math.floor(pesertaBus/BUS_CAPACITY) ? BUS_CAPACITY : (pesertaBus % BUS_CAPACITY || BUS_CAPACITY);
+        const pct    = Math.round(terisi / BUS_CAPACITY * 100);
         return `<div class="bar-row">
           <div class="bar-label"><span>🚌 Bus ${i+1}</span><span style="color:#7ecfff;font-weight:700">${terisi} terisi · ${BUS_CAPACITY-terisi} kosong</span></div>
           <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:linear-gradient(90deg,#3b82f6,#6ee7b7)"></div></div>
         </div>`;
-      }).join("")||'<div class="empty">Belum ada peserta bus</div>'}
+      }).join("") || '<div class="empty">Belum ada peserta bus</div>'}
     </div>
 
-    <!-- 5. KEBUTUHAN KAMAR ← BARU -->
+    <!-- 5. KEBUTUHAN KAMAR -->
     <div class="card" style="margin-bottom:20px;background:rgba(20,184,166,0.1);border-color:rgba(20,184,166,0.35)">
       <div class="card-title" style="color:#2dd4bf">🛏️ Kebutuhan Kamar Hotel</div>
 
-      <!-- Ringkasan 4 angka -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px">
+      <!-- Ringkasan angka -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px">
         <div class="mini-card" style="background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.35)">
           <div style="font-size:32px;font-weight:900;color:#2dd4bf">${km.totalKamar}</div>
           <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🛏️ Total Kamar</div>
@@ -270,109 +333,143 @@ function render(data) {
         <div class="mini-card" style="background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.35)">
           <div style="font-size:32px;font-weight:900;color:#fb923c">${km.kamarKeluarga}</div>
           <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👨‍👩‍👧 Kamar Keluarga</div>
-          <div style="font-size:11px;font-weight:700;color:#fb923c;margin-top:4px">${pctKamarKeluarga}%</div>
+          <div style="font-size:11px;font-weight:700;color:#fb923c;margin-top:4px">${pctKK}%</div>
+        </div>
+        <div class="mini-card" style="background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.3)">
+          <div style="font-size:32px;font-weight:900;color:#f9a8d4">${km.kamarSolo}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👩 Kamar Solo</div>
+          <div style="font-size:11px;font-weight:700;color:#f9a8d4;margin-top:4px">${pctKSolo}%</div>
         </div>
         <div class="mini-card" style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.35)">
           <div style="font-size:32px;font-weight:900;color:#a5b4fc">${km.kamarSharing}</div>
           <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👥 Kamar Sharing</div>
-          <div style="font-size:11px;font-weight:700;color:#a5b4fc;margin-top:4px">${pctKamarSharing}%</div>
+          <div style="font-size:11px;font-weight:700;color:#a5b4fc;margin-top:4px">${pctKS}%</div>
         </div>
         <div class="mini-card" style="background:rgba(244,63,94,0.12);border:1px solid rgba(244,63,94,0.3)">
-          <div style="font-size:32px;font-weight:900;color:#fda4af">${km.sharingKosong}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🪑 Slot Sharing Kosong</div>
+          <div style="font-size:32px;font-weight:900;color:#fda4af">${km.kosongSharing}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🪑 Slot Kosong</div>
         </div>
       </div>
 
-      <!-- Bar proporsi kamar -->
-      <div style="margin-bottom:18px">
-        <div class="bar-label" style="margin-bottom:6px">
-          <span style="color:#fb923c;font-weight:700">👨‍👩‍👧 Keluarga: ${km.kamarKeluarga} kamar (${pctKamarKeluarga}%)</span>
-          <span style="color:#a5b4fc;font-weight:700">Sharing: ${km.kamarSharing} kamar (${pctKamarSharing}%) 👥</span>
+      <!-- Bar proporsi -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px">
+          <span style="color:#fb923c;font-weight:700">👨‍👩‍👧 Keluarga ${km.kamarKeluarga} (${pctKK}%)</span>
+          <span style="color:#f9a8d4;font-weight:700">👩 Solo ${km.kamarSolo} (${pctKSolo}%)</span>
+          <span style="color:#a5b4fc;font-weight:700">👥 Sharing ${km.kamarSharing} (${pctKS}%) </span>
         </div>
         <div style="background:rgba(255,255,255,0.08);border-radius:8px;height:18px;overflow:hidden;display:flex">
-          <div style="width:${pctKamarKeluarga}%;background:linear-gradient(90deg,#f97316,#fb923c);border-radius:8px 0 0 8px;transition:width .8s"></div>
-          <div style="width:${pctKamarSharing}%;background:linear-gradient(90deg,#6366f1,#a5b4fc);border-radius:0 8px 8px 0;transition:width .8s"></div>
+          <div style="width:${pctKK}%;background:linear-gradient(90deg,#f97316,#fb923c);transition:width .8s"></div>
+          <div style="width:${pctKSolo}%;background:linear-gradient(90deg,#db2777,#f9a8d4);transition:width .8s"></div>
+          <div style="width:${pctKS}%;background:linear-gradient(90deg,#6366f1,#a5b4fc);border-radius:0 8px 8px 0;transition:width .8s"></div>
         </div>
       </div>
 
-      <div class="grid2" style="margin-bottom:0;gap:16px">
+      <!-- Panel 3 kolom: Keluarga | Solo | Sharing -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
 
-        <!-- Kamar Keluarga breakdown -->
+        <!-- Kamar Keluarga -->
         <div style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.25);border-radius:12px;padding:16px">
-          <div style="font-size:12px;font-weight:800;color:#fb923c;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">
+          <div style="font-size:12px;font-weight:800;color:#fb923c;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">
             👨‍👩‍👧 Kamar Keluarga — ${km.kamarKeluarga} Kamar
           </div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:10px">
-            1 karyawan = 1 kamar · Dewasa &gt; 1 atau ada anak
-          </div>
-          ${Object.entries(km.breakdown).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
-            const pct = km.kamarKeluarga > 0 ? Math.round(v/km.kamarKeluarga*100) : 0;
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px">1 karyawan = 1 kamar · Dewasa &gt; 1 atau ada anak</div>
+          ${Object.entries(km.breakdown).sort((a,b) => b[1]-a[1]).map(([k,v]) => {
+            const pct = km.kamarKeluarga > 0 ? Math.round(v / km.kamarKeluarga * 100) : 0;
             return `<div class="bar-row">
               <div class="bar-label">
-                <span style="color:rgba(255,255,255,0.8)">${k}</span>
+                <span>${k}</span>
                 <span style="color:#fb923c;font-weight:700">${v} kamar (${pct}%)</span>
               </div>
               <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:#fb923c"></div></div>
             </div>`;
-          }).join("")||'<div class="empty">Belum ada data</div>'}
-
-          <!-- Daftar nama karyawan keluarga -->
-          <div style="margin-top:14px">
-            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Daftar Karyawan Keluarga</div>
-            <table class="kamar-tbl">
-              <thead><tr>
-                <th>#</th><th>Nama</th><th>Section</th><th>Dewasa</th><th>Anak</th>
-              </tr></thead>
-              <tbody>
-                ${km.keluarga.map((r,i)=>`
-                  <tr>
-                    <td style="color:rgba(255,255,255,0.35)">${i+1}</td>
-                    <td style="font-weight:700;color:#fff">${r[1]}</td>
-                    <td style="color:rgba(255,255,255,0.5);max-width:120px">${r[3]}</td>
-                    <td style="text-align:center;color:#fb923c;font-weight:700">${r[9]}</td>
-                    <td style="text-align:center;color:#fda4af;font-weight:700">${r[10]}</td>
-                  </tr>`).join("")||'<tr><td colspan="5" class="empty">Belum ada data</td></tr>'}
-              </tbody>
-            </table>
-          </div>
+          }).join("") || '<div class="empty">Belum ada data</div>'}
+          <table class="kamar-tbl" style="margin-top:14px">
+            <thead><tr>
+              <th>#</th><th>Nama</th><th>Section</th><th style="text-align:center">Dws</th><th style="text-align:center">Anak</th>
+            </tr></thead>
+            <tbody>
+              ${km.keluarga.map((r, i) => `
+                <tr>
+                  <td style="color:rgba(255,255,255,0.3)">${i+1}</td>
+                  <td style="font-weight:700">${r[1]}</td>
+                  <td style="color:rgba(255,255,255,0.45);font-size:10px">${r[3]}</td>
+                  <td style="text-align:center;color:#fb923c;font-weight:700">${r[9]}</td>
+                  <td style="text-align:center;color:#fda4af;font-weight:700">${r[10]}</td>
+                </tr>`).join("") || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>'}
+            </tbody>
+          </table>
         </div>
 
-        <!-- Kamar Sharing breakdown -->
-        <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:12px;padding:16px">
-          <div style="font-size:12px;font-weight:800;color:#a5b4fc;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">
-            👥 Kamar Sharing — ${km.kamarSharing} Kamar
-          </div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:14px">
-            ${km.sharing.length} karyawan solo · ${ROOM_CAPACITY} orang/kamar · ${km.sharingKosong} slot kosong
+        <!-- Kamar Sharing + Solo (kolom kanan) -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- Kamar Solo (Dayudya) -->
+          <div style="background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.25);border-radius:12px;padding:16px">
+            <div style="font-size:12px;font-weight:800;color:#f9a8d4;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">
+              👩 Kamar Solo — ${km.kamarSolo} Kamar
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:10px">Kamar khusus wanita, tidak digabung</div>
+            ${km.soloFixed.length > 0
+              ? km.soloFixed.map(r => `
+                  <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.2);border-radius:8px">
+                    <span style="font-size:18px">👩</span>
+                    <div>
+                      <div style="font-weight:700;color:#fff;font-size:13px">${r[1]}</div>
+                      <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">${r[3]}</div>
+                    </div>
+                    <span style="margin-left:auto;font-size:10px;background:rgba(236,72,153,0.2);border:1px solid rgba(236,72,153,0.4);color:#f9a8d4;padding:2px 8px;border-radius:8px;font-weight:700">1 Kamar</span>
+                  </div>`).join("")
+              : `<div class="empty" style="font-size:11px">${SOLO_NAME} belum mendaftar</div>`}
           </div>
 
-          ${sharingRooms.map((room, i)=>{
-            const isi = room.length;
-            const pct = Math.round(isi/ROOM_CAPACITY*100);
-            const kosong = ROOM_CAPACITY - isi;
-            return `<div style="margin-bottom:14px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                <span style="font-weight:800;color:#a5b4fc;font-size:12px">🛏️ Kamar Sharing ${i+1}</span>
-                <span style="font-size:11px;color:${isi===ROOM_CAPACITY?'#6ee7b7':'#f7c948'};font-weight:700">${isi}/${ROOM_CAPACITY} terisi${kosong>0?' · '+kosong+' kosong':' · Full'}</span>
-              </div>
-              <div class="bar-track" style="margin-bottom:10px">
-                <div class="bar-fill" style="width:${pct}%;background:${isi===ROOM_CAPACITY?'linear-gradient(90deg,#6366f1,#6ee7b7)':'linear-gradient(90deg,#6366f1,#a5b4fc)'}"></div>
-              </div>
-              ${room.map((r,j)=>`
-                <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-                  <span style="font-size:10px;color:rgba(255,255,255,0.3);min-width:14px">${j+1}</span>
-                  <span style="font-size:12px;font-weight:700;color:#fff;flex:1">${r[1]}</span>
-                  <span style="font-size:10px;color:rgba(255,255,255,0.4)">${r[3].replace('Sec','').replace('Section','').trim().slice(0,22)}</span>
-                </div>`).join("")}
-              ${kosong>0 ? Array.from({length:kosong},()=>`
-                <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
-                  <span style="font-size:10px;color:rgba(255,255,255,0.15);min-width:14px">—</span>
-                  <span style="font-size:11px;color:rgba(255,255,255,0.2);font-style:italic">Slot kosong</span>
-                </div>`).join("") : ''}
-            </div>`;
-          }).join("")||'<div class="empty">Belum ada karyawan solo</div>'}
+          <!-- Kamar Sharing -->
+          <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:12px;padding:16px;flex:1">
+            <div style="font-size:12px;font-weight:800;color:#a5b4fc;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">
+              👥 Kamar Sharing — ${km.kamarSharing} Kamar
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:14px">
+              ${km.sharingPool.length} orang · Prioritas 1 section, sisa gabung lintas section · ${ROOM_CAPACITY}/kamar · ${km.kosongSharing} slot kosong
+            </div>
+            ${km.sharingRooms.map((room, i) => {
+              const isi    = room.members.length;
+              const kosong = ROOM_CAPACITY - isi;
+              const pct    = Math.round(isi / ROOM_CAPACITY * 100);
+              const isFull = kosong === 0;
+              const isMixed= !room.sameSection;
+              return `
+                <div style="margin-bottom:12px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,${isMixed?'0.35':'0.2'});border-radius:10px;padding:12px">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;flex-wrap:wrap">
+                    <div style="display:flex;align-items:center;gap:6px">
+                      <span style="font-weight:800;color:#a5b4fc;font-size:12px">🛏️ Kamar ${i+1}</span>
+                      ${isMixed
+                        ? `<span style="font-size:9px;background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.4);color:#f7c948;padding:1px 7px;border-radius:8px;font-weight:700">LINTAS SECTION</span>`
+                        : `<span style="font-size:9px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc;padding:1px 7px;border-radius:8px;font-weight:700">1 SECTION</span>`}
+                    </div>
+                    <span style="font-size:11px;color:${isFull?'#6ee7b7':'#f7c948'};font-weight:700">${isi}/${ROOM_CAPACITY}${isFull?' · Full':` · ${kosong} kosong`}</span>
+                  </div>
+                  <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:8px;font-style:italic">${room.label}</div>
+                  <div class="bar-track" style="margin-bottom:10px">
+                    <div class="bar-fill" style="width:${pct}%;background:${isFull
+                      ? 'linear-gradient(90deg,#6366f1,#6ee7b7)'
+                      : 'linear-gradient(90deg,#6366f1,#a5b4fc)'}"></div>
+                  </div>
+                  ${room.members.map((r, j) => `
+                    <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+                      <span style="font-size:10px;color:rgba(255,255,255,0.25);min-width:14px">${j+1}</span>
+                      <span style="font-size:12px;font-weight:700;color:#fff;flex:1">${r[1]}</span>
+                      <span style="font-size:10px;color:rgba(255,255,255,0.35)">${r[3].replace(/Section|Sec\.?/gi,'').trim().slice(0,24)}</span>
+                    </div>`).join("")}
+                  ${kosong > 0 ? Array.from({length:kosong}, () => `
+                    <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
+                      <span style="font-size:10px;color:rgba(255,255,255,0.12);min-width:14px">—</span>
+                      <span style="font-size:11px;color:rgba(255,255,255,0.18);font-style:italic">Slot kosong</span>
+                    </div>`).join("") : ''}
+                </div>`;
+            }).join("") || '<div class="empty">Belum ada karyawan sharing</div>'}
+          </div>
+
         </div>
-
       </div>
     </div>
 
@@ -380,19 +477,19 @@ function render(data) {
     <div class="grid2" style="margin-bottom:20px">
       <div class="card">
         <div class="card-title" style="color:#f7c948">📅 Pilihan Tanggal Tour</div>
-        ${Object.entries(perTanggal).map(([k,v],i)=>`
+        ${Object.entries(perTanggal).map(([k,v], i) => `
           <div class="bar-row">
             <div class="bar-label"><span>${k}</span><span style="color:#f7c948;font-weight:700">${v} orang (${Math.round(v/total*100)}%)</span></div>
             <div class="bar-track"><div class="bar-fill" style="width:${v/maxTanggal*100}%;background:${colors[i%colors.length]}"></div></div>
-          </div>`).join("")||'<div class="empty">Belum ada data</div>'}
+          </div>`).join("") || '<div class="empty">Belum ada data</div>'}
       </div>
       <div class="card">
         <div class="card-title" style="color:#6ee7b7">🎫 Tipe Kehadiran</div>
-        ${Object.entries(perKehadiran).map(([k,v],i)=>`
+        ${Object.entries(perKehadiran).map(([k,v], i) => `
           <div class="bar-row">
             <div class="bar-label"><span>${k}</span><span style="color:#6ee7b7;font-weight:700">${v} orang (${Math.round(v/total*100)}%)</span></div>
             <div class="bar-track"><div class="bar-fill" style="width:${v/total*100}%;background:${colors[i%colors.length]}"></div></div>
-          </div>`).join("")||'<div class="empty">Belum ada data</div>'}
+          </div>`).join("") || '<div class="empty">Belum ada data</div>'}
       </div>
     </div>
 
@@ -428,16 +525,16 @@ function render(data) {
       <div class="card">
         <div class="card-title" style="color:#c084fc">👕 Ukuran Kaos</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
-          ${["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"].map(s=>`
+          ${["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"].map(s => `
             <div class="pill" style="background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4);color:#c084fc">
               ${s}: <strong>${perSize[s]||0}</strong>
             </div>`).join("")}
         </div>
-        ${Object.entries(perSize).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`
+        ${Object.entries(perSize).sort((a,b) => b[1]-a[1]).map(([k,v], i) => `
           <div class="bar-row">
             <div class="bar-label"><span>Size ${k}</span><span>${v} orang</span></div>
             <div class="bar-track"><div class="bar-fill" style="width:${v/maxSize*100}%;background:${colors[i%colors.length]}"></div></div>
-          </div>`).join("")||'<div class="empty">Belum ada data</div>'}
+          </div>`).join("") || '<div class="empty">Belum ada data</div>'}
       </div>
       <div class="card">
         <div class="card-title" style="color:#fda4af">🧥 Model Lengan</div>
@@ -465,8 +562,13 @@ function render(data) {
           </tr>
         </thead>
         <tbody>
-          ${data.map((r,i)=>{
-            const isKeluarga = parseInt(r[9])>1 || parseInt(r[10])>0;
+          ${data.map((r, i) => {
+            const info = kamarMap[r[1]] || {tipe:'keluarga', label:'👨‍👩‍👧 Keluarga'};
+            const styleMap = {
+              keluarga: 'background:rgba(251,146,60,0.2);border:1px solid rgba(251,146,60,0.4);color:#fb923c',
+              solo:     'background:rgba(236,72,153,0.2);border:1px solid rgba(236,72,153,0.4);color:#f9a8d4',
+              sharing:  'background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc'
+            };
             return `<tr>
               <td style="color:rgba(255,255,255,0.4)">${i+1}</td>
               <td style="font-weight:700">${r[1]}</td>
@@ -474,10 +576,7 @@ function render(data) {
               <td style="color:#f7c948;font-size:11px">${r[5]}</td>
               <td><span style="background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);padding:2px 8px;border-radius:10px;font-size:11px;color:#6ee7b7">${r[6]}</span></td>
               <td style="font-size:11px">${r[28]}</td>
-              <td><span class="badge" style="${isKeluarga
-                ? 'background:rgba(251,146,60,0.2);border:1px solid rgba(251,146,60,0.4);color:#fb923c'
-                : 'background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc'
-              }">${isKeluarga ? '👨‍👩‍👧 Keluarga' : '👥 Sharing'}</span></td>
+              <td><span class="badge" style="${styleMap[info.tipe]}">${info.label}</span></td>
               <td style="font-size:11px">${r[29]} / ${r[30]}</td>
               <td style="text-align:center;font-weight:700;color:#f7c948">${r[11]}</td>
             </tr>`;
