@@ -7,65 +7,125 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);min-height:100vh;font-family:'Poppins',sans-serif;padding:20px;color:white}
-.wrap{max-width:1200px;margin:0 auto}
-.header{text-align:center;margin-bottom:28px}
-.header h1{font-size:26px;font-weight:900;background:linear-gradient(135deg,#f7c948,#ff6b35,#e94560,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.header p{color:rgba(255,255,255,0.5);font-size:13px;margin-top:4px}
-.refresh-btn{margin-top:12px;background:linear-gradient(90deg,#a855f7,#3b82f6);border:none;color:white;padding:8px 20px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif}
-.last-update{font-size:11px;color:rgba(255,255,255,0.3);margin-top:6px}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
-.stat-card{border-radius:16px;padding:18px;text-align:center;backdrop-filter:blur(10px)}
-.stat-card .num{font-size:36px;font-weight:900;line-height:1}
-.stat-card .lbl{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:6px;opacity:0.7}
-.s1{background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.4)}.s1 .num{color:#7ecfff}
-.s2{background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4)}.s2 .num{color:#6ee7b7}
-.s3{background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.4)}.s3 .num{color:#f7c948}
-.s4{background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4)}.s4 .num{color:#c084fc}
-.s5{background:rgba(233,69,96,0.2);border:1px solid rgba(233,69,96,0.4)}.s5 .num{color:#fda4af}
-.s6{background:rgba(255,107,53,0.2);border:1px solid rgba(255,107,53,0.4)}.s6 .num{color:#ffb347}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
-.card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:20px;backdrop-filter:blur(10px)}
-.card-title{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
-.bar-row{margin-bottom:10px}
-.bar-label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px}
-.bar-track{background:rgba(255,255,255,0.08);border-radius:6px;height:10px;overflow:hidden}
-.bar-fill{height:100%;border-radius:6px;transition:width 0.8s ease}
-.pill{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700}
-.tbl{width:100%;border-collapse:collapse;font-size:12px}
-.tbl th{color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.1);text-align:left}
-.tbl td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.8)}
-.tbl tr:last-child td{border-bottom:none}
-.loading{text-align:center;padding:40px;color:rgba(255,255,255,0.4);font-size:14px}
-.spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,0.1);border-top-color:#a855f7;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px}
+body{background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);min-height:100vh;font-family:'Poppins',sans-serif;padding:12px;color:white}
+.wrap{max-width:600px;margin:0 auto}
+
+/* ── HEADER ── */
+.header{text-align:center;margin-bottom:20px;padding:20px 16px 16px}
+.header h1{font-size:20px;font-weight:900;line-height:1.3;background:linear-gradient(135deg,#f7c948,#ff6b35,#e94560,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header p{color:rgba(255,255,255,0.45);font-size:12px;margin-top:6px}
+.refresh-btn{margin-top:10px;background:linear-gradient(90deg,#a855f7,#3b82f6);border:none;color:white;padding:9px 22px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;width:100%}
+.last-update{font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px}
+
+/* ── CARD ── */
+.card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.11);border-radius:16px;padding:16px;margin-bottom:14px}
+.card-title{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* ── STAT STRIP: 3 kolom per baris ── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.stat-card{border-radius:12px;padding:12px 8px;text-align:center}
+.stat-card .num{font-size:28px;font-weight:900;line-height:1}
+.stat-card .lbl{font-size:9px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-top:4px;opacity:0.65;line-height:1.3}
+.s1{background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.35)}.s1 .num{color:#7ecfff}
+.s2{background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.35)}.s2 .num{color:#6ee7b7}
+.s3{background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.35)}.s3 .num{color:#f7c948}
+.s4{background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.35)}.s4 .num{color:#c084fc}
+.s5{background:rgba(233,69,96,0.2);border:1px solid rgba(233,69,96,0.35)}.s5 .num{color:#fda4af}
+.s6{background:rgba(255,107,53,0.2);border:1px solid rgba(255,107,53,0.35)}.s6 .num{color:#ffb347}
+
+/* ── STAT ROW: horizontal 2-value ── */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;margin-bottom:8px}
+.stat-row:last-child{margin-bottom:0}
+.stat-row .sr-label{font-size:12px;color:rgba(255,255,255,0.7);flex:1}
+.stat-row .sr-val{font-size:14px;font-weight:800}
+.stat-row .sr-pct{font-size:11px;font-weight:600;opacity:0.7;margin-left:6px}
+
+/* ── PROGRESS BAR ── */
+.bar-wrap{margin-bottom:10px}
+.bar-wrap:last-child{margin-bottom:0}
+.bar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.bar-top .bl{font-size:12px;color:rgba(255,255,255,0.75);flex:1;padding-right:8px;line-height:1.4}
+.bar-top .bv{font-size:12px;font-weight:800;white-space:nowrap}
+.bar-track{background:rgba(255,255,255,0.08);border-radius:6px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px}
+
+/* ── MINI GRID: 2 kolom ── */
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.mini-card{border-radius:10px;padding:12px;text-align:center}
+.mini-card .mn{font-size:26px;font-weight:900;line-height:1}
+.mini-card .ml{font-size:9px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.4}
+.mini-card .mp{font-size:11px;font-weight:700;margin-top:3px}
+
+/* ── BIG NUMBER ── */
+.big-num{text-align:center;padding:12px 0}
+.big-num .bn{font-size:56px;font-weight:900;line-height:1}
+.big-num .bs{font-size:13px;color:rgba(255,255,255,0.45);margin-top:4px}
+
+/* ── KAMAR ROOM BLOCK ── */
+.room-block{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;margin-bottom:10px}
+.room-block:last-child{margin-bottom:0}
+.room-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:4px}
+.room-title{font-size:13px;font-weight:800;color:#a5b4fc}
+.room-sub{font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:8px;font-style:italic}
+.room-person{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.room-person:last-child{border-bottom:none}
+.room-person .rp-num{font-size:10px;color:rgba(255,255,255,0.25);width:16px}
+.room-person .rp-name{font-size:12px;font-weight:700;flex:1}
+.room-person .rp-sec{font-size:10px;color:rgba(255,255,255,0.35);text-align:right}
+.room-empty-slot{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.room-empty-slot span{font-size:11px;color:rgba(255,255,255,0.18);font-style:italic}
+
+/* ── BADGE ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap}
+
+/* ── PILL TAGS ── */
+.pill-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pill{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700}
+
+/* ── TABLE (mobile-friendly card list) ── */
+.person-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;margin-bottom:8px}
+.person-card:last-child{margin-bottom:0}
+.pc-name{font-size:14px;font-weight:800;margin-bottom:6px}
+.pc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pc-row:last-child{margin-bottom:0}
+.pc-label{font-size:11px;color:rgba(255,255,255,0.4)}
+.pc-val{font-size:11px;font-weight:600;color:rgba(255,255,255,0.8)}
+
+/* ── PROGRESS RING ── */
+.ring-wrap{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.ring-info{flex:1}
+.ring-pct{font-size:44px;font-weight:900;color:#6ee7b7;line-height:1}
+.ring-sub{font-size:12px;color:rgba(255,255,255,0.45);margin-top:4px}
+
+/* ── LOADING ── */
+.loading{text-align:center;padding:60px 20px;color:rgba(255,255,255,0.4);font-size:14px}
+.spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,0.1);border-top-color:#a855f7;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty{text-align:center;color:rgba(255,255,255,0.3);font-size:13px;padding:20px;font-style:italic}
-.mini-card{text-align:center;border-radius:12px;padding:14px}
-.kamar-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
-.kamar-tbl th{color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.1);text-align:left}
-.kamar-tbl td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.8);font-size:11px}
-.kamar-tbl tr:last-child td{border-bottom:none}
-.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700}
-@media(max-width:768px){.grid2{grid-template-columns:1fr}}
+.empty{text-align:center;color:rgba(255,255,255,0.3);font-size:12px;padding:16px;font-style:italic}
+
+/* ── DIVIDER ── */
+.section-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-align:center;padding:4px 0 10px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="header">
-    <h1>🚌 Dashboard Tour PPIC & Warehouse 2026</h1>
+    <h1>🚌 Dashboard Tour<br>PPIC &amp; Warehouse 2026</h1>
     <p>Data realtime dari Google Sheets</p>
     <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
     <div class="last-update" id="lastUpdate">—</div>
   </div>
-  <div id="content"><div class="loading"><div class="spinner"></div>Memuat data...</div></div>
+  <div id="content">
+    <div class="loading"><div class="spinner"></div>Memuat data...</div>
+  </div>
 </div>
 
 <script>
-const SHEET_ID       = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
-const BUS_CAPACITY   = 59;
-const GRAND_TOTAL    = 97;
-const ROOM_CAPACITY  = 4;
-const SOLO_NAME      = "Dayudya Luthfiarasty"; // kamar sendiri, tidak digabung
+const SHEET_ID      = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
+const BUS_CAPACITY  = 59;
+const GRAND_TOTAL   = 97;
+const ROOM_CAPACITY = 4;
+const SOLO_NAME     = "Dayudya Luthfiarasty";
 
 const TARGETS = {
   "Dept. Head":1,
@@ -77,513 +137,437 @@ const TARGETS = {
   "Warehouse Ordering & Engineering Sec":15,
   "Warehouse Plant #3 Sec":14
 };
-const colors = ["#7ecfff","#6ee7b7","#f7c948","#c084fc","#fda4af","#ffb347","#60a5fa","#a78bfa"];
+const colors=["#7ecfff","#6ee7b7","#f7c948","#c084fc","#fda4af","#ffb347","#60a5fa","#a78bfa"];
 
 function count(arr){const m={};arr.forEach(v=>{m[v]=(m[v]||0)+1});return m}
 function sum(arr){return arr.reduce((a,b)=>a+(parseFloat(b)||0),0)}
+function pct(a,b){return b>0?Math.round(a/b*100):0}
 
-// ── KALKULASI KAMAR ──────────────────────────────────────────────────────────
-// Kamar Keluarga : dewasa > 1 ATAU ada anak — 1 karyawan = 1 kamar
-// Kamar Solo     : Dayudya Luthfiarasty — 1 kamar sendiri (wanita)
-// Kamar Sharing  : sisanya, dikelompokkan per section dulu,
-//                  lalu sisa yang kurang 4 digabung lintas section sampai genap 4
-function hitungKamar(data) {
-  const keluarga = data.filter(r => parseInt(r[9]) > 1 || parseInt(r[10]) > 0);
+function shortSec(s){
+  return s.replace(/Section|Sec\.?/gi,'').replace(/Plant #\d/gi,p=>p.replace('Plant ','P')).trim().slice(0,28);
+}
 
-  // Pisahkan karyawan solo dari pool sharing
-  const soloFixed  = data.filter(r =>
-    r[1].trim().toLowerCase() === SOLO_NAME.toLowerCase() &&
-    parseInt(r[9]) <= 1 && parseInt(r[10]) === 0
-  );
-  const sharingPool = data.filter(r =>
-    r[1].trim().toLowerCase() !== SOLO_NAME.toLowerCase() &&
-    parseInt(r[9]) <= 1 && parseInt(r[10]) === 0
-  );
+function hitungKamar(data){
+  const keluarga   = data.filter(r=>parseInt(r[9])>1||parseInt(r[10])>0);
+  const soloFixed  = data.filter(r=>r[1].trim().toLowerCase()===SOLO_NAME.toLowerCase()&&parseInt(r[9])<=1&&parseInt(r[10])===0);
+  const sharingPool= data.filter(r=>r[1].trim().toLowerCase()!==SOLO_NAME.toLowerCase()&&parseInt(r[9])<=1&&parseInt(r[10])===0);
 
-  // ── Algoritma pengelompokan sharing ────────────────────────────────────────
-  // 1. Kelompokkan per section
-  // 2. Section yang >= 4 → bikin kamar penuh (pakai kelipatan 4), sisa masuk antrian
-  // 3. Antrian gabungan (sisa dari semua section) → diisi 4-4 sampai habis
-  const bySection = {};
-  sharingPool.forEach(r => {
-    const sec = r[3] || "Unknown";
-    if (!bySection[sec]) bySection[sec] = [];
-    bySection[sec].push(r);
-  });
+  const bySection={};
+  sharingPool.forEach(r=>{const s=r[3]||"Unknown";if(!bySection[s])bySection[s]=[];bySection[s].push(r);});
 
-  const sharingRooms  = []; // array of { label, members[] }
-  const overflow      = []; // orang-orang sisa yang belum dapat kamar
-
-  Object.entries(bySection).forEach(([sec, members]) => {
-    let idx = 0;
-    // Ambil kelipatan 4 terlebih dulu → buat kamar penuh 1 section
-    while (idx + ROOM_CAPACITY <= members.length) {
-      sharingRooms.push({
-        label: sec,
-        sameSection: true,
-        members: members.slice(idx, idx + ROOM_CAPACITY)
-      });
-      idx += ROOM_CAPACITY;
+  const sharingRooms=[],overflow=[];
+  Object.entries(bySection).forEach(([sec,members])=>{
+    let idx=0;
+    while(idx+ROOM_CAPACITY<=members.length){
+      sharingRooms.push({label:sec,sameSection:true,members:members.slice(idx,idx+ROOM_CAPACITY)});
+      idx+=ROOM_CAPACITY;
     }
-    // Sisa (< 4) masuk overflow
-    while (idx < members.length) {
-      overflow.push(members[idx]);
-      idx++;
-    }
+    while(idx<members.length){overflow.push(members[idx]);idx++;}
   });
-
-  // Gabungkan overflow lintas section, 4 per kamar
-  for (let i = 0; i < overflow.length; i += ROOM_CAPACITY) {
-    const chunk = overflow.slice(i, i + ROOM_CAPACITY);
-    // Label kamar: sebutkan section yang ada di dalamnya
-    const secs  = [...new Set(chunk.map(r => r[3]))];
-    sharingRooms.push({
-      label: secs.join(" + "),
-      sameSection: false,
-      members: chunk
-    });
+  for(let i=0;i<overflow.length;i+=ROOM_CAPACITY){
+    const chunk=overflow.slice(i,i+ROOM_CAPACITY);
+    const secs=[...new Set(chunk.map(r=>r[3]))];
+    sharingRooms.push({label:secs.join(" + "),sameSection:false,members:chunk});
   }
 
-  const kamarKeluarga = keluarga.length;
-  const kamarSolo     = soloFixed.length;   // max 1 (Dayudya)
-  const kamarSharing  = sharingRooms.length;
-  const totalKamar    = kamarKeluarga + kamarSolo + kamarSharing;
-
-  // Slot kosong kamar sharing (kamar terakhir mungkin tidak penuh)
-  const totalSlotSharing  = kamarSharing * ROOM_CAPACITY;
-  const terisiSharing     = sharingPool.length;
-  const kosongSharing     = totalSlotSharing - terisiSharing;
-
-  // Breakdown keluarga
-  const breakdown = {};
-  keluarga.forEach(r => {
-    const d = parseInt(r[9]) || 1;
-    const a = parseInt(r[10]) || 0;
-    const k = `${d} Dewasa${a > 0 ? ` + ${a} Anak` : ''}`;
-    breakdown[k] = (breakdown[k] || 0) + 1;
+  const breakdown={};
+  keluarga.forEach(r=>{
+    const d=parseInt(r[9])||1,a=parseInt(r[10])||0;
+    const k=`${d} Dewasa${a>0?` + ${a} Anak`:''}`;
+    breakdown[k]=(breakdown[k]||0)+1;
   });
 
-  return {
-    keluarga, soloFixed, sharingPool, sharingRooms,
-    kamarKeluarga, kamarSolo, kamarSharing, totalKamar,
-    terisiSharing, kosongSharing, breakdown
+  return{
+    keluarga,soloFixed,sharingPool,sharingRooms,
+    kamarKeluarga:keluarga.length,
+    kamarSolo:soloFixed.length,
+    kamarSharing:sharingRooms.length,
+    totalKamar:keluarga.length+soloFixed.length+sharingRooms.length,
+    kosongSharing:sharingRooms.length*ROOM_CAPACITY-sharingPool.length,
+    breakdown
   };
 }
 
-async function loadData() {
-  document.getElementById("content").innerHTML =
-    `<div class="loading"><div class="spinner"></div>Memuat data...</div>`;
-  try {
-    const res  = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`);
-    const txt  = await res.text();
-    const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const rows = json.table.rows || [];
-    if (!rows || rows.length === 0) {
-      document.getElementById("content").innerHTML =
-        `<div class="loading">📭 Belum ada data pendaftaran.</div>`;
-      return;
-    }
-    const data = rows.map(r => r.c.map(c => c ? (c.f || c.v || "-") : "-"));
+async function loadData(){
+  document.getElementById("content").innerHTML=`<div class="loading"><div class="spinner"></div>Memuat data...</div>`;
+  try{
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`);
+    const txt=await res.text();
+    const json=JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows=json.table.rows||[];
+    if(!rows||rows.length===0){document.getElementById("content").innerHTML=`<div class="loading">📭 Belum ada data.</div>`;return;}
+    const data=rows.map(r=>r.c.map(c=>c?(c.f||c.v||"-"):"-"));
     render(data);
-    document.getElementById("lastUpdate").textContent =
-      "Terakhir diperbarui: " + new Date().toLocaleTimeString("id-ID");
-  } catch(e) {
-    document.getElementById("content").innerHTML =
-      `<div class="loading">❌ Gagal memuat data.</div>`;
+    document.getElementById("lastUpdate").textContent="Diperbarui: "+new Date().toLocaleTimeString("id-ID");
+  }catch(e){
+    document.getElementById("content").innerHTML=`<div class="loading">❌ Gagal memuat data.</div>`;
   }
 }
 
-function render(data) {
-  const total        = data.length;
-  const totalPeserta = sum(data.map(r => r[11]));
-  const totalDewasa  = sum(data.map(r => r[9]));
-  const totalAnak    = sum(data.map(r => r[10]));
-  const totalBus     = data.filter(r => r[28] === "Ikut Bus Panitia").length;
-  const totalMobil   = data.filter(r => r[28] === "Kendaraan Sendiri").length;
-  const pesertaBus   = sum(data.filter(r => r[28] === "Ikut Bus Panitia").map(r => parseInt(r[11]) || 1));
-  const busCount     = Math.ceil(pesertaBus / BUS_CAPACITY) || 0;
-  const kursiKosong  = busCount * BUS_CAPACITY - pesertaBus;
-  const perSection   = count(data.map(r => r[3]));
-  const perTanggal   = count(data.map(r => r[5]));
-  const perKehadiran = count(data.map(r => r[6]));
-  const perSize      = count(data.map(r => r[30]));
-  const perLengan    = count(data.map(r => r[29]));
+function render(data){
+  const total       =data.length;
+  const totalPeserta=sum(data.map(r=>r[11]));
+  const totalDewasa =sum(data.map(r=>r[9]));
+  const totalAnak   =sum(data.map(r=>r[10]));
+  const totalBus    =data.filter(r=>r[28]==="Ikut Bus Panitia").length;
+  const totalMobil  =data.filter(r=>r[28]==="Kendaraan Sendiri").length;
+  const pesertaBus  =sum(data.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>parseInt(r[11])||1));
+  const busCount    =Math.ceil(pesertaBus/BUS_CAPACITY)||0;
+  const kursiKosong =busCount*BUS_CAPACITY-pesertaBus;
+  const perSection  =count(data.map(r=>r[3]));
+  const perTanggal  =count(data.map(r=>r[5]));
+  const perKehadiran=count(data.map(r=>r[6]));
+  const perSize     =count(data.map(r=>r[30]));
+  const perLengan   =count(data.map(r=>r[29]));
+  const anakR={"0-5":0,"6-12":0,"13-17":0};
+  data.forEach(r=>{for(let i=0;i<8;i++){const n=r[12+i*2],u=parseInt(r[13+i*2]);if(n&&n!=="-"&&!isNaN(u)){if(u<=5)anakR["0-5"]++;else if(u<=12)anakR["6-12"]++;else anakR["13-17"]++;}}});
 
-  const anakRanges = {"0-5":0,"6-12":0,"13-17":0};
-  data.forEach(r => {
-    for (let i = 0; i < 8; i++) {
-      const nama = r[12+i*2], usia = parseInt(r[13+i*2]);
-      if (nama && nama !== "-" && !isNaN(usia)) {
-        if (usia <= 5) anakRanges["0-5"]++;
-        else if (usia <= 12) anakRanges["6-12"]++;
-        else anakRanges["13-17"]++;
-      }
-    }
-  });
+  const maxTanggal=Math.max(...Object.values(perTanggal),1);
+  const maxSize=Math.max(...Object.values(perSize),1);
+  const pctTotal=pct(total,GRAND_TOTAL);
 
-  const maxTanggal = Math.max(...Object.values(perTanggal), 1);
-  const maxSize    = Math.max(...Object.values(perSize), 1);
-  const pctTotal   = Math.round(total / GRAND_TOTAL * 100);
+  const km=hitungKamar(data);
+  const pctKK=pct(km.kamarKeluarga,km.totalKamar);
+  const pctKS=pct(km.kamarSharing,km.totalKamar);
+  const pctKSolo=pct(km.kamarSolo,km.totalKamar);
 
-  // Hitung kamar
-  const km = hitungKamar(data);
-  const pctKK = km.totalKamar > 0 ? Math.round(km.kamarKeluarga / km.totalKamar * 100) : 0;
-  const pctKS = km.totalKamar > 0 ? Math.round(km.kamarSharing  / km.totalKamar * 100) : 0;
-  const pctKSolo = km.totalKamar > 0 ? Math.round(km.kamarSolo / km.totalKamar * 100) : 0;
+  const kamarMap={};
+  km.keluarga.forEach(r=>{kamarMap[r[1]]={tipe:'keluarga',label:'👨‍👩‍👧 Keluarga'};});
+  km.soloFixed.forEach(r=>{kamarMap[r[1]]={tipe:'solo',label:'👩 Solo'};});
+  km.sharingRooms.forEach((room,i)=>{room.members.forEach(r=>{kamarMap[r[1]]={tipe:'sharing',label:`👥 Sharing #${i+1}`};});});
 
-  // Penanda kamar per karyawan (untuk tabel bawah)
-  const kamarMap = {};
-  km.keluarga.forEach(r  => { kamarMap[r[1]] = {tipe:'keluarga', label:'👨‍👩‍👧 Keluarga'} });
-  km.soloFixed.forEach(r => { kamarMap[r[1]] = {tipe:'solo', label:'👩 Solo'} });
-  km.sharingRooms.forEach((room, i) => {
-    room.members.forEach(r => {
-      kamarMap[r[1]] = {tipe:'sharing', label:`👥 Sharing #${i+1}`};
-    });
-  });
+  document.getElementById("content").innerHTML=`
 
-  document.getElementById("content").innerHTML = `
+    <!-- ══════ A. RINGKASAN UTAMA ══════ -->
+    <div class="section-label">Ringkasan</div>
 
-    <!-- 1. RINGKASAN UTAMA -->
+    <!-- A1. Angka Utama 3x2 -->
     <div class="stat-grid">
       <div class="stat-card s1"><div class="num">${total}</div><div class="lbl">Karyawan Daftar</div></div>
       <div class="stat-card s2"><div class="num">${totalPeserta}</div><div class="lbl">Total Peserta</div></div>
-      <div class="stat-card s3"><div class="num">${totalDewasa}</div><div class="lbl">Total Dewasa</div></div>
-      <div class="stat-card s4"><div class="num">${totalAnak}</div><div class="lbl">Total Anak</div></div>
-      <div class="stat-card s5"><div class="num">${totalBus}</div><div class="lbl">Ikut Bus</div></div>
-      <div class="stat-card s6"><div class="num">${totalMobil}</div><div class="lbl">Kendaraan Sendiri</div></div>
+      <div class="stat-card s3"><div class="num">${totalDewasa}</div><div class="lbl">Dewasa</div></div>
+      <div class="stat-card s4"><div class="num">${totalAnak}</div><div class="lbl">Anak</div></div>
+      <div class="stat-card s5"><div class="num">${totalBus}</div><div class="lbl">Naik Bus</div></div>
+      <div class="stat-card s6"><div class="num">${totalMobil}</div><div class="lbl">Kend. Sendiri</div></div>
     </div>
 
-    <!-- 2. PROGRESS OVERALL -->
-    <div class="card" style="margin-bottom:20px;background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3)">
-      <div class="card-title" style="color:#6ee7b7">🎯 Overall Progress Pendaftaran</div>
-      <div style="text-align:center;margin-bottom:16px">
-        <div style="font-size:52px;font-weight:900;color:#6ee7b7;line-height:1">${pctTotal}%</div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:4px">${total} dari ${GRAND_TOTAL} karyawan</div>
+    <!-- A2. Overall Progress -->
+    <div class="card" style="background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.25)">
+      <div class="card-title" style="color:#6ee7b7">🎯 Progress Pendaftaran</div>
+      <div class="ring-wrap">
+        <div class="ring-info">
+          <div class="ring-pct">${pctTotal}%</div>
+          <div class="ring-sub">${total} dari ${GRAND_TOTAL} karyawan mendaftar</div>
+        </div>
+        <svg width="72" height="72" viewBox="0 0 72 72">
+          <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+          <circle cx="36" cy="36" r="30" fill="none" stroke="#6ee7b7" stroke-width="8"
+            stroke-dasharray="${Math.round(pctTotal*1.885)} 188.5"
+            stroke-linecap="round" transform="rotate(-90 36 36)"/>
+          <text x="36" y="40" text-anchor="middle" fill="#6ee7b7" font-size="14" font-weight="900" font-family="Poppins">${pctTotal}%</text>
+        </svg>
       </div>
-      <div style="background:rgba(255,255,255,0.08);border-radius:8px;height:14px;overflow:hidden;margin-bottom:12px">
-        <div style="width:${pctTotal}%;height:100%;border-radius:8px;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.4)">
-        <span>0</span><span>Target: ${GRAND_TOTAL}</span>
+      <div class="bar-track" style="height:10px">
+        <div class="bar-fill" style="width:${pctTotal}%;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div>
       </div>
     </div>
 
-    <!-- 3. PROGRESS PER SECTION -->
-    <div class="card" style="margin-bottom:20px;background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3)">
-      <div class="card-title" style="color:#c084fc">🏢 Progress Pendaftaran per Section</div>
-      ${Object.entries(TARGETS).map(([sec, target]) => {
-        const daftar = perSection[sec] || 0;
-        const pct    = Math.min(Math.round(daftar / target * 100), 100);
-        const color  = pct >= 100 ? "#6ee7b7" : pct >= 60 ? "#f7c948" : "#fda4af";
-        return `<div class="bar-row">
-          <div class="bar-label">
-            <span style="max-width:70%">${sec}</span>
-            <span style="color:${color};font-weight:700">${daftar} / ${target} (${pct}%)</span>
+    <!-- A3. Ringkasan Kamar + Bus side by side -->
+    <div class="mini-grid">
+      <div class="mini-card" style="background:rgba(20,184,166,0.15);border:1px solid rgba(20,184,166,0.3)">
+        <div class="mn" style="color:#2dd4bf">${km.totalKamar}</div>
+        <div class="ml">Total Kamar</div>
+        <div class="mp" style="color:#2dd4bf">${km.kamarKeluarga}K + ${km.kamarSharing}S + ${km.kamarSolo}Solo</div>
+      </div>
+      <div class="mini-card" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3)">
+        <div class="mn" style="color:#7ecfff">${busCount}</div>
+        <div class="ml">Bus Dibutuhkan</div>
+        <div class="mp" style="color:#7ecfff">${pesertaBus} peserta · ${kursiKosong} kosong</div>
+      </div>
+    </div>
+
+    <!-- A4. Komposisi Anak -->
+    <div class="card" style="background:rgba(247,201,72,0.06);border-color:rgba(247,201,72,0.2)">
+      <div class="card-title" style="color:#f7c948">👨‍👩‍👧‍👦 Komposisi Peserta</div>
+      <div class="stat-row" style="background:rgba(59,130,246,0.1)">
+        <span class="sr-label">👨‍💼 Dewasa</span>
+        <span class="sr-val" style="color:#93c5fd">${totalDewasa}</span>
+        <span class="sr-pct" style="color:#93c5fd">${pct(totalDewasa,totalPeserta)}%</span>
+      </div>
+      <div class="stat-row" style="background:rgba(247,201,72,0.1)">
+        <span class="sr-label">👶 Anak 0–5 th</span>
+        <span class="sr-val" style="color:#f7c948">${anakR["0-5"]}</span>
+        <span class="sr-pct" style="color:#f7c948">${pct(anakR["0-5"],totalAnak)}%</span>
+      </div>
+      <div class="stat-row" style="background:rgba(16,185,129,0.1)">
+        <span class="sr-label">🧒 Anak 6–12 th</span>
+        <span class="sr-val" style="color:#6ee7b7">${anakR["6-12"]}</span>
+        <span class="sr-pct" style="color:#6ee7b7">${pct(anakR["6-12"],totalAnak)}%</span>
+      </div>
+      <div class="stat-row" style="background:rgba(233,69,96,0.1)">
+        <span class="sr-label">🧑 Anak 13–17 th</span>
+        <span class="sr-val" style="color:#fda4af">${anakR["13-17"]}</span>
+        <span class="sr-pct" style="color:#fda4af">${pct(anakR["13-17"],totalAnak)}%</span>
+      </div>
+    </div>
+
+    <!-- ══════ B. PROGRESS SECTION ══════ -->
+    <div class="section-label">Detail per Section</div>
+
+    <div class="card" style="background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.25)">
+      <div class="card-title" style="color:#c084fc">🏢 Pendaftaran per Section</div>
+      ${Object.entries(TARGETS).map(([sec,target])=>{
+        const daftar=perSection[sec]||0;
+        const p=Math.min(pct(daftar,target),100);
+        const color=p>=100?"#6ee7b7":p>=60?"#f7c948":"#fda4af";
+        return `<div class="bar-wrap">
+          <div class="bar-top">
+            <span class="bl">${sec}</span>
+            <span class="bv" style="color:${color}">${daftar}/${target} <span style="opacity:0.6;font-size:10px">(${p}%)</span></span>
           </div>
-          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div>
         </div>`;
       }).join("")}
-      <div style="margin-top:14px;padding:12px 18px;background:rgba(247,201,72,0.12);border:1px solid rgba(247,201,72,0.35);border-radius:10px;display:flex;justify-content:space-between;align-items:center">
-        <span style="font-weight:800;color:#f7c948;font-size:14px">Grand Total</span>
-        <span style="font-weight:900;color:#f7c948;font-size:16px">${total} / ${GRAND_TOTAL} (${pctTotal}%)</span>
+      <div style="margin-top:14px;padding:10px 14px;background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.3);border-radius:10px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-weight:800;color:#f7c948;font-size:13px">Grand Total</span>
+        <span style="font-weight:900;color:#f7c948;font-size:15px">${total} / ${GRAND_TOTAL} (${pctTotal}%)</span>
       </div>
     </div>
 
-    <!-- 4. KEBUTUHAN BUS -->
-    <div class="card" style="margin-bottom:20px;background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.3)">
+    <!-- ══════ C. BUS ══════ -->
+    <div class="section-label">Transportasi</div>
+
+    <div class="card" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.25)">
       <div class="card-title" style="color:#7ecfff">🚌 Kebutuhan Bus (Kap. ${BUS_CAPACITY})</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px">
-        <div class="mini-card" style="background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#7ecfff">${busCount}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🚌 Bus Dibutuhkan</div>
+      <div class="mini-grid" style="margin-bottom:12px">
+        <div class="mini-card" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3)">
+          <div class="mn" style="color:#7ecfff">${busCount}</div><div class="ml">Bus Dibutuhkan</div>
         </div>
-        <div class="mini-card" style="background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#6ee7b7">${pesertaBus}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👥 Peserta Bus</div>
+        <div class="mini-card" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3)">
+          <div class="mn" style="color:#6ee7b7">${pesertaBus}</div><div class="ml">Peserta Naik Bus</div>
         </div>
-        <div class="mini-card" style="background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#f7c948">${kursiKosong}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🪑 Kursi Kosong</div>
+        <div class="mini-card" style="background:rgba(247,201,72,0.12);border:1px solid rgba(247,201,72,0.3)">
+          <div class="mn" style="color:#f7c948">${kursiKosong}</div><div class="ml">Kursi Kosong</div>
         </div>
-        <div class="mini-card" style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#c084fc">${busCount * BUS_CAPACITY}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">💺 Total Kursi</div>
+        <div class="mini-card" style="background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3)">
+          <div class="mn" style="color:#c084fc">${busCount*BUS_CAPACITY}</div><div class="ml">Total Kursi</div>
         </div>
       </div>
-      ${Array.from({length:busCount}, (_, i) => {
-        const terisi = i < Math.floor(pesertaBus/BUS_CAPACITY) ? BUS_CAPACITY : (pesertaBus % BUS_CAPACITY || BUS_CAPACITY);
-        const pct    = Math.round(terisi / BUS_CAPACITY * 100);
-        return `<div class="bar-row">
-          <div class="bar-label"><span>🚌 Bus ${i+1}</span><span style="color:#7ecfff;font-weight:700">${terisi} terisi · ${BUS_CAPACITY-terisi} kosong</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:linear-gradient(90deg,#3b82f6,#6ee7b7)"></div></div>
+      ${Array.from({length:busCount},(_,i)=>{
+        const terisi=i<Math.floor(pesertaBus/BUS_CAPACITY)?BUS_CAPACITY:(pesertaBus%BUS_CAPACITY||BUS_CAPACITY);
+        const p=pct(terisi,BUS_CAPACITY);
+        return `<div class="bar-wrap">
+          <div class="bar-top">
+            <span class="bl">🚌 Bus ${i+1}</span>
+            <span class="bv" style="color:#7ecfff">${terisi} terisi · ${BUS_CAPACITY-terisi} kosong</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:linear-gradient(90deg,#3b82f6,#6ee7b7)"></div></div>
         </div>`;
-      }).join("") || '<div class="empty">Belum ada peserta bus</div>'}
+      }).join("")||'<div class="empty">Belum ada peserta bus</div>'}
+
+      <!-- Tanggal tour & kehadiran -->
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08)">
+        <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">📅 Pilihan Tanggal</div>
+        ${Object.entries(perTanggal).map(([k,v],i)=>`
+          <div class="bar-wrap">
+            <div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:${colors[i%colors.length]}">${v} orang <span style="opacity:0.6;font-size:10px">(${pct(v,total)}%)</span></span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct(v,maxTanggal)}%;background:${colors[i%colors.length]}"></div></div>
+          </div>`).join("")||'<div class="empty">Belum ada data</div>'}
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08)">
+        <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">🎫 Tipe Kehadiran</div>
+        ${Object.entries(perKehadiran).map(([k,v],i)=>`
+          <div class="bar-wrap">
+            <div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:${colors[(i+2)%colors.length]}">${v} orang <span style="opacity:0.6;font-size:10px">(${pct(v,total)}%)</span></span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct(v,total)}%;background:${colors[(i+2)%colors.length]}"></div></div>
+          </div>`).join("")||'<div class="empty">Belum ada data</div>'}
+      </div>
     </div>
 
-    <!-- 5. KEBUTUHAN KAMAR -->
-    <div class="card" style="margin-bottom:20px;background:rgba(20,184,166,0.1);border-color:rgba(20,184,166,0.35)">
+    <!-- ══════ D. KAMAR ══════ -->
+    <div class="section-label">Akomodasi</div>
+
+    <div class="card" style="background:rgba(20,184,166,0.08);border-color:rgba(20,184,166,0.25)">
       <div class="card-title" style="color:#2dd4bf">🛏️ Kebutuhan Kamar Hotel</div>
 
-      <!-- Ringkasan angka -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px">
-        <div class="mini-card" style="background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.35)">
-          <div style="font-size:32px;font-weight:900;color:#2dd4bf">${km.totalKamar}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🛏️ Total Kamar</div>
+      <!-- Ringkasan 4 angka -->
+      <div class="mini-grid" style="margin-bottom:14px">
+        <div class="mini-card" style="background:rgba(20,184,166,0.18);border:1px solid rgba(20,184,166,0.3)">
+          <div class="mn" style="color:#2dd4bf">${km.totalKamar}</div><div class="ml">Total Kamar</div>
         </div>
-        <div class="mini-card" style="background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.35)">
-          <div style="font-size:32px;font-weight:900;color:#fb923c">${km.kamarKeluarga}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👨‍👩‍👧 Kamar Keluarga</div>
-          <div style="font-size:11px;font-weight:700;color:#fb923c;margin-top:4px">${pctKK}%</div>
+        <div class="mini-card" style="background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.3)">
+          <div class="mn" style="color:#fb923c">${km.kamarKeluarga}</div>
+          <div class="ml">Kamar Keluarga</div>
+          <div class="mp" style="color:#fb923c">${pctKK}%</div>
         </div>
-        <div class="mini-card" style="background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.3)">
-          <div style="font-size:32px;font-weight:900;color:#f9a8d4">${km.kamarSolo}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👩 Kamar Solo</div>
-          <div style="font-size:11px;font-weight:700;color:#f9a8d4;margin-top:4px">${pctKSolo}%</div>
+        <div class="mini-card" style="background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.25)">
+          <div class="mn" style="color:#f9a8d4">${km.kamarSolo}</div>
+          <div class="ml">Kamar Solo (Wanita)</div>
+          <div class="mp" style="color:#f9a8d4">${pctKSolo}%</div>
         </div>
-        <div class="mini-card" style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.35)">
-          <div style="font-size:32px;font-weight:900;color:#a5b4fc">${km.kamarSharing}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👥 Kamar Sharing</div>
-          <div style="font-size:11px;font-weight:700;color:#a5b4fc;margin-top:4px">${pctKS}%</div>
-        </div>
-        <div class="mini-card" style="background:rgba(244,63,94,0.12);border:1px solid rgba(244,63,94,0.3)">
-          <div style="font-size:32px;font-weight:900;color:#fda4af">${km.kosongSharing}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🪑 Slot Kosong</div>
+        <div class="mini-card" style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3)">
+          <div class="mn" style="color:#a5b4fc">${km.kamarSharing}</div>
+          <div class="ml">Kamar Sharing</div>
+          <div class="mp" style="color:#a5b4fc">${pctKS}%</div>
         </div>
       </div>
 
       <!-- Bar proporsi -->
-      <div style="margin-bottom:20px">
-        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px">
-          <span style="color:#fb923c;font-weight:700">👨‍👩‍👧 Keluarga ${km.kamarKeluarga} (${pctKK}%)</span>
-          <span style="color:#f9a8d4;font-weight:700">👩 Solo ${km.kamarSolo} (${pctKSolo}%)</span>
-          <span style="color:#a5b4fc;font-weight:700">👥 Sharing ${km.kamarSharing} (${pctKS}%) </span>
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px;color:rgba(255,255,255,0.5)">
+          <span style="color:#fb923c">Keluarga ${pctKK}%</span>
+          <span style="color:#f9a8d4">Solo ${pctKSolo}%</span>
+          <span style="color:#a5b4fc">Sharing ${pctKS}%</span>
         </div>
-        <div style="background:rgba(255,255,255,0.08);border-radius:8px;height:18px;overflow:hidden;display:flex">
-          <div style="width:${pctKK}%;background:linear-gradient(90deg,#f97316,#fb923c);transition:width .8s"></div>
-          <div style="width:${pctKSolo}%;background:linear-gradient(90deg,#db2777,#f9a8d4);transition:width .8s"></div>
-          <div style="width:${pctKS}%;background:linear-gradient(90deg,#6366f1,#a5b4fc);border-radius:0 8px 8px 0;transition:width .8s"></div>
+        <div style="height:14px;border-radius:8px;overflow:hidden;display:flex">
+          <div style="width:${pctKK}%;background:linear-gradient(90deg,#f97316,#fb923c)"></div>
+          <div style="width:${pctKSolo}%;background:linear-gradient(90deg,#db2777,#f9a8d4)"></div>
+          <div style="width:${pctKS}%;background:linear-gradient(90deg,#6366f1,#a5b4fc)"></div>
         </div>
       </div>
 
-      <!-- Panel 3 kolom: Keluarga | Solo | Sharing -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-
-        <!-- Kamar Keluarga -->
-        <div style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.25);border-radius:12px;padding:16px">
-          <div style="font-size:12px;font-weight:800;color:#fb923c;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">
-            👨‍👩‍👧 Kamar Keluarga — ${km.kamarKeluarga} Kamar
-          </div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px">1 karyawan = 1 kamar · Dewasa &gt; 1 atau ada anak</div>
-          ${Object.entries(km.breakdown).sort((a,b) => b[1]-a[1]).map(([k,v]) => {
-            const pct = km.kamarKeluarga > 0 ? Math.round(v / km.kamarKeluarga * 100) : 0;
-            return `<div class="bar-row">
-              <div class="bar-label">
-                <span>${k}</span>
-                <span style="color:#fb923c;font-weight:700">${v} kamar (${pct}%)</span>
+      <!-- Kamar Keluarga: breakdown -->
+      <div style="background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.2);border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:12px;font-weight:800;color:#fb923c;margin-bottom:4px">👨‍👩‍👧 Kamar Keluarga — ${km.kamarKeluarga} kamar</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:12px">1 karyawan = 1 kamar · Dewasa &gt; 1 atau ada anak</div>
+        ${Object.entries(km.breakdown).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
+          const p=pct(v,km.kamarKeluarga);
+          return `<div class="bar-wrap">
+            <div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:#fb923c">${v} kamar <span style="opacity:0.6;font-size:10px">(${p}%)</span></span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:#fb923c"></div></div>
+          </div>`;
+        }).join("")||'<div class="empty">Belum ada data</div>'}
+        <!-- Daftar nama -->
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07)">
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Daftar Karyawan</div>
+          ${km.keluarga.map((r,i)=>`
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+              <span style="font-size:10px;color:rgba(255,255,255,0.25);width:18px">${i+1}</span>
+              <div style="flex:1">
+                <div style="font-size:12px;font-weight:700">${r[1]}</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.4)">${r[3]}</div>
               </div>
-              <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:#fb923c"></div></div>
-            </div>`;
-          }).join("") || '<div class="empty">Belum ada data</div>'}
-          <table class="kamar-tbl" style="margin-top:14px">
-            <thead><tr>
-              <th>#</th><th>Nama</th><th>Section</th><th style="text-align:center">Dws</th><th style="text-align:center">Anak</th>
-            </tr></thead>
-            <tbody>
-              ${km.keluarga.map((r, i) => `
-                <tr>
-                  <td style="color:rgba(255,255,255,0.3)">${i+1}</td>
-                  <td style="font-weight:700">${r[1]}</td>
-                  <td style="color:rgba(255,255,255,0.45);font-size:10px">${r[3]}</td>
-                  <td style="text-align:center;color:#fb923c;font-weight:700">${r[9]}</td>
-                  <td style="text-align:center;color:#fda4af;font-weight:700">${r[10]}</td>
-                </tr>`).join("") || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>'}
-            </tbody>
-          </table>
+              <div style="text-align:right">
+                <span class="badge" style="background:rgba(251,146,60,0.2);border:1px solid rgba(251,146,60,0.3);color:#fb923c">${r[9]} dws · ${r[10]} anak</span>
+              </div>
+            </div>`).join("")||'<div class="empty">Belum ada data</div>'}
         </div>
+      </div>
 
-        <!-- Kamar Sharing + Solo (kolom kanan) -->
-        <div style="display:flex;flex-direction:column;gap:16px">
-
-          <!-- Kamar Solo (Dayudya) -->
-          <div style="background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.25);border-radius:12px;padding:16px">
-            <div style="font-size:12px;font-weight:800;color:#f9a8d4;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">
-              👩 Kamar Solo — ${km.kamarSolo} Kamar
+      <!-- Kamar Solo -->
+      ${km.kamarSolo>0?`
+      <div style="background:rgba(236,72,153,0.07);border:1px solid rgba(236,72,153,0.2);border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:12px;font-weight:800;color:#f9a8d4;margin-bottom:4px">👩 Kamar Solo — ${km.kamarSolo} kamar</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:10px">Kamar khusus, tidak digabung</div>
+        ${km.soloFixed.map(r=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.18);border-radius:8px">
+            <span style="font-size:20px">👩</span>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:700">${r[1]}</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">${r[3]}</div>
             </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:10px">Kamar khusus wanita, tidak digabung</div>
-            ${km.soloFixed.length > 0
-              ? km.soloFixed.map(r => `
-                  <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.2);border-radius:8px">
-                    <span style="font-size:18px">👩</span>
-                    <div>
-                      <div style="font-weight:700;color:#fff;font-size:13px">${r[1]}</div>
-                      <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">${r[3]}</div>
-                    </div>
-                    <span style="margin-left:auto;font-size:10px;background:rgba(236,72,153,0.2);border:1px solid rgba(236,72,153,0.4);color:#f9a8d4;padding:2px 8px;border-radius:8px;font-weight:700">1 Kamar</span>
-                  </div>`).join("")
-              : `<div class="empty" style="font-size:11px">${SOLO_NAME} belum mendaftar</div>`}
-          </div>
+            <span class="badge" style="background:rgba(236,72,153,0.2);border:1px solid rgba(236,72,153,0.35);color:#f9a8d4">1 Kamar</span>
+          </div>`).join("")}
+      </div>`:``}
 
-          <!-- Kamar Sharing -->
-          <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:12px;padding:16px;flex:1">
-            <div style="font-size:12px;font-weight:800;color:#a5b4fc;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">
-              👥 Kamar Sharing — ${km.kamarSharing} Kamar
+      <!-- Kamar Sharing -->
+      <div style="background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:14px">
+        <div style="font-size:12px;font-weight:800;color:#a5b4fc;margin-bottom:4px">👥 Kamar Sharing — ${km.kamarSharing} kamar</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:12px">${km.sharingPool.length} orang · Prioritas 1 section · Max ${ROOM_CAPACITY}/kamar · ${km.kosongSharing} slot kosong</div>
+        ${km.sharingRooms.map((room,i)=>{
+          const isi=room.members.length;
+          const kosong=ROOM_CAPACITY-isi;
+          const isFull=kosong===0;
+          const isMixed=!room.sameSection;
+          return `<div class="room-block" style="${isMixed?'border-color:rgba(247,201,72,0.3)':''}">
+            <div class="room-header">
+              <span class="room-title">🛏️ Kamar Sharing ${i+1}</span>
+              <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+                <span class="badge" style="${isMixed
+                  ?'background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.35);color:#f7c948'
+                  :'background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc'}">${isMixed?'LINTAS SEC':'1 SECTION'}</span>
+                <span class="badge" style="${isFull
+                  ?'background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7'
+                  :'background:rgba(247,201,72,0.12);border:1px solid rgba(247,201,72,0.3);color:#f7c948'}">${isi}/${ROOM_CAPACITY}${isFull?' Full':` +${kosong} kosong`}</span>
+              </div>
             </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:14px">
-              ${km.sharingPool.length} orang · Prioritas 1 section, sisa gabung lintas section · ${ROOM_CAPACITY}/kamar · ${km.kosongSharing} slot kosong
+            <div class="room-sub">${room.label}</div>
+            <div class="bar-track" style="margin-bottom:10px;height:6px">
+              <div class="bar-fill" style="width:${pct(isi,ROOM_CAPACITY)}%;background:${isFull?'linear-gradient(90deg,#6366f1,#6ee7b7)':'linear-gradient(90deg,#6366f1,#a5b4fc)'}"></div>
             </div>
-            ${km.sharingRooms.map((room, i) => {
-              const isi    = room.members.length;
-              const kosong = ROOM_CAPACITY - isi;
-              const pct    = Math.round(isi / ROOM_CAPACITY * 100);
-              const isFull = kosong === 0;
-              const isMixed= !room.sameSection;
-              return `
-                <div style="margin-bottom:12px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,${isMixed?'0.35':'0.2'});border-radius:10px;padding:12px">
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;flex-wrap:wrap">
-                    <div style="display:flex;align-items:center;gap:6px">
-                      <span style="font-weight:800;color:#a5b4fc;font-size:12px">🛏️ Kamar ${i+1}</span>
-                      ${isMixed
-                        ? `<span style="font-size:9px;background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.4);color:#f7c948;padding:1px 7px;border-radius:8px;font-weight:700">LINTAS SECTION</span>`
-                        : `<span style="font-size:9px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc;padding:1px 7px;border-radius:8px;font-weight:700">1 SECTION</span>`}
-                    </div>
-                    <span style="font-size:11px;color:${isFull?'#6ee7b7':'#f7c948'};font-weight:700">${isi}/${ROOM_CAPACITY}${isFull?' · Full':` · ${kosong} kosong`}</span>
-                  </div>
-                  <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:8px;font-style:italic">${room.label}</div>
-                  <div class="bar-track" style="margin-bottom:10px">
-                    <div class="bar-fill" style="width:${pct}%;background:${isFull
-                      ? 'linear-gradient(90deg,#6366f1,#6ee7b7)'
-                      : 'linear-gradient(90deg,#6366f1,#a5b4fc)'}"></div>
-                  </div>
-                  ${room.members.map((r, j) => `
-                    <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-                      <span style="font-size:10px;color:rgba(255,255,255,0.25);min-width:14px">${j+1}</span>
-                      <span style="font-size:12px;font-weight:700;color:#fff;flex:1">${r[1]}</span>
-                      <span style="font-size:10px;color:rgba(255,255,255,0.35)">${r[3].replace(/Section|Sec\.?/gi,'').trim().slice(0,24)}</span>
-                    </div>`).join("")}
-                  ${kosong > 0 ? Array.from({length:kosong}, () => `
-                    <div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
-                      <span style="font-size:10px;color:rgba(255,255,255,0.12);min-width:14px">—</span>
-                      <span style="font-size:11px;color:rgba(255,255,255,0.18);font-style:italic">Slot kosong</span>
-                    </div>`).join("") : ''}
-                </div>`;
-            }).join("") || '<div class="empty">Belum ada karyawan sharing</div>'}
+            ${room.members.map((r,j)=>`
+              <div class="room-person">
+                <span class="rp-num">${j+1}</span>
+                <span class="rp-name">${r[1]}</span>
+                <span class="rp-sec">${shortSec(r[3])}</span>
+              </div>`).join("")}
+            ${kosong>0?Array.from({length:kosong},()=>`
+              <div class="room-empty-slot"><span style="color:rgba(255,255,255,0.15)">—</span><span>Slot kosong</span></div>`).join(""):''}
+          </div>`;
+        }).join("")||'<div class="empty">Belum ada karyawan sharing</div>'}
+      </div>
+    </div>
+
+    <!-- ══════ E. KAOS ══════ -->
+    <div class="section-label">Kaos</div>
+
+    <div class="card" style="background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.2)">
+      <div class="card-title" style="color:#c084fc">👕 Ukuran &amp; Model Kaos</div>
+      <!-- Model Lengan -->
+      <div class="mini-grid" style="margin-bottom:14px">
+        <div class="mini-card" style="background:rgba(233,69,96,0.12);border:1px solid rgba(233,69,96,0.25)">
+          <div class="mn" style="color:#fda4af">${perLengan["Lengan Pendek"]||0}</div>
+          <div class="ml">Lengan Pendek</div>
+          <div class="mp" style="color:#fda4af">${pct(perLengan["Lengan Pendek"]||0,total)}%</div>
+        </div>
+        <div class="mini-card" style="background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.25)">
+          <div class="mn" style="color:#c084fc">${perLengan["Lengan Panjang"]||0}</div>
+          <div class="ml">Lengan Panjang</div>
+          <div class="mp" style="color:#c084fc">${pct(perLengan["Lengan Panjang"]||0,total)}%</div>
+        </div>
+      </div>
+      <!-- Ukuran pills -->
+      <div class="pill-wrap">
+        ${["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"].map(s=>`
+          <div class="pill" style="background:rgba(168,85,247,0.18);border:1px solid rgba(168,85,247,0.35);color:#c084fc">
+            ${s} <strong>${perSize[s]||0}</strong>
+          </div>`).join("")}
+      </div>
+      <!-- Bar chart ukuran -->
+      ${Object.entries(perSize).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`
+        <div class="bar-wrap">
+          <div class="bar-top"><span class="bl">Size ${k}</span><span class="bv" style="color:${colors[i%colors.length]}">${v} orang <span style="opacity:0.6;font-size:10px">(${pct(v,total)}%)</span></span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct(v,maxSize)}%;background:${colors[i%colors.length]}"></div></div>
+        </div>`).join("")||'<div class="empty">Belum ada data</div>'}
+    </div>
+
+    <!-- ══════ F. DATA PENDAFTAR ══════ -->
+    <div class="section-label">Data Pendaftar</div>
+
+    <div class="card">
+      <div class="card-title" style="color:#6ee7b7">📋 Semua Pendaftar (${total} orang)</div>
+      ${data.map((r,i)=>{
+        const info=kamarMap[r[1]]||{tipe:'keluarga',label:'👨‍👩‍👧 Keluarga'};
+        const bStyle={
+          keluarga:'background:rgba(251,146,60,0.2);border:1px solid rgba(251,146,60,0.35);color:#fb923c',
+          solo:'background:rgba(236,72,153,0.2);border:1px solid rgba(236,72,153,0.35);color:#f9a8d4',
+          sharing:'background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc'
+        };
+        return `<div class="person-card">
+          <div class="pc-name">${i+1}. ${r[1]}</div>
+          <div class="pc-row"><span class="pc-label">Section</span><span class="pc-val">${r[3]}</span></div>
+          <div class="pc-row"><span class="pc-label">Tanggal</span><span class="pc-val" style="color:#f7c948">${r[5]}</span></div>
+          <div class="pc-row"><span class="pc-label">Transportasi</span><span class="pc-val">${r[28]}</span></div>
+          <div class="pc-row">
+            <span class="pc-label">Kamar</span>
+            <span class="badge" style="${bStyle[info.tipe]}">${info.label}</span>
           </div>
-
-        </div>
-      </div>
+          <div class="pc-row"><span class="pc-label">Kaos</span><span class="pc-val">${r[29]} / ${r[30]}</span></div>
+          <div class="pc-row"><span class="pc-label">Total Peserta</span><span class="pc-val" style="color:#f7c948;font-weight:800">${r[11]} orang</span></div>
+        </div>`;
+      }).join("")}
     </div>
 
-    <!-- 6. PILIHAN TANGGAL + KEHADIRAN -->
-    <div class="grid2" style="margin-bottom:20px">
-      <div class="card">
-        <div class="card-title" style="color:#f7c948">📅 Pilihan Tanggal Tour</div>
-        ${Object.entries(perTanggal).map(([k,v], i) => `
-          <div class="bar-row">
-            <div class="bar-label"><span>${k}</span><span style="color:#f7c948;font-weight:700">${v} orang (${Math.round(v/total*100)}%)</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:${v/maxTanggal*100}%;background:${colors[i%colors.length]}"></div></div>
-          </div>`).join("") || '<div class="empty">Belum ada data</div>'}
-      </div>
-      <div class="card">
-        <div class="card-title" style="color:#6ee7b7">🎫 Tipe Kehadiran</div>
-        ${Object.entries(perKehadiran).map(([k,v], i) => `
-          <div class="bar-row">
-            <div class="bar-label"><span>${k}</span><span style="color:#6ee7b7;font-weight:700">${v} orang (${Math.round(v/total*100)}%)</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:${v/total*100}%;background:${colors[i%colors.length]}"></div></div>
-          </div>`).join("") || '<div class="empty">Belum ada data</div>'}
-      </div>
-    </div>
-
-    <!-- 7. KOMPOSISI PESERTA -->
-    <div class="card" style="margin-bottom:20px;background:rgba(247,201,72,0.08);border-color:rgba(247,201,72,0.3)">
-      <div class="card-title" style="color:#f7c948">👨‍👩‍👧‍👦 Komposisi Peserta</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
-        <div class="mini-card" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#93c5fd">${totalDewasa}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👨‍💼 Total Dewasa</div>
-        </div>
-        <div class="mini-card" style="background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#f7c948">${anakRanges["0-5"]}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👶 Anak 0–5 th</div>
-        </div>
-        <div class="mini-card" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#6ee7b7">${anakRanges["6-12"]}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🧒 Anak 6–12 th</div>
-        </div>
-        <div class="mini-card" style="background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#fda4af">${anakRanges["13-17"]}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🧑 Anak 13–17 th</div>
-        </div>
-        <div class="mini-card" style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3)">
-          <div style="font-size:28px;font-weight:900;color:#c084fc">${totalPeserta}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👥 Grand Total Peserta</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 8. KAOS -->
-    <div class="grid2" style="margin-bottom:20px">
-      <div class="card">
-        <div class="card-title" style="color:#c084fc">👕 Ukuran Kaos</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
-          ${["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"].map(s => `
-            <div class="pill" style="background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4);color:#c084fc">
-              ${s}: <strong>${perSize[s]||0}</strong>
-            </div>`).join("")}
-        </div>
-        ${Object.entries(perSize).sort((a,b) => b[1]-a[1]).map(([k,v], i) => `
-          <div class="bar-row">
-            <div class="bar-label"><span>Size ${k}</span><span>${v} orang</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:${v/maxSize*100}%;background:${colors[i%colors.length]}"></div></div>
-          </div>`).join("") || '<div class="empty">Belum ada data</div>'}
-      </div>
-      <div class="card">
-        <div class="card-title" style="color:#fda4af">🧥 Model Lengan</div>
-        <div style="display:flex;gap:12px;margin-top:8px">
-          <div style="flex:1;text-align:center;background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);border-radius:12px;padding:20px">
-            <div style="font-size:40px;font-weight:900;color:#fda4af">${perLengan["Lengan Pendek"]||0}</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px">👕 Lengan Pendek</div>
-          </div>
-          <div style="flex:1;text-align:center;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:20px">
-            <div style="font-size:40px;font-weight:900;color:#c084fc">${perLengan["Lengan Panjang"]||0}</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px">🧥 Lengan Panjang</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 9. TABEL DATA -->
-    <div class="card" style="overflow-x:auto">
-      <div class="card-title" style="color:#6ee7b7">📋 Data Pendaftar (${total} orang)</div>
-      <table class="tbl">
-        <thead>
-          <tr>
-            <th>#</th><th>Nama</th><th>Section</th><th>Tanggal</th>
-            <th>Kehadiran</th><th>Transportasi</th><th>Kamar</th><th>Kaos</th><th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${data.map((r, i) => {
-            const info = kamarMap[r[1]] || {tipe:'keluarga', label:'👨‍👩‍👧 Keluarga'};
-            const styleMap = {
-              keluarga: 'background:rgba(251,146,60,0.2);border:1px solid rgba(251,146,60,0.4);color:#fb923c',
-              solo:     'background:rgba(236,72,153,0.2);border:1px solid rgba(236,72,153,0.4);color:#f9a8d4',
-              sharing:  'background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc'
-            };
-            return `<tr>
-              <td style="color:rgba(255,255,255,0.4)">${i+1}</td>
-              <td style="font-weight:700">${r[1]}</td>
-              <td style="font-size:11px;color:rgba(255,255,255,0.6)">${r[3]}</td>
-              <td style="color:#f7c948;font-size:11px">${r[5]}</td>
-              <td><span style="background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);padding:2px 8px;border-radius:10px;font-size:11px;color:#6ee7b7">${r[6]}</span></td>
-              <td style="font-size:11px">${r[28]}</td>
-              <td><span class="badge" style="${styleMap[info.tipe]}">${info.label}</span></td>
-              <td style="font-size:11px">${r[29]} / ${r[30]}</td>
-              <td style="text-align:center;font-weight:700;color:#f7c948">${r[11]}</td>
-            </tr>`;
-          }).join("")}
-        </tbody>
-      </table>
-    </div>
   `;
 }
 
