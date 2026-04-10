@@ -85,6 +85,18 @@ body{background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);min-height:100vh
 
 <script>
 const SHEET_ID = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
+const BUS_CAPACITY = 59;
+const TARGETS = {
+  "Dept. Head": 1,
+  "CCR & Ordering NR Engine Sec": 13,
+  "CCR Plant #2 Prod Indication & Admin Sec": 17,
+  "CCR Vehicle Plant #1 Sec": 13,
+  "Component Ordering & Inventory Mgt. Sec": 8,
+  "Warehouse KRW Plant & Steel Opr Sec": 17,
+  "Warehouse Ordering & Engineering Sec": 15,
+  "Warehouse Plant #3 Sec": 14
+};
+const GRAND_TOTAL = 97;
 const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
 async function loadData() {
@@ -121,6 +133,25 @@ function render(data) {
   const totalAnak = sum(data.map(r => r[10]));
   const totalBus = data.filter(r => r[28]==="Ikut Bus Panitia").length;
   const totalMobil = data.filter(r => r[28]==="Kendaraan Sendiri").length;
+  // Peserta bus = total peserta yang ikut bus
+  const pesertaBus = sum(data.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>r[11]));
+  const kursiTerisi = pesertaBus;
+  const kursiKosong = Math.max(0, BUS_CAPACITY - kursiTerisi);
+
+  // Dewasa & anak by range
+  const dewasaTotal = totalDewasa;
+  const anakRanges = {"0-5":0,"6-12":0,"13-17":0};
+  data.forEach(r => {
+    for(let i=0;i<8;i++){
+      const nama = r[12+i*2];
+      const usia = parseInt(r[13+i*2]);
+      if(nama && nama!=="-" && !isNaN(usia)){
+        if(usia<=5) anakRanges["0-5"]++;
+        else if(usia<=12) anakRanges["6-12"]++;
+        else if(usia<=17) anakRanges["13-17"]++;
+      }
+    }
+  });
 
   // Per tanggal
   const perTanggal = count(data.map(r => r[5]));
@@ -167,9 +198,79 @@ function render(data) {
       <div class="stat-card s6"><div class="num">${totalMobil}</div><div class="lbl">Kendaraan Sendiri</div></div>
     </div>
 
+    <!-- Bus Summary -->
+    <div class="card" style="margin-bottom:20px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);">
+      <div class="card-title" style="color:#7ecfff">🚌 Kebutuhan & Kapasitas Bus</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px">
+        <div style="text-align:center;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#7ecfff">${BUS_CAPACITY}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Kapasitas Bus</div>
+        </div>
+        <div style="text-align:center;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#6ee7b7">${kursiTerisi}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Kursi Terisi</div>
+        </div>
+        <div style="text-align:center;background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#f7c948">${kursiKosong}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Kursi Kosong</div>
+        </div>
+        <div style="text-align:center;background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#fda4af">${Math.round(kursiTerisi/BUS_CAPACITY*100)}%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Terisi</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:8px;height:14px;overflow:hidden">
+        <div style="width:${Math.min(kursiTerisi/BUS_CAPACITY*100,100)}%;height:100%;border-radius:8px;background:linear-gradient(90deg,#3b82f6,#6ee7b7);transition:width 0.8s ease"></div>
+      </div>
+    </div>
+
+    <!-- Peserta by Dewasa & Anak -->
+    <div class="card" style="margin-bottom:20px;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);">
+      <div class="card-title" style="color:#c084fc">👨‍👩‍👧‍👦 Total Peserta — Dewasa & Anak</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+        <div style="text-align:center;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#93c5fd">${dewasaTotal}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">👨‍💼 Total Dewasa</div>
+        </div>
+        <div style="text-align:center;background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#f7c948">${anakRanges["0-5"]}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">👶 Anak 0–5 th</div>
+        </div>
+        <div style="text-align:center;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#6ee7b7">${anakRanges["6-12"]}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">🧒 Anak 6–12 th</div>
+        </div>
+        <div style="text-align:center;background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);border-radius:12px;padding:14px">
+          <div style="font-size:28px;font-weight:900;color:#fda4af">${anakRanges["13-17"]}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">🧑 Anak 13–17 th</div>
+        </div>
+      </div>
+    </div>
+
     <div class="section-grid">
 
-      <!-- Per Tanggal -->
+      <!-- Progress per Section -->
+    <div class="card" style="margin-bottom:20px;grid-column:1/-1;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);">
+      <div class="card-title" style="color:#6ee7b7">📊 Progress Pendaftaran per Section</div>
+      ${Object.entries(TARGETS).map(([sec,target],i) => {
+        const daftar = (perSection[sec]||0);
+        const pct = Math.min(Math.round(daftar/target*100),100);
+        const color = pct>=100?"#6ee7b7":pct>=60?"#f7c948":"#fda4af";
+        return `<div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.75);margin-bottom:4px">
+            <span>${sec}</span>
+            <span style="color:${color};font-weight:700">${daftar} / ${target} (${pct}%)</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:6px;height:10px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;border-radius:6px;background:${color}"></div>
+          </div>
+        </div>`;
+      }).join("")}
+      <div style="margin-top:14px;padding:12px 18px;background:rgba(247,201,72,0.12);border:1px solid rgba(247,201,72,0.35);border-radius:10px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-weight:800;color:#f7c948;font-size:14px;">Grand Total</span>
+        <span style="font-weight:900;color:#f7c948;font-size:16px;">${total} / ${GRAND_TOTAL} &nbsp;(${Math.round(total/GRAND_TOTAL*100)}%)</span>
+      </div>
+    </div>
       <div class="card">
         <div class="card-title" style="color:#f7c948">📅 Peserta per Tanggal</div>
         ${Object.entries(perTanggal).map(([k,v],i) => `
