@@ -207,7 +207,38 @@ function render(data) {
       </div>
     </div>
 
-    <!-- 4. PILIHAN TANGGAL + KEHADIRAN -->
+    <!-- 4. BUS SUMMARY -->
+    <div class="card" style="margin-bottom:20px;background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.3)">
+      <div class="card-title" style="color:#7ecfff">🚌 Kebutuhan Bus (Kap. ${BUS_CAPACITY})</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px">
+        <div class="mini-card" style="background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.3)">
+          <div style="font-size:28px;font-weight:900;color:#7ecfff">${busCount}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🚌 Bus Dibutuhkan</div>
+        </div>
+        <div class="mini-card" style="background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3)">
+          <div style="font-size:28px;font-weight:900;color:#6ee7b7">${pesertaBus}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">👥 Peserta Bus</div>
+        </div>
+        <div class="mini-card" style="background:rgba(247,201,72,0.15);border:1px solid rgba(247,201,72,0.3)">
+          <div style="font-size:28px;font-weight:900;color:#f7c948">${kursiKosong}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">🪑 Kursi Kosong</div>
+        </div>
+        <div class="mini-card" style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3)">
+          <div style="font-size:28px;font-weight:900;color:#c084fc">${busCount*BUS_CAPACITY}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">💺 Total Kursi</div>
+        </div>
+      </div>
+      ${Array.from({length:busCount},(_,i)=>{
+        const terisi=i<Math.floor(pesertaBus/BUS_CAPACITY)?BUS_CAPACITY:(pesertaBus%BUS_CAPACITY||BUS_CAPACITY);
+        const pct=Math.round(terisi/BUS_CAPACITY*100);
+        return `<div class="bar-row">
+          <div class="bar-label"><span>🚌 Bus ${i+1}</span><span style="color:#7ecfff;font-weight:700">${terisi} terisi · ${BUS_CAPACITY-terisi} kosong</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:linear-gradient(90deg,#3b82f6,#6ee7b7)"></div></div>
+        </div>`;
+      }).join("")||'<div class="empty">Belum ada peserta bus</div>'}
+    </div>
+
+    <!-- 5. PILIHAN TANGGAL + KEHADIRAN -->
     <div class="grid2">
       <div class="card">
         <div class="card-title" style="color:#f7c948">📅 Pilihan Tanggal Tour</div>
