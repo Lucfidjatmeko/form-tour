@@ -95,7 +95,8 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
       <input type="text" id="nama" placeholder="Nama lengkap" oninput="updateSummary()"/>
       <div class="err" id="err-nama">Wajib diisi</div>
       <label>NIK / ID Karyawan</label>
-      <input type="text" id="nik" placeholder="Nomor induk karyawan"/>
+      <input type="text" id="nik" placeholder="Nomor induk karyawan" onblur="cekNIK()"/>
+      <div id="nik-info" style="display:none;margin-top:-8px;margin-bottom:10px;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.6"></div>
       <label>Section <span class="req">*</span></label>
       <select id="dept">
         <option value="">Pilih section...</option>
@@ -225,6 +226,60 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
 </div>
 
 <script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxsFAX3pNyTnv5RgU9cJ089a6Rp-znaLzi-Pj0qF1DDQCW20GN6UZVRC178QDwNENgQ/exec";
+
+async function cekNIK() {
+  const nik = document.getElementById("nik").value.trim();
+  const info = document.getElementById("nik-info");
+  if (!nik) { info.style.display="none"; return; }
+
+  info.style.display="block";
+  info.style.background="rgba(255,255,255,0.07)";
+  info.style.border="1px solid rgba(255,255,255,0.15)";
+  info.style.color="rgba(255,255,255,0.5)";
+  info.innerHTML="🔍 Mengecek data...";
+
+  try {
+    const res = await fetch(`${GAS_URL}?nik=${encodeURIComponent(nik)}`);
+    const json = await res.json();
+    if (json.found) {
+      const d = json.data;
+      info.style.background="rgba(247,201,72,0.12)";
+      info.style.border="1px solid rgba(247,201,72,0.4)";
+      info.style.color="#f7c948";
+      info.innerHTML=`⚠️ <strong>NIK sudah terdaftar!</strong> Data lama akan diperbarui saat submit.<br>
+        <span style="color:rgba(255,255,255,0.6)">Nama: ${d.Nama} · ${d.Section} · ${d["Tanggal Tour"]}</span>`;
+
+      // Pre-fill form
+      document.getElementById("nama").value = d.Nama || "";
+      document.getElementById("noHp").value = d["No HP"] || "";
+      // Section
+      const deptEl = document.getElementById("dept");
+      for(let o of deptEl.options){ if(o.value===d.Section){ deptEl.value=d.Section; break; } }
+      // Tanggal
+      const tMap = {"16-17 Agustus 2026":"d1","19-20 September 2026":"d2","26-27 September 2026":"d3"};
+      if(tMap[d["Tanggal Tour"]]) pilihTanggal(d["Tanggal Tour"], tMap[d["Tanggal Tour"]], Object.values(tMap).filter(v=>v!==tMap[d["Tanggal Tour"]]));
+      // Kehadiran
+      if(d.Kehadiran){ document.getElementById("tipeKehadiran").value=d.Kehadiran; onKehadiranChange(); }
+      // Transport
+      if(d.Transportasi==="Ikut Bus Panitia") pilihTransport("Ikut Bus Panitia","t-bus","t-mobil","ab");
+      else if(d.Transportasi==="Kendaraan Sendiri") pilihTransport("Kendaraan Sendiri","t-mobil","t-bus","ap");
+      // Lengan & size
+      if(d["Model Lengan"]==="Lengan Pendek") pilihLengan("Lengan Pendek","lk1","lk2");
+      else if(d["Model Lengan"]==="Lengan Panjang") pilihLengan("Lengan Panjang","lk2","lk1");
+      if(d["Ukuran Kaos"]){ state.sizeK=d["Ukuran Kaos"]; buildSizes("size-k","sizeK"); }
+      updateSummary();
+    } else {
+      info.style.background="rgba(16,185,129,0.1)";
+      info.style.border="1px solid rgba(16,185,129,0.3)";
+      info.style.color="#6ee7b7";
+      info.innerHTML="✅ NIK belum terdaftar. Silakan lanjut mengisi form.";
+    }
+  } catch(e) {
+    info.style.display="none";
+  }
+}
+
 const sizes = ["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"];
 let state = { tanggal:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahIstri:0, jumlahAnak:0, anak:[] };
 
