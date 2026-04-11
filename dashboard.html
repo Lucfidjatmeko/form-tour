@@ -197,7 +197,7 @@ const MASTER_RAW=[
   {name:"ARI HERYAWAN",noreg:"0010684",sec:"Component Ordering & Inventory Mgt. Sec"},
   {name:"R. SENJA SONIA NUR ASYIAH",noreg:"1223279",sec:"Component Ordering & Inventory Mgt. Sec"},
   {name:"RIZZAL FIRDAUS",noreg:"0516498",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"HERU FARDYANTO",noreg:"9709390",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"HERU FARDYANTO",noreg:"9709390",sec:"Warehouse Plant #3 Sec"},
   {name:"ADNAN KOHAR",noreg:"0415766",sec:"Warehouse KRW Plant & Steel Opr Sec"},
   {name:"MASRIYO",noreg:"2335743",sec:"Warehouse KRW Plant & Steel Opr Sec"},
   {name:"RIYAN ARIF MUSTOFA",noreg:"1425685",sec:"Warehouse KRW Plant & Steel Opr Sec"},
@@ -300,25 +300,32 @@ async function loadData(){
 }
 
 function render(data){
-  const total       =data.length;
-  const totalPeserta=sum(data.map(r=>r[11]));
-  const totalDewasa =sum(data.map(r=>r[9]));
-  const totalAnak   =sum(data.map(r=>r[10]));
-  const naikBus     =data.filter(r=>r[28]==="Ikut Bus Panitia").length;
-  const kendSendiri =data.filter(r=>r[28]==="Kendaraan Sendiri").length;
-  const pesertaBus  =sum(data.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>parseInt(r[11])||1));
+  // Pisahkan: ikut tour vs tidak ikut vs belum konfirmasi
+  const dataIkut    =data.filter(r=>!r[32]||r[32]==="Ya"||r[32]==="");  // isi form ikut / data lama
+  const dataTidak   =data.filter(r=>r[32]==="Tidak");
+  const totalIsi    =data.length;          // semua yg sudah isi form
+  const totalIkut   =dataIkut.length;
+  const totalTidak  =dataTidak.length;
+
+  const total       =dataIkut.length;      // progress & stat pakai yg ikut saja
+  const totalPeserta=sum(dataIkut.map(r=>r[11]));
+  const totalDewasa =sum(dataIkut.map(r=>r[9]));
+  const totalAnak   =sum(dataIkut.map(r=>r[10]));
+  const naikBus     =dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").length;
+  const kendSendiri =dataIkut.filter(r=>r[28]==="Kendaraan Sendiri").length;
+  const pesertaBus  =sum(dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>parseInt(r[11])||1));
   const busCount    =Math.ceil(pesertaBus/BUS_CAPACITY)||0;
   const kursiKosong =busCount*BUS_CAPACITY-pesertaBus;
-  const perSection  =count(data.map(r=>r[3]));
-  const perTanggal  =count(data.map(r=>r[5]));
-  const perKehadiran=count(data.map(r=>r[6]));
-  const perSize     =count(data.map(r=>r[30]));
-  const perLengan   =count(data.map(r=>r[29]));
+  const perSection  =count(dataIkut.map(r=>r[3]));
+  const perTanggal  =count(dataIkut.map(r=>r[5]));
+  const perKehadiran=count(dataIkut.map(r=>r[6]));
+  const perSize     =count(dataIkut.map(r=>r[30]));
+  const perLengan   =count(dataIkut.map(r=>r[29]));
   const anakR={"0-5":0,"6-12":0,"13-17":0};
-  data.forEach(r=>{for(let i=0;i<8;i++){const n=r[12+i*2],u=parseInt(r[13+i*2]);if(n&&n!=="-"&&!isNaN(u)){if(u<=5)anakR["0-5"]++;else if(u<=12)anakR["6-12"]++;else anakR["13-17"]++;}}});
+  dataIkut.forEach(r=>{for(let i=0;i<8;i++){const n=r[12+i*2],u=parseInt(r[13+i*2]);if(n&&n!=="-"&&!isNaN(u)){if(u<=5)anakR["0-5"]++;else if(u<=12)anakR["6-12"]++;else anakR["13-17"]++;}}});
   const maxSize=Math.max(...Object.values(perSize),1);
   const pctTotal=pct(total,GRAND_TOTAL);
-  const km=hitungKamar(data);
+  const km=hitungKamar(dataIkut);
 
   // kamar label map for person cards
   const kamarMap={};
@@ -353,34 +360,38 @@ function render(data){
 
   <!-- A1. Angka Utama -->
   <div class="stat-grid">
-    <div class="stat-card s1"><div class="num">${total}</div><div class="lbl">Karyawan</div></div>
-    <div class="stat-card s2"><div class="num">${totalPeserta}</div><div class="lbl">Peserta</div></div>
+    <div class="stat-card s1"><div class="num">${total}</div><div class="lbl">Ikut Tour</div></div>
+    <div class="stat-card s2"><div class="num">${totalPeserta}</div><div class="lbl">Total Peserta</div></div>
     <div class="stat-card s3"><div class="num">${totalDewasa}</div><div class="lbl">Dewasa</div></div>
     <div class="stat-card s4"><div class="num">${totalAnak}</div><div class="lbl">Anak</div></div>
-    <div class="stat-card s5"><div class="num">${naikBus}</div><div class="lbl">Naik Bus</div></div>
-    <div class="stat-card s6"><div class="num">${kendSendiri}</div><div class="lbl">Kend. Sendiri</div></div>
+    <div class="stat-card s5"><div class="num">${totalTidak}</div><div class="lbl">Tidak Ikut</div></div>
+    <div class="stat-card s6"><div class="num">${GRAND_TOTAL-totalIsi}</div><div class="lbl">Belum Respons</div></div>
   </div>
 
   <!-- A2. Progress Overall -->
   <div class="card" style="background:rgba(16,185,129,0.07);border-color:rgba(16,185,129,0.2)">
     <div class="ring-wrap">
       <div class="ring-info">
-        <div class="ring-pct">${pctTotal}%</div>
-        <div class="ring-sub">${total} sudah daftar · <span style="color:#fda4af;font-weight:700">${GRAND_TOTAL-total} belum daftar</span></div>
+        <div class="ring-pct">${pct(totalIsi,GRAND_TOTAL)}%</div>
+        <div class="ring-sub">${totalIsi} sudah respons · <span style="color:#fda4af;font-weight:700">${GRAND_TOTAL-totalIsi} belum</span></div>
+        <div style="margin-top:6px;font-size:11px">
+          <span style="color:#6ee7b7">✅ ${total} ikut</span>
+          <span style="color:rgba(255,255,255,0.25)"> · </span>
+          <span style="color:#fda4af">❌ ${totalTidak} tidak ikut</span>
+        </div>
       </div>
       <svg width="72" height="72" viewBox="0 0 72 72">
         <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="7"/>
         <circle cx="36" cy="36" r="28" fill="none" stroke="#6ee7b7" stroke-width="7"
-          stroke-dasharray="${Math.round(pctTotal*1.759)} 175.9"
+          stroke-dasharray="${Math.round(pct(totalIsi,GRAND_TOTAL)*1.759)} 175.9"
           stroke-linecap="round" transform="rotate(-90 36 36)"/>
-        <!-- angka belum daftar di tengah ring -->
-        <text x="36" y="31" text-anchor="middle" fill="#fda4af" font-size="15" font-weight="900" font-family="Poppins,sans-serif">${GRAND_TOTAL-total}</text>
+        <text x="36" y="31" text-anchor="middle" fill="#fda4af" font-size="15" font-weight="900" font-family="Poppins,sans-serif">${GRAND_TOTAL-totalIsi}</text>
         <text x="36" y="44" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7.5" font-family="Poppins,sans-serif">belum</text>
-        <text x="36" y="53" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7.5" font-family="Poppins,sans-serif">daftar</text>
+        <text x="36" y="53" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7.5" font-family="Poppins,sans-serif">respons</text>
       </svg>
     </div>
     <div class="bar-track" style="height:9px">
-      <div class="bar-fill" style="width:${pctTotal}%;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div>
+      <div class="bar-fill" style="width:${pct(totalIsi,GRAND_TOTAL)}%;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div>
     </div>
   </div>
 
@@ -416,13 +427,15 @@ function render(data){
       const color=p>=100?"#6ee7b7":p>=60?"#f7c948":"#fda4af";
       const normNik=v=>String(v).replace(/^0+/,'').trim();
       const sudahNikSet=new Set(data.map(r=>normNik(r[2])));
-      // Sudah daftar di section ini
-      const orang=data.filter(r=>r[3]===sec);
+      // Sudah daftar & ikut di section ini
+      const orang=dataIkut.filter(r=>r[3]===sec);
+      // Sudah daftar tapi tidak ikut di section ini
+      const orangTidak=dataTidak.filter(r=>r[3]===sec);
       // Belum daftar di section ini (dari MASTER)
       const belumSec=MASTER.filter(k=>k.sec===sec&&!sudahNikSet.has(normNik(k.noreg)));
       const secId='sec-'+sec.replace(/\W/g,'');
 
-      const sudahRows=orang.length===0?`<div class="empty">Belum ada pendaftar</div>`:
+      const sudahRows=orang.length===0?`<div class="empty">Belum ada pendaftar ikut</div>`:
         orang.map((r,i)=>`
           <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
             <span style="font-size:10px;color:rgba(255,255,255,0.22);width:18px">${i+1}</span>
@@ -432,6 +445,17 @@ function render(data){
             </div>
             <span class="badge" style="${kamarMap[r[1]]?bStyle[kamarMap[r[1]].tipe]:bStyle['k']}">${kamarMap[r[1]]?kamarMap[r[1]].lbl:'—'}</span>
           </div>`).join('');
+
+      const tidakRows=orangTidak.length===0?'':
+        `<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(107,114,128,0.3)">
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">❌ Tidak ikut (${orangTidak.length})</div>
+          ${orangTidak.map((r,i)=>`
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+              <span style="font-size:10px;color:rgba(255,255,255,0.2);width:18px">${i+1}</span>
+              <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);flex:1">${r[1]}</span>
+              <span class="badge" style="background:rgba(107,114,128,0.15);border:1px solid rgba(107,114,128,0.3);color:rgba(255,255,255,0.4)">Tidak Ikut</span>
+            </div>`).join('')}
+        </div>`;
 
       const belumRows=belumSec.length===0?'':
         `<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(233,69,96,0.2)">
@@ -461,15 +485,17 @@ function render(data){
             <div style="flex:1">
               <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6)">Tap untuk lihat detail</div>
               <div style="font-size:10px;margin-top:2px">
-                <span style="color:#6ee7b7">✅ ${daftar} daftar</span>
-                ${belumSec.length>0?`<span style="color:rgba(255,255,255,0.25)"> · </span><span style="color:#fda4af">❌ ${belumSec.length} belum</span>`:''}
+                <span style="color:#6ee7b7">✅ ${orang.length} ikut</span>
+                ${orangTidak.length>0?`<span style="color:rgba(255,255,255,0.25)"> · </span><span style="color:rgba(255,255,255,0.4)">❌ ${orangTidak.length} tidak ikut</span>`:''}
+                ${belumSec.length>0?`<span style="color:rgba(255,255,255,0.25)"> · </span><span style="color:#fda4af">⚠️ ${belumSec.length} belum</span>`:''}
               </div>
             </div>
             <span class="acc-chevron">▼</span>
           </div>
           <div class="acc-body" id="b-${secId}">
-            ${orang.length>0?`<div style="font-size:10px;font-weight:700;color:#6ee7b7;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">✅ Sudah daftar (${orang.length})</div>`:''}
+            ${orang.length>0?`<div style="font-size:10px;font-weight:700;color:#6ee7b7;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">✅ Ikut tour (${orang.length})</div>`:''}
             ${sudahRows}
+            ${tidakRows}
             ${belumRows}
           </div>
         </div>`;
