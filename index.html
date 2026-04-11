@@ -510,6 +510,7 @@ let state = { tanggal:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", juml
 
 function buildSizes(id, key) {
   const w = document.getElementById(id);
+  if (!w) return;
   w.innerHTML = "";
   sizes.forEach(s => {
     const d = document.createElement("div");
@@ -523,6 +524,7 @@ buildSizes("size-k","sizeK");
 
 function buildAnakList() {
   const w = document.getElementById("anak-list");
+  if (!w) return;
   w.innerHTML = "";
   state.anak.forEach((a,i) => {
     const d = document.createElement("div");
