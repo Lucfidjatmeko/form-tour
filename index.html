@@ -88,34 +88,54 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
   </div>
 
   <div id="formArea">
-    <!-- Data Peserta -->
+    <!-- Data Peserta — hanya Noreg, nama+section auto-fill readonly -->
     <div class="card c1">
       <div class="ctitle">👤 DATA PESERTA</div>
-      <label>Nama Lengkap <span class="req">*</span></label>
-      <input type="text" id="nama" placeholder="Nama lengkap" oninput="updateSummary()"/>
-      <div class="err" id="err-nama">Wajib diisi</div>
-      <label>NIK / ID Karyawan</label>
-      <input type="text" id="nik" placeholder="Nomor induk karyawan 7 digit" onblur="cekNIK()" oninput="onNikInput()"/>
+      <label>Noreg <span class="req">*</span></label>
+      <input type="text" id="nik" placeholder="Nomor registrasi 7 digit" onblur="cekNIK()" oninput="onNikInput()"/>
       <div id="nik-info" style="display:none;margin-top:-8px;margin-bottom:10px;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.6"></div>
-      <label>Section <span class="req">*</span></label>
-      <select id="dept">
-        <option value="">Pilih section...</option>
-        <option>Dept. Head</option>
-        <option>CCR & Ordering NR Engine Sec</option>
-        <option>CCR Plant #2 Prod Indication & Admin Sec</option>
-        <option>CCR Vehicle Plant #1 Sec</option>
-        <option>Component Ordering & Inventory Mgt. Sec</option>
-        <option>Warehouse KRW Plant & Steel Opr Sec</option>
-        <option>Warehouse Ordering & Engineering Sec</option>
-        <option>Warehouse Plant #3 Sec</option>
-      </select>
-      <div class="err" id="err-dept">Wajib dipilih</div>
+      <!-- Nama & Section: auto-fill, readonly, hanya tampil setelah Noreg valid -->
+      <div id="wrap-identitas" class="hidden">
+        <label>Nama Lengkap</label>
+        <input type="text" id="nama" placeholder="Nama lengkap" readonly style="opacity:0.7;cursor:default" oninput="updateSummary()"/>
+        <label>Section</label>
+        <select id="dept" disabled style="opacity:0.7;cursor:default">
+          <option value="">—</option>
+          <option>Dept. Head</option>
+          <option>CCR & Ordering NR Engine Sec</option>
+          <option>CCR Plant #2 Prod Indication & Admin Sec</option>
+          <option>CCR Vehicle Plant #1 Sec</option>
+          <option>Component Ordering & Inventory Mgt. Sec</option>
+          <option>Warehouse KRW Plant & Steel Opr Sec</option>
+          <option>Warehouse Ordering & Engineering Sec</option>
+          <option>Warehouse Plant #3 Sec</option>
+        </select>
+        <div class="err" id="err-dept" style="display:none">Wajib dipilih</div>
+      </div>
+      <div class="err" id="err-nama" style="display:none">Wajib diisi</div>
+    </div>
+
+    <!-- Konfirmasi Ikut Tour -->
+    <div class="card hidden" id="card-konfirmasi" style="background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.35)">
+      <div class="ctitle" style="color:#c084fc">🎯 KONFIRMASI KEIKUTSERTAAN</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:14px;line-height:1.6">
+        Apakah <strong id="konfirmasi-nama" style="color:white">Anda</strong> ikut tour PPIC &amp; Warehouse 2026?
+      </div>
+      <div class="toggle-wrap">
+        <div class="tbtn" id="btn-ikut" onclick="pilihIkut('Ya')">✅ Ya, Saya Ikut</div>
+        <div class="tbtn" id="btn-tidak" onclick="pilihIkut('Tidak')">❌ Tidak Ikut</div>
+      </div>
+      <div class="err" id="err-ikut">Wajib dipilih</div>
+    </div>
+
+    <!-- Form detail — hanya muncul jika ikut = Ya -->
+    <div id="form-detail" class="hidden">
+    <div class="card c1" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2)">
+      <div class="ctitle" style="color:#7ecfff">📞 KONTAK</div>
       <label>No. HP / WhatsApp <span class="req">*</span></label>
       <input type="tel" id="noHp" placeholder="08xxxxxxxxxx"/>
       <div class="err" id="err-noHp">Wajib diisi</div>
     </div>
-
-    <!-- Tanggal -->
     <div class="card c5">
       <div class="ctitle">📅 PILIHAN TANGGAL TOUR</div>
       <div class="date-option" id="d1" onclick="pilihTanggal('16-17 Agustus 2026','d1',['d2','d3'])">
@@ -215,7 +235,12 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
     <div class="btn-wrap">
       <button class="btn-submit" onclick="submitForm()">DAFTAR SEKARANG 🚌</button>
     </div>
-  </div>
+    </div><!-- /form-detail -->
+
+    <!-- Tombol submit tidak ikut — muncul jika pilih Tidak -->
+    <div id="wrap-tidak" class="hidden btn-wrap">
+      <button class="btn-submit" style="background:linear-gradient(90deg,#374151,#6b7280)" onclick="submitTidakIkut()">KONFIRMASI TIDAK IKUT</button>
+    </div>
 
   <div class="success" id="successArea">
     <div style="font-size:52px;margin-bottom:12px">✅</div>
@@ -341,15 +366,15 @@ function onNikInput() {
 }
 
 function autoFillFromMaster(found) {
-  // Auto-fill nama
-  if (!document.getElementById('nama').value) {
-    document.getElementById('nama').value = found.name;
-    updateSummary();
-  }
-  // Auto-fill section
+  document.getElementById('nama').value = found.name;
   const deptEl = document.getElementById('dept');
   deptEl.value = found.sec;
-  showErr('err-dept', '');
+  // Tampilkan nama + section
+  document.getElementById('wrap-identitas').classList.remove('hidden');
+  // Tampilkan card konfirmasi
+  document.getElementById('konfirmasi-nama').textContent = found.name;
+  document.getElementById('card-konfirmasi').classList.remove('hidden');
+  updateSummary();
 }
 
 async function cekNIK() {
@@ -418,7 +443,66 @@ async function cekNIK() {
   }
 }
 
-// ── Semua fungsi form di bawah TIDAK DIUBAH dari versi asli ──────────────
+// ── IKUT / TIDAK IKUT ────────────────────────────────────────────────────
+let statusIkut = ""; // "Ya" atau "Tidak"
+
+function pilihIkut(val) {
+  statusIkut = val;
+  const ikut  = val === "Ya";
+  document.getElementById("btn-ikut").classList.toggle("ag", ikut);
+  document.getElementById("btn-ikut").classList.toggle("ap", !ikut);
+  document.getElementById("btn-tidak").classList.toggle("ap", !ikut);
+  document.getElementById("btn-tidak").classList.toggle("ag", ikut);
+  // reset warna sesuai pilihan
+  if (ikut) {
+    document.getElementById("btn-ikut").classList.add("ag");
+    document.getElementById("btn-ikut").classList.remove("ap");
+    document.getElementById("btn-tidak").classList.remove("ag","ap","ab");
+  } else {
+    document.getElementById("btn-tidak").classList.add("ap");
+    document.getElementById("btn-tidak").classList.remove("ag","ab");
+    document.getElementById("btn-ikut").classList.remove("ag","ap","ab");
+  }
+  document.getElementById("form-detail").classList.toggle("hidden", !ikut);
+  document.getElementById("wrap-tidak").classList.toggle("hidden", ikut);
+  showErr("err-ikut","");
+}
+
+async function submitTidakIkut() {
+  const nama  = document.getElementById("nama").value;
+  const nik   = document.getElementById("nik").value;
+  const dept  = document.getElementById("dept").value;
+  if (!nama || !nik) return alert("Noreg dan nama wajib terisi.");
+
+  const btn = document.querySelector("#wrap-tidak button");
+  btn.textContent = "Mengirim... ⏳";
+  btn.disabled = true;
+
+  try {
+    await fetch(GAS_URL, {
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        "Nama":nama, "NIK":nik, "Section":dept,
+        "Kehadiran":"-", "Ikut Tour":"Tidak",
+        "Tanggal Tour":"-","No HP":"-","Jumlah Istri":0,
+        "Nama Istri":"-","Jumlah Anak":0,"Data Anak":"-",
+        "Total Peserta":0,"Transportasi":"-",
+        "Kaos Karyawan":"-","Catatan":"-"
+      })
+    });
+    document.getElementById("formArea").style.display = "none";
+    document.getElementById("successDetail").innerHTML =
+      `Nama: <strong style="color:white">${nama}</strong><br>
+       Status: <strong style="color:#fda4af">Tidak ikut tour</strong><br>
+       <span style="color:rgba(255,255,255,0.4);font-size:12px">Terima kasih sudah konfirmasi 🙏</span>`;
+    document.getElementById("successArea").style.display = "block";
+  } catch(e) {
+    alert("Gagal mengirim. Periksa koneksi.");
+    btn.textContent = "KONFIRMASI TIDAK IKUT";
+    btn.disabled = false;
+  }
+}
 
 const sizes = ["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"];
 let state = { tanggal:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahIstri:0, jumlahAnak:0, anak:[] };
@@ -573,7 +657,7 @@ async function submitForm() {
         "Jumlah Anak":state.jumlahAnak, "Data Anak":anakSummary||"-",
         "Total Peserta":total, "Transportasi":state.transport,
         "Kaos Karyawan":`${state.lenganK} / Size ${state.sizeK}`,
-        "Catatan":catatan||"-"
+        "Catatan":catatan||"-", "Ikut Tour":"Ya"
       })
     });
     document.getElementById("formArea").style.display = "none";
@@ -604,6 +688,12 @@ function resetForm() {
   document.getElementById("val-anak").textContent="0";
   document.getElementById("istri-input").classList.add("hidden");
   document.getElementById("nik-info").style.display="none";
+  document.getElementById("wrap-identitas").classList.add("hidden");
+  document.getElementById("card-konfirmasi").classList.add("hidden");
+  document.getElementById("form-detail").classList.add("hidden");
+  document.getElementById("wrap-tidak").classList.add("hidden");
+  document.querySelectorAll("#btn-ikut,#btn-tidak").forEach(el=>el.classList.remove("ag","ab","ap"));
+  statusIkut = "";
   buildSizes("size-k","sizeK"); buildAnakList();
   document.querySelectorAll(".tbtn").forEach(el=>el.classList.remove("ag","ab","ap"));
   document.querySelectorAll(".date-option,.date-radio").forEach(el=>el.classList.remove("active"));
