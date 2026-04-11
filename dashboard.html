@@ -621,14 +621,43 @@ function render(data){
   <div class="sec-div">Kaos</div>
 
   ${acc('kaos','sec-acc','👕','Ukuran & Model Kaos',`${perLengan["Lengan Pendek"]||0} pendek · ${perLengan["Lengan Panjang"]||0} panjang`,`
-    <div class="mini-grid" style="margin-bottom:12px">
-      <div class="mini-card" style="background:rgba(233,69,96,0.1);border:1px solid rgba(233,69,96,0.22)"><div class="mn" style="color:#fda4af">${perLengan["Lengan Pendek"]||0}</div><div class="ml">Lengan Pendek</div><div class="mp" style="color:#fda4af">${pct(perLengan["Lengan Pendek"]||0,total)}%</div></div>
-      <div class="mini-card" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.22)"><div class="mn" style="color:#c084fc">${perLengan["Lengan Panjang"]||0}</div><div class="ml">Lengan Panjang</div><div class="mp" style="color:#c084fc">${pct(perLengan["Lengan Panjang"]||0,total)}%</div></div>
+    <!-- Ringkasan lengan -->
+    <div class="mini-grid" style="margin-bottom:14px">
+      <div class="mini-card" style="background:rgba(233,69,96,0.1);border:1px solid rgba(233,69,96,0.22)">
+        <div class="mn" style="color:#fda4af">${perLengan["Lengan Pendek"]||0}</div>
+        <div class="ml">Lengan Pendek</div>
+        <div class="mp" style="color:#fda4af">${pct(perLengan["Lengan Pendek"]||0,total)}%</div>
+      </div>
+      <div class="mini-card" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.22)">
+        <div class="mn" style="color:#c084fc">${perLengan["Lengan Panjang"]||0}</div>
+        <div class="ml">Lengan Panjang</div>
+        <div class="mp" style="color:#c084fc">${pct(perLengan["Lengan Panjang"]||0,total)}%</div>
+      </div>
     </div>
-    <div class="pill-wrap">
-      ${["S","M","L","XL","XXL","3XL","4XL","5XL","6XL"].map(s=>`<div class="pill" style="background:rgba(168,85,247,0.16);border:1px solid rgba(168,85,247,0.3);color:#c084fc">${s} <strong>${perSize[s]||0}</strong></div>`).join('')}
-    </div>
-    ${Object.entries(perSize).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">Size ${k}</span><span class="bv" style="color:${CLR[i%CLR.length]}">${v} orang (${pct(v,total)}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,maxSize)}%;background:${CLR[i%CLR.length]}"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>'}
+
+    <!-- Summary gabungan Lengan + Ukuran -->
+    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Detail Lengan + Ukuran</div>
+    ${(()=>{
+      const perKaos = {};
+      dataIkut.forEach(r => {
+        const lengan = getLengan(r);
+        const size   = getSize(r);
+        if (!lengan || !size) return;
+        const key = `${lengan} ${size}`;
+        perKaos[key] = (perKaos[key]||0) + 1;
+      });
+      const maxKaos = Math.max(...Object.values(perKaos), 1);
+      return Object.entries(perKaos)
+        .sort((a,b) => b[1]-a[1])
+        .map(([k,v], i) => `
+          <div class="bar-wrap">
+            <div class="bar-top">
+              <span class="bl">${k}</span>
+              <span class="bv" style="color:${CLR[i%CLR.length]}">${v} orang <span style="opacity:.6;font-size:10px">(${pct(v,total)}%)</span></span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct(v,maxKaos)}%;background:${CLR[i%CLR.length]}"></div></div>
+          </div>`).join('') || '<div class="empty">Belum ada data</div>';
+    })()}
   `)}
 
   <!-- ══ F. DATA PENDAFTAR ══ -->
