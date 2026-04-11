@@ -466,6 +466,7 @@ function pilihIkut(val) {
   document.getElementById("form-detail").classList.toggle("hidden", !ikut);
   document.getElementById("wrap-tidak").classList.toggle("hidden", ikut);
   showErr("err-ikut","");
+  updateSummary();
 }
 
 async function submitTidakIkut() {
@@ -481,7 +482,7 @@ async function submitTidakIkut() {
   try {
     await fetch(GAS_URL, {
       method:"POST", mode:"no-cors",
-      headers:{"Content-Type":"application/json"},
+      headers:{"Content-Type":"text/plain"},
       body: JSON.stringify({
         "Nama":nama, "NIK":nik, "Section":dept,
         "Kehadiran":"-", "Ikut Tour":"Tidak",
@@ -597,6 +598,7 @@ function showErr(id, msg) {
 
 function updateSummary() {
   const s = document.getElementById("summary");
+  if (statusIkut !== "Ya") { s.style.display="none"; return; }
   const nama = document.getElementById("nama").value;
   if (!nama && !state.tanggal) { s.style.display="none"; return; }
   s.style.display = "block";
@@ -649,7 +651,7 @@ async function submitForm() {
   try {
     await fetch("https://script.google.com/macros/s/AKfycbxsFAX3pNyTnv5RgU9cJ089a6Rp-znaLzi-Pj0qF1DDQCW20GN6UZVRC178QDwNENgQ/exec", {
       method:"POST", mode:"no-cors",
-      headers:{"Content-Type":"application/json"},
+      headers:{"Content-Type":"text/plain"},
       body: JSON.stringify({
         "Nama":nama, "NIK":nik||"-", "Section":dept, "No HP":noHp,
         "Tanggal Tour":state.tanggal, "Kehadiran":state.kehadiran,
