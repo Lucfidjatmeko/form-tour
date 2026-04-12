@@ -107,7 +107,7 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
       <h1>Form Pendaftaran Tour</h1>
       <div class="sub">PPIC & WAREHOUSE 2026</div>
     </div>
-    <div class="notice">🙏 Terima kasih telah berpartisipasi mengisi form pendaftaran <strong>Tour PPIC &amp; Warehouse 2026!</strong></div>
+    <div class="notice" id="notice-header">Anak yang didaftarkan adalah yang <strong>belum menikah</strong></div>
   </div>
 
   <div id="formArea">
@@ -812,6 +812,9 @@ async function doSubmit() {
     // Tutup modal
     document.getElementById('konfirModal').classList.remove('show');
     document.body.style.overflow = '';
+    // Ubah notice jadi ucapan terima kasih
+    const noticeEl = document.getElementById('notice-header');
+    if (noticeEl) noticeEl.innerHTML = '🙏 Terima kasih telah berpartisipasi mengisi form pendaftaran <strong>Tour PPIC &amp; Warehouse 2026!</strong>';
     // Tampilkan success
     document.getElementById("formArea").style.display = "none";
     document.getElementById("successDetail").innerHTML =
