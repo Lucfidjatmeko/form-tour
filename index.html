@@ -273,8 +273,23 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
   </div>
 </div>
 
-<!-- ── MODAL KONFIRMASI ── -->
-<div id="konfirModal" class="konfir-overlay" onclick="tutupKonfirmasi(event)">
+<!-- ── MODAL KONFIRMASI TIDAK IKUT ── -->
+<div id="konfirTidakModal" class="konfir-overlay" onclick="tutupKonfirTidak(event)">
+  <div class="konfir-panel">
+    <div class="konfir-header">
+      <span class="konfir-icon">❌</span>
+      <div>
+        <div class="konfir-title">Konfirmasi Tidak Ikut Tour</div>
+        <div class="konfir-sub">Pastikan keputusan Anda sudah benar</div>
+      </div>
+    </div>
+    <div class="konfir-body" id="konfirTidakBody"></div>
+    <div class="konfir-footer">
+      <button class="konfir-btn-ubah" onclick="tutupKonfirTidak()">← Kembali</button>
+      <button class="konfir-btn-ok" id="konfirTidakBtnOk" style="background:linear-gradient(90deg,#6b7280,#374151)" onclick="doSubmitTidak()">✅ Ya, Konfirmasi</button>
+    </div>
+  </div>
+</div>
   <div class="konfir-panel" id="konfirPanel">
     <div class="konfir-header">
       <span class="konfir-icon">📋</span>
@@ -540,7 +555,38 @@ async function submitTidakIkut() {
   const dept  = document.getElementById("dept").value;
   if (!nama || !nik) return alert("Noreg dan nama wajib terisi.");
 
-  const btn = document.querySelector("#wrap-tidak button");
+  // Tampilkan modal konfirmasi tidak ikut
+  document.getElementById('konfirTidakBody').innerHTML = `
+    <div class="konfir-row">
+      <div class="konfir-emoji">👤</div>
+      <div><div class="konfir-label">Karyawan</div>
+      <div class="konfir-value">${nama}<br><span style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:400">${dept}</span></div></div>
+    </div>
+    <div class="konfir-row">
+      <div class="konfir-emoji">❌</div>
+      <div><div class="konfir-label">Status</div>
+      <div class="konfir-value" style="color:#fda4af">Tidak Ikut Tour</div></div>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;background:rgba(233,69,96,0.08);border:1px solid rgba(233,69,96,0.2);border-radius:10px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6">
+      Dengan konfirmasi ini, data ketidakhadiran Anda akan tercatat. Panitia akan memproses lebih lanjut.
+    </div>
+  `;
+  document.getElementById('konfirTidakModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function tutupKonfirTidak(e) {
+  if (e && e.target !== document.getElementById('konfirTidakModal')) return;
+  document.getElementById('konfirTidakModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+async function doSubmitTidak() {
+  const nama  = document.getElementById("nama").value;
+  const nik   = document.getElementById("nik").value;
+  const dept  = document.getElementById("dept").value;
+
+  const btn = document.getElementById('konfirTidakBtnOk');
   btn.textContent = "Mengirim... ⏳";
   btn.disabled = true;
 
@@ -557,16 +603,23 @@ async function submitTidakIkut() {
         "Kaos Karyawan":"-","Catatan":"-"
       })
     });
+    // Tutup modal
+    document.getElementById('konfirTidakModal').classList.remove('show');
+    document.body.style.overflow = '';
+    // Update notice
+    const noticeEl = document.getElementById('notice-header');
+    if (noticeEl) noticeEl.innerHTML = '🙏 Terima kasih telah berpartisipasi mengisi form pendaftaran <strong>Tour PPIC &amp; Warehouse 2026!</strong>';
+    // Tampilkan success
     document.getElementById("formArea").style.display = "none";
     document.getElementById("successDetail").innerHTML =
       `Nama: <strong>${nama}</strong><br>
        Status: <strong style="color:#fda4af">Tidak ikut tour</strong><br>
-       <span style="color:rgba(255,255,255,0.45);font-size:12px">Terima kasih sudah konfirmasi 🙏</span>`;
+       <span style="color:rgba(255,255,255,0.45);font-size:12px">Terima kasih sudah konfirmasi, data Anda telah tercatat 🙏</span>`;
     document.getElementById("successArea").style.display = "block";
     window.scrollTo({top:0, behavior:"smooth"});
   } catch(e) {
     alert("Gagal mengirim. Periksa koneksi.");
-    btn.textContent = "KONFIRMASI TIDAK IKUT";
+    btn.textContent = "✅ Ya, Konfirmasi";
     btn.disabled = false;
   }
 }
