@@ -9,142 +9,117 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);min-height:100vh;font-family:'Poppins',sans-serif;padding:12px;color:white}
 .wrap{max-width:600px;margin:0 auto}
-
-/* HEADER */
-.header{text-align:center;margin-bottom:18px;padding:18px 16px 14px}
-.header h1{font-size:20px;font-weight:900;line-height:1.3;background:linear-gradient(135deg,#f7c948,#ff6b35,#e94560,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.header p{color:rgba(255,255,255,0.4);font-size:11px;margin-top:5px}
+.header{text-align:center;margin-bottom:14px;padding:14px 16px 10px}
+.header h1{font-size:19px;font-weight:900;line-height:1.3;background:linear-gradient(135deg,#f7c948,#ff6b35,#e94560,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header p{color:rgba(255,255,255,0.35);font-size:10px;margin-top:4px}
 .refresh-btn{margin-top:10px;background:linear-gradient(90deg,#a855f7,#3b82f6);border:none;color:white;padding:9px 0;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;width:100%}
-.last-update{font-size:10px;color:rgba(255,255,255,0.25);margin-top:7px}
+.last-update{font-size:10px;color:rgba(255,255,255,0.2);margin-top:6px}
+.sec-div{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.15);text-align:center;padding:5px 0 7px}
+.card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:14px;margin-bottom:10px}
+.card-title{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;color:rgba(255,255,255,0.4)}
 
-/* CARD */
-.card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px;margin-bottom:12px}
-.card-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;color:rgba(255,255,255,0.5)}
-
-/* SECTION DIVIDER */
-.sec-div{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.18);text-align:center;padding:6px 0 8px}
-
-/* STAT 3-col */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.stat-card{border-radius:12px;padding:11px 6px;text-align:center}
-.stat-card .num{font-size:26px;font-weight:900;line-height:1}
-.stat-card .lbl{font-size:8px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-top:4px;opacity:0.6;line-height:1.3}
-.s1{background:rgba(59,130,246,0.18);border:1px solid rgba(59,130,246,0.3)}.s1 .num{color:#7ecfff}
-.s2{background:rgba(16,185,129,0.18);border:1px solid rgba(16,185,129,0.3)}.s2 .num{color:#6ee7b7}
-.s3{background:rgba(247,201,72,0.14);border:1px solid rgba(247,201,72,0.3)}.s3 .num{color:#f7c948}
-.s4{background:rgba(168,85,247,0.18);border:1px solid rgba(168,85,247,0.3)}.s4 .num{color:#c084fc}
-.s5{background:rgba(233,69,96,0.18);border:1px solid rgba(233,69,96,0.3)}.s5 .num{color:#fda4af}
-.s6{background:rgba(255,107,53,0.18);border:1px solid rgba(255,107,53,0.3)}.s6 .num{color:#ffb347}
-
-/* MINI GRID 2-col */
-.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.mini-card{border-radius:10px;padding:12px;text-align:center}
-.mini-card .mn{font-size:24px;font-weight:900;line-height:1}
-.mini-card .ml{font-size:9px;color:rgba(255,255,255,0.45);margin-top:4px;line-height:1.4}
-.mini-card .mp{font-size:11px;font-weight:700;margin-top:3px}
+/* TOP AREA */
+.top-area{display:flex;gap:10px;align-items:stretch;margin-bottom:10px}
+.ring-box{flex:0 0 90px;background:rgba(16,185,129,0.09);border:1px solid rgba(16,185,129,0.2);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 6px;position:relative}
+.ring-pct{font-size:30px;font-weight:900;color:#6ee7b7;line-height:1;margin-top:-2px}
+.ring-lbl{font-size:9px;color:rgba(255,255,255,0.3);margin-top:3px}
+.stat-grid{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.sc{border-radius:10px;padding:9px 5px;text-align:center;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;position:relative}
+.sc:active{transform:scale(.96)}
+.sc.active{outline:2px solid white;outline-offset:1px}
+.sc .sn{font-size:20px;font-weight:900;line-height:1}
+.sc .sl{font-size:8px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;margin-top:3px;opacity:.55;line-height:1.3}
+.sc .sa{font-size:8px;position:absolute;bottom:4px;right:5px;opacity:.35}
+.c1{background:rgba(59,130,246,0.18);border:1px solid rgba(59,130,246,0.3)}.c1 .sn{color:#7ecfff}
+.c2{background:rgba(16,185,129,0.18);border:1px solid rgba(16,185,129,0.3)}.c2 .sn{color:#6ee7b7}
+.c3{background:rgba(247,201,72,0.14);border:1px solid rgba(247,201,72,0.3)}.c3 .sn{color:#f7c948}
+.c4{background:rgba(168,85,247,0.18);border:1px solid rgba(168,85,247,0.3)}.c4 .sn{color:#c084fc}
+.c5{background:rgba(233,69,96,0.18);border:1px solid rgba(233,69,96,0.3)}.c5 .sn{color:#fda4af}
+.c6{background:rgba(20,184,166,0.14);border:1px solid rgba(20,184,166,0.25)}.c6 .sn{color:#2dd4bf}
 
 /* PROGRESS BAR */
-.bar-wrap{margin-bottom:9px}
+.bar-track{background:rgba(255,255,255,0.08);border-radius:5px;height:6px;overflow:hidden}
+.bar-fill{height:100%;border-radius:5px;transition:width .6s ease}
+.bar-wrap{margin-bottom:8px}
 .bar-wrap:last-child{margin-bottom:0}
 .bar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:8px}
-.bar-top .bl{font-size:12px;color:rgba(255,255,255,0.75);flex:1;line-height:1.4}
-.bar-top .bv{font-size:12px;font-weight:800;white-space:nowrap;flex-shrink:0}
-.bar-track{background:rgba(255,255,255,0.08);border-radius:5px;height:7px;overflow:hidden}
-.bar-fill{height:100%;border-radius:5px;transition:width .6s ease}
+.bar-top .bl{font-size:12px;color:rgba(255,255,255,0.7);flex:1;line-height:1.4}
+.bar-top .bv{font-size:12px;font-weight:800;white-space:nowrap}
+
+/* DRILL PANEL */
+.drill{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;margin-bottom:10px;display:none}
+.drill.show{display:block}
+.drill-head{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.drill-title{font-size:13px;font-weight:800}
+.drill-close{background:none;border:none;color:rgba(255,255,255,0.3);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+.drill-body{padding:12px 13px}
+
+/* QUICK PILLS */
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+
+/* MINI 2-COL */
+.m2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.m3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.mc{border-radius:10px;padding:10px;text-align:center}
+.mc .mn{font-size:22px;font-weight:900;line-height:1}
+.mc .ml{font-size:9px;color:rgba(255,255,255,0.4);margin-top:3px;line-height:1.4}
+.mc .mp{font-size:10px;font-weight:700;margin-top:2px}
 
 /* STAT ROW */
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:9px;margin-bottom:7px}
-.stat-row:last-child{margin-bottom:0}
-.stat-row .sr-l{font-size:12px;color:rgba(255,255,255,0.65);flex:1}
-.stat-row .sr-v{font-size:13px;font-weight:800}
-.stat-row .sr-p{font-size:10px;font-weight:600;opacity:0.65;margin-left:5px}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;border-radius:8px;margin-bottom:6px}
+.sr:last-child{margin-bottom:0}
+.sr .sl{font-size:12px;color:rgba(255,255,255,0.6);flex:1}
+.sr .sv{font-size:13px;font-weight:800}
 
-/* BADGE & PILL */
+/* BADGE */
 .badge{display:inline-block;padding:2px 8px;border-radius:7px;font-size:10px;font-weight:700;white-space:nowrap}
-.pill-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.pill{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700}
 
-/* ════ ACCORDION ════ */
+/* ACCORDION */
 .acc-item{border-radius:12px;margin-bottom:8px;overflow:hidden}
-.acc-header{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;user-select:none;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.acc-header{display:flex;align-items:center;gap:10px;padding:12px 13px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
 .acc-header:active{opacity:.85}
-.acc-chevron{font-size:11px;color:rgba(255,255,255,0.35);transition:transform .25s;flex-shrink:0;margin-left:auto}
+.acc-chevron{font-size:10px;color:rgba(255,255,255,0.3);transition:transform .25s;flex-shrink:0;margin-left:auto}
 .acc-header.open .acc-chevron{transform:rotate(180deg)}
-.acc-body{display:none;padding:0 14px 14px}
+.acc-body{display:none;padding:0 13px 13px}
 .acc-body.open{display:block}
+.bus-acc{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2)}.bus-acc .acc-header{background:rgba(59,130,246,0.1)}
+.km-k-acc{background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.18)}.km-k-acc .acc-header{background:rgba(251,146,60,0.1)}
+.km-s-acc{background:rgba(236,72,153,0.07);border:1px solid rgba(236,72,153,0.18)}.km-s-acc .acc-header{background:rgba(236,72,153,0.08)}
+.km-sh-acc{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2)}.km-sh-acc .acc-header{background:rgba(99,102,241,0.1)}
+.sec-acc{background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.18)}.sec-acc .acc-header{background:rgba(168,85,247,0.08)}
+.orang-acc{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)}.orang-acc .acc-header{padding:10px 13px}
 
-/* Bus accordion item */
-.bus-acc{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2)}
-.bus-acc .acc-header{background:rgba(59,130,246,0.1)}
-
-/* Kamar accordion item */
-.kamar-keluarga-acc{background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.18)}
-.kamar-keluarga-acc .acc-header{background:rgba(251,146,60,0.1)}
-.kamar-solo-acc{background:rgba(236,72,153,0.07);border:1px solid rgba(236,72,153,0.18)}
-.kamar-solo-acc .acc-header{background:rgba(236,72,153,0.08)}
-.kamar-sharing-acc{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2)}
-.kamar-sharing-acc .acc-header{background:rgba(99,102,241,0.1)}
-
-/* Section progress accordion */
-.sec-acc{background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.18)}
-.sec-acc .acc-header{background:rgba(168,85,247,0.08)}
-
-/* Pendaftar accordion */
-.orang-acc{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)}
-.orang-acc .acc-header{background:rgba(255,255,255,0.04);padding:11px 14px}
-
-/* ROOM BLOCK */
-.room-block{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.18);border-radius:9px;padding:11px;margin-bottom:8px}
+/* ROOM */
+.room-block{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.18);border-radius:9px;padding:10px;margin-bottom:7px}
 .room-block:last-child{margin-bottom:0}
-.room-person{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.room-person{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
 .room-person:last-child{border-bottom:none}
 
-/* PROGRESS RING */
-.ring-wrap{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.ring-info{flex:1}
-.ring-pct{font-size:42px;font-weight:900;color:#6ee7b7;line-height:1}
-.ring-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px}
-
-/* LOADING */
 .loading{text-align:center;padding:60px 20px;color:rgba(255,255,255,0.4);font-size:14px}
-.spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,0.1);border-top-color:#a855f7;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+.spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,0.1);border-top-color:#a855f7;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty{text-align:center;color:rgba(255,255,255,0.25);font-size:12px;padding:14px;font-style:italic}
+.empty{text-align:center;color:rgba(255,255,255,0.25);font-size:11px;padding:12px;font-style:italic}
+.divider{height:1px;background:rgba(255,255,255,0.07);margin:10px 0}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="header">
     <h1>🚌 Dashboard Tour<br>PPIC &amp; Warehouse 2026</h1>
-    <p>Data realtime · Google Sheets</p>
+    <p>Data realtime · Google Sheets · klik kartu untuk drill-down</p>
     <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
     <div class="last-update" id="lastUpdate">—</div>
   </div>
-  <div id="content">
-    <div class="loading"><div class="spinner"></div>Memuat data...</div>
-  </div>
+  <div id="content"><div class="loading"><div class="spinner"></div>Memuat data...</div></div>
 </div>
-
 <script>
-const SHEET_ID      = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
-const BUS_CAPACITY  = 59;
-const GRAND_TOTAL   = 97;
-const ROOM_CAPACITY = 4;
-const SOLO_NAME     = "Dayudya Luthfiarasty";
-const TARGETS = {
-  "Dept. Head":1,
-  "CCR & Ordering NR Engine Sec":13,
-  "CCR Plant #2 Prod Indication & Admin Sec":17,
-  "CCR Vehicle Plant #1 Sec":13,
-  "Component Ordering & Inventory Mgt. Sec":8,
-  "Warehouse KRW Plant & Steel Opr Sec":16,
-  "Warehouse Ordering & Engineering Sec":15,
-  "Warehouse Plant #3 Sec":15
-};
+const SHEET_ID="1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
+const BUS_CAP=59,GRAND=97,ROOM_CAP=4;
+const SOLO="dayudya luthfiarasty";
+const TARGETS={"Dept. Head":1,"CCR & Ordering NR Engine Sec":13,"CCR Plant #2 Prod Indication & Admin Sec":17,"CCR Vehicle Plant #1 Sec":13,"Component Ordering & Inventory Mgt. Sec":8,"Warehouse KRW Plant & Steel Opr Sec":16,"Warehouse Ordering & Engineering Sec":15,"Warehouse Plant #3 Sec":15};
 const CLR=["#7ecfff","#6ee7b7","#f7c948","#c084fc","#fda4af","#ffb347","#60a5fa","#a78bfa"];
-
-// ── MASTER LIST semua karyawan (noreg 7 digit, tanpa leading zero) ────────
-const MASTER_RAW=[
+const MASTER=[
   {name:"CAHYA TRI KARTIKA L.",noreg:"9709655",sec:"Dept. Head"},
   {name:"IWAN KUSTIAWAN",noreg:"9305558",sec:"CCR & Ordering NR Engine Sec"},
   {name:"HENDRO SUJATMIKO",noreg:"0313690",sec:"CCR & Ordering NR Engine Sec"},
@@ -243,47 +218,70 @@ const MASTER_RAW=[
   {name:"MURDIYANTO",noreg:"1323859",sec:"Warehouse Plant #3 Sec"},
   {name:"MOHAMAD ROHMAT",noreg:"1020113",sec:"Warehouse Plant #3 Sec"},
 ];
-// Deduplikasi by noreg
-const MASTER=Object.values(MASTER_RAW.reduce((m,k)=>{if(!m[k.noreg])m[k.noreg]=k;return m},{}));
 
-const count=arr=>{const m={};arr.forEach(v=>{m[v]=(m[v]||0)+1});return m};
+const cnt=arr=>{const m={};arr.forEach(v=>{m[v]=(m[v]||0)+1});return m};
 const sum=arr=>arr.reduce((a,b)=>a+(parseFloat(b)||0),0);
 const pct=(a,b)=>b>0?Math.round(a/b*100):0;
-const shortSec=s=>s.replace(/Section|Sec\.?/gi,'').replace(/Plant #(\d)/gi,'P$1').trim().slice(0,26);
+const normNik=v=>String(v).replace(/^0+/,'').trim();
+const shortSec=s=>s.replace(/Section|Sec\.?/gi,'').replace(/Plant #(\d)/gi,'P$1').trim().slice(0,24);
+const kaosLabel=r=>{if(r[29]&&r[29].includes('/'))return r[29].replace(/Size\s*/i,'').replace('/','/ ').replace(/\s+/g,' ');if(r[29]&&r[30]&&r[30]!=='-')return`${r[29]} / ${r[30]}`;return r[29]||r[30]||'-';};
+const getSize=r=>{if(r[29]&&r[29].includes('/')){const m=r[29].match(/Size\s*(\S+)/i)||r[29].match(/\/\s*(\S+)/);return m?m[1].trim():'';}return r[30]||'';};
+const getLengan=r=>{if(r[29]&&r[29].includes('/'))return r[29].split('/')[0].trim();return r[29]||'';};
 
 function hitungKamar(data){
-  const keluarga   =data.filter(r=>parseInt(r[9])>1||parseInt(r[10])>0);
-  const soloFixed  =data.filter(r=>r[1].trim().toLowerCase()===SOLO_NAME.toLowerCase()&&parseInt(r[9])<=1&&parseInt(r[10])===0);
-  const sharingPool=data.filter(r=>r[1].trim().toLowerCase()!==SOLO_NAME.toLowerCase()&&parseInt(r[9])<=1&&parseInt(r[10])===0);
+  const keluarga=data.filter(r=>parseInt(r[9])>1||parseInt(r[10])>0);
+  const soloFixed=data.filter(r=>r[1].trim().toLowerCase()===SOLO&&parseInt(r[9])<=1&&parseInt(r[10])===0);
+  const sharingPool=data.filter(r=>r[1].trim().toLowerCase()!==SOLO&&parseInt(r[9])<=1&&parseInt(r[10])===0);
   const bySection={};
   sharingPool.forEach(r=>{const s=r[3]||"?";if(!bySection[s])bySection[s]=[];bySection[s].push(r);});
   const sharingRooms=[],overflow=[];
-  Object.entries(bySection).forEach(([sec,ms])=>{
-    let i=0;
-    while(i+ROOM_CAPACITY<=ms.length){sharingRooms.push({label:sec,same:true,members:ms.slice(i,i+ROOM_CAPACITY)});i+=ROOM_CAPACITY;}
-    while(i<ms.length){overflow.push(ms[i]);i++;}
-  });
-  for(let i=0;i<overflow.length;i+=ROOM_CAPACITY){
-    const chunk=overflow.slice(i,i+ROOM_CAPACITY);
-    sharingRooms.push({label:[...new Set(chunk.map(r=>r[3]))].join(" + "),same:false,members:chunk});
-  }
+  Object.entries(bySection).forEach(([,ms])=>{let i=0;while(i+ROOM_CAP<=ms.length){sharingRooms.push({label:ms[0][3],same:true,members:ms.slice(i,i+ROOM_CAP)});i+=ROOM_CAP;}while(i<ms.length){overflow.push(ms[i]);i++;}});
+  for(let i=0;i<overflow.length;i+=ROOM_CAP){const ch=overflow.slice(i,i+ROOM_CAP);sharingRooms.push({label:[...new Set(ch.map(r=>r[3]))].join(" + "),same:false,members:ch});}
   const breakdown={};
-  keluarga.forEach(r=>{const d=parseInt(r[9])||1,a=parseInt(r[10])||0,k=`${d} Dewasa${a>0?` + ${a} Anak`:''}`;breakdown[k]=(breakdown[k]||0)+1;});
-  return{keluarga,soloFixed,sharingPool,sharingRooms,
-    kamarKeluarga:keluarga.length,kamarSolo:soloFixed.length,
-    kamarSharing:sharingRooms.length,
-    totalKamar:keluarga.length+soloFixed.length+sharingRooms.length,
-    kosongSharing:sharingRooms.length*ROOM_CAPACITY-sharingPool.length,breakdown};
+  keluarga.forEach(r=>{const d=parseInt(r[9])||1,a=parseInt(r[10])||0,k=`${d} Dws${a>0?` + ${a} Anak`:''}`;breakdown[k]=(breakdown[k]||0)+1;});
+  return{keluarga,soloFixed,sharingPool,sharingRooms,kamarKeluarga:keluarga.length,kamarSolo:soloFixed.length,kamarSharing:sharingRooms.length,totalKamar:keluarga.length+soloFixed.length+sharingRooms.length,kosongSharing:sharingRooms.length*ROOM_CAP-sharingPool.length,breakdown};
 }
 
-// ── Accordion toggle ──
 function tog(id){
-  const body=document.getElementById('b-'+id);
-  const hdr=document.getElementById('h-'+id);
-  const open=body.classList.contains('open');
-  body.classList.toggle('open',!open);
-  hdr.classList.toggle('open',!open);
+  const b=document.getElementById('b-'+id),h=document.getElementById('h-'+id);
+  const o=b.classList.contains('open');
+  b.classList.toggle('open',!o);h.classList.toggle('open',!o);
 }
+
+let activeDrill='';
+function drill(key){
+  const panel=document.getElementById('drillPanel');
+  if(activeDrill===key){activeDrill='';panel.classList.remove('show');document.querySelectorAll('.sc').forEach(c=>c.classList.remove('active'));return;}
+  activeDrill=key;
+  document.querySelectorAll('.sc').forEach(c=>c.classList.remove('active'));
+  const el=document.getElementById('sc-'+key);
+  if(el)el.classList.add('active');
+  const cfg=window._drillCfg;
+  if(!cfg||!cfg[key])return;
+  const {title,color,html}=cfg[key];
+  panel.innerHTML=`<div class="drill-head"><span class="drill-title" style="color:${color}">${title}</span><button class="drill-close" onclick="closeDrill()">×</button></div><div class="drill-body">${html}</div>`;
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function closeDrill(){activeDrill='';document.getElementById('drillPanel').classList.remove('show');document.querySelectorAll('.sc').forEach(c=>c.classList.remove('active'));}
+
+const bStyle={k:'background:rgba(251,146,60,0.18);border:1px solid rgba(251,146,60,0.35);color:#fb923c',s:'background:rgba(236,72,153,0.18);border:1px solid rgba(236,72,153,0.35);color:#f9a8d4',sh:'background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc'};
+
+const acc=(id,cls,icon,title,badge,body,open=false)=>`
+  <div class="acc-item ${cls}">
+    <div class="acc-header${open?' open':''}" id="h-${id}" onclick="tog('${id}')">
+      <span style="font-size:15px">${icon}</span>
+      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800;line-height:1.2">${title}</div>${badge?`<div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:2px">${badge}</div>`:''}</div>
+      <span class="acc-chevron">▼</span>
+    </div>
+    <div class="acc-body${open?' open':''}" id="b-${id}">${body}</div>
+  </div>`;
+
+const personRow=(r,i,extra='')=>`
+  <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+    <span style="font-size:10px;color:rgba(255,255,255,0.2);width:18px">${i+1}</span>
+    <div style="flex:1"><div style="font-size:12px;font-weight:700">${r[1]}</div>${extra?`<div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px">${extra}</div>`:''}</div>
+  </div>`;
 
 async function loadData(){
   document.getElementById("content").innerHTML=`<div class="loading"><div class="spinner"></div>Memuat data...</div>`;
@@ -292,151 +290,159 @@ async function loadData(){
     const txt=await res.text();
     const json=JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
     const rows=json.table.rows||[];
-    if(!rows||rows.length===0){document.getElementById("content").innerHTML=`<div class="loading">📭 Belum ada data.</div>`;return;}
+    if(!rows.length){document.getElementById("content").innerHTML=`<div class="loading">📭 Belum ada data.</div>`;return;}
     render(rows.map(r=>r.c.map(c=>c?(c.f||c.v||"-"):"-")));
     document.getElementById("lastUpdate").textContent="Diperbarui: "+new Date().toLocaleTimeString("id-ID");
   }catch(e){document.getElementById("content").innerHTML=`<div class="loading">❌ Gagal memuat data.</div>`;}
 }
 
 function render(data){
-  // Pisahkan: ikut tour vs tidak ikut vs belum konfirmasi
-  const dataIkut    =data.filter(r=>!r[32]||r[32]==="Ya"||r[32]==="");  // isi form ikut / data lama
-  const dataTidak   =data.filter(r=>r[32]==="Tidak");
-  const totalIsi    =data.length;          // semua yg sudah isi form
-  const totalIkut   =dataIkut.length;
-  const totalTidak  =dataTidak.length;
-
-  const total       =dataIkut.length;      // progress & stat pakai yg ikut saja
+  const dataIkut=data.filter(r=>!r[32]||r[32]==="Ya"||r[32]==="");
+  const dataTidak=data.filter(r=>r[32]==="Tidak");
+  const totalIsi=data.length,total=dataIkut.length,totalTidak=dataTidak.length,belum=GRAND-totalIsi;
   const totalPeserta=sum(dataIkut.map(r=>r[11]));
-  const totalDewasa =sum(dataIkut.map(r=>r[9]));
-  const totalAnak   =sum(dataIkut.map(r=>r[10]));
-  const naikBus     =dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").length;
-  const kendSendiri =dataIkut.filter(r=>r[28]==="Kendaraan Sendiri").length;
-  const pesertaBus  =sum(dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>parseInt(r[11])||1));
-  const busCount    =Math.ceil(pesertaBus/BUS_CAPACITY)||0;
-  const kursiKosong =busCount*BUS_CAPACITY-pesertaBus;
-  const perSection  =count(dataIkut.map(r=>r[3]));
-  const perTanggal  =count(dataIkut.map(r=>r[5]));
-  const perKehadiran=count(dataIkut.map(r=>r[6]));
-  // Helper: normalize kaos display & extract size/lengan
-  // Form lama: r[29]="Lengan Pendek / Size L", r[30]=""
-  // Form baru: r[29]="Lengan Pendek", r[30]="L"
-  const kaosLabel = r => {
-    if (r[29] && r[29].includes('/')) return r[29].replace(/Size\s*/i,'').replace('/','/ Size ').replace(/\s+/g,' ');
-    if (r[29] && r[30] && r[30]!=='-') return `${r[29]} / ${r[30]}`;
-    return r[29] || r[30] || '-';
-  };
-  const getSize = r => {
-    if (r[29] && r[29].includes('/')) {
-      const m = r[29].match(/Size\s*(\S+)/i) || r[29].match(/\/\s*(\S+)/);
-      return m ? m[1].trim() : '';
-    }
-    return r[30] || '';
-  };
-  const getLengan = r => {
-    if (r[29] && r[29].includes('/')) return r[29].split('/')[0].trim();
-    return r[29] || '';
-  };
-
-  const perSize   =count(dataIkut.map(r=>getSize(r)).filter(v=>v&&v!=='-'));
-  const perLengan =count(dataIkut.map(r=>getLengan(r)).filter(v=>v&&v!=='-'));
+  const totalDewasa=sum(dataIkut.map(r=>r[9])),totalAnak=sum(dataIkut.map(r=>r[10]));
+  const naikBus=dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").length;
+  const pesertaBus=sum(dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>parseInt(r[11])||1));
+  const busCount=Math.ceil(pesertaBus/BUS_CAP)||0,kursiKosong=busCount*BUS_CAP-pesertaBus;
+  const perSection=cnt(dataIkut.map(r=>r[3]));
+  const perTanggal=cnt(dataIkut.map(r=>r[5]));
+  const perKehadiran=cnt(dataIkut.map(r=>r[6]));
+  const perLengan=cnt(dataIkut.map(r=>getLengan(r)).filter(v=>v&&v!=='-'));
+  const perKaos={};
+  dataIkut.forEach(r=>{const l=getLengan(r),s=getSize(r);if(l&&s){const k=l+' '+s;perKaos[k]=(perKaos[k]||0)+1;}});
   const anakR={"0-5":0,"6-12":0,"13-17":0};
   dataIkut.forEach(r=>{for(let i=0;i<8;i++){const n=r[12+i*2],u=parseInt(r[13+i*2]);if(n&&n!=="-"&&!isNaN(u)){if(u<=5)anakR["0-5"]++;else if(u<=12)anakR["6-12"]++;else anakR["13-17"]++;}}});
-  const maxSize=Math.max(...Object.values(perSize),1);
-  const pctTotal=pct(total,GRAND_TOTAL);
   const km=hitungKamar(dataIkut);
+  const pctTotal=pct(totalIsi,GRAND);
+  const sudahNikSet=new Set(data.map(r=>normNik(r[2])));
 
-  // kamar label map for person cards
   const kamarMap={};
   km.keluarga.forEach(r=>{kamarMap[r[1]]={tipe:'k',lbl:'👨‍👩‍👧 Keluarga'};});
   km.soloFixed.forEach(r=>{kamarMap[r[1]]={tipe:'s',lbl:'👩 Solo'};});
   km.sharingRooms.forEach((room,i)=>{room.members.forEach(r=>{kamarMap[r[1]]={tipe:'sh',lbl:`👥 Kamar ${i+1}`};});});
 
-  const bStyle={
-    k:'background:rgba(251,146,60,0.18);border:1px solid rgba(251,146,60,0.35);color:#fb923c',
-    s:'background:rgba(236,72,153,0.18);border:1px solid rgba(236,72,153,0.35);color:#f9a8d4',
-    sh:'background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);color:#a5b4fc'
+  // ── BUILD DRILL HTML ──────────────────────────────────────────────────────
+  const dTanggalRows=Object.entries(perTanggal).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`
+    <div class="bar-wrap"><div class="bar-top"><span class="bl">${k.replace('2026','').trim()}</span><span class="bv" style="color:${CLR[i]}">${v} orang · ${pct(v,total)}%</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct(v,Math.max(...Object.values(perTanggal)))}%;background:${CLR[i]}"></div></div></div>`).join('');
+  const dKhRows=Object.entries(perKehadiran).map(([k,v],i)=>`
+    <div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:${CLR[i+3]}">${v} · ${pct(v,total)}%</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct(v,total)}%;background:${CLR[i+3]}"></div></div></div>`).join('');
+
+  window._drillCfg={
+    ikut:{title:`${total} karyawan ikut`,color:'#7ecfff',html:`
+      <div class="m2" style="margin-bottom:10px">
+        <div class="mc" style="background:rgba(59,130,246,0.14);border:1px solid rgba(59,130,246,0.2)"><div class="mn" style="color:#7ecfff">${naikBus}</div><div class="ml">Naik Bus</div></div>
+        <div class="mc" style="background:rgba(255,107,53,0.14);border:1px solid rgba(255,107,53,0.2)"><div class="mn" style="color:#ffb347">${total-naikBus}</div><div class="ml">Kend. Sendiri</div></div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Pilihan Tanggal</div>
+      ${dTanggalRows}
+      <div class="divider"></div>
+      <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Tipe Kehadiran</div>
+      ${dKhRows}`
+    },
+    pax:{title:`${totalPeserta} total peserta`,color:'#f7c948',html:`
+      <div class="m3">
+        <div class="mc" style="background:rgba(59,130,246,0.14);border:1px solid rgba(59,130,246,0.2)"><div class="mn" style="color:#7ecfff">${totalDewasa}</div><div class="ml">Dewasa</div></div>
+        <div class="mc" style="background:rgba(247,201,72,0.12);border:1px solid rgba(247,201,72,0.2)"><div class="mn" style="color:#f7c948">${totalAnak}</div><div class="ml">Anak</div></div>
+        <div class="mc" style="background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.2)"><div class="mn" style="color:#c084fc">${totalPeserta}</div><div class="ml">Total</div></div>
+      </div>
+      <div class="divider"></div>
+      ${[["0–5 th",anakR["0-5"],"#f7c948"],["6–12 th",anakR["6-12"],"#6ee7b7"],["13–17 th",anakR["13-17"],"#fda4af"]].map(([l,v,c])=>`
+        <div class="bar-wrap"><div class="bar-top"><span class="bl">Anak ${l}</span><span class="bv" style="color:${c}">${v} orang</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct(v,totalAnak||1)}%;background:${c}"></div></div></div>`).join('')}`
+    },
+    belum:{title:`${belum} belum respons`,color:'#fda4af',html:
+      belum===0?`<div class="empty">🎉 Semua sudah respons!</div>`
+      :Object.entries(Object.fromEntries(Object.keys(TARGETS).map(s=>[s,MASTER.filter(k=>k.sec===s&&!sudahNikSet.has(normNik(k.noreg)))])))
+        .filter(([,v])=>v.length>0).sort((a,b)=>b[1].length-a[1].length)
+        .map(([sec,list])=>`
+          <div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-size:11px;color:rgba(255,255,255,0.5)">${sec}</span>
+              <span class="badge" style="background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);color:#fda4af">${list.length}</span>
+            </div>
+            ${list.map(k=>`<div style="font-size:11px;color:rgba(255,255,255,0.6);padding:3px 0 3px 10px;border-left:2px solid rgba(233,69,96,0.25)">⚠️ ${k.name}</div>`).join('')}
+          </div>`).join('')
+    },
+    tidak:{title:`${totalTidak} tidak ikut`,color:'#fda4af',html:
+      totalTidak===0?`<div class="empty">Belum ada yang tidak ikut</div>`
+      :dataTidak.map((r,i)=>personRow(r,i,shortSec(r[3]))).join('')
+    },
+    kamar:{title:`${km.totalKamar} kamar hotel`,color:'#2dd4bf',html:`
+      <div class="m3">
+        <div class="mc" style="background:rgba(251,146,60,0.14);border:1px solid rgba(251,146,60,0.2)"><div class="mn" style="color:#fb923c">${km.kamarKeluarga}</div><div class="ml">Keluarga</div></div>
+        <div class="mc" style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.18)"><div class="mn" style="color:#f9a8d4">${km.kamarSolo}</div><div class="ml">Solo</div></div>
+        <div class="mc" style="background:rgba(99,102,241,0.14);border:1px solid rgba(99,102,241,0.2)"><div class="mn" style="color:#a5b4fc">${km.kamarSharing}</div><div class="ml">Sharing</div></div>
+      </div>
+      <div style="height:8px;border-radius:5px;overflow:hidden;display:flex;margin-bottom:10px">
+        <div style="width:${pct(km.kamarKeluarga,km.totalKamar)}%;background:#f97316"></div>
+        <div style="width:${pct(km.kamarSolo,km.totalKamar)}%;background:#db2777"></div>
+        <div style="width:${pct(km.kamarSharing,km.totalKamar)}%;background:#6366f1"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4)">Detail lihat bagian Akomodasi ↓</div>`
+    },
+    bus:{title:`${busCount} bus dibutuhkan`,color:'#7ecfff',html:`
+      <div class="m2">
+        <div class="mc" style="background:rgba(59,130,246,0.14);border:1px solid rgba(59,130,246,0.2)"><div class="mn" style="color:#7ecfff">${pesertaBus}</div><div class="ml">Peserta naik bus</div></div>
+        <div class="mc" style="background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.2)"><div class="mn" style="color:#f7c948">${kursiKosong}</div><div class="ml">Kursi kosong</div></div>
+      </div>
+      ${Array.from({length:busCount},(_,i)=>{const t=i<Math.floor(pesertaBus/BUS_CAP)?BUS_CAP:(pesertaBus%BUS_CAP||BUS_CAP);return`
+        <div class="bar-wrap"><div class="bar-top"><span class="bl">🚌 Bus ${i+1}</span><span class="bv" style="color:#7ecfff">${t}/${BUS_CAP}</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct(t,BUS_CAP)}%;background:linear-gradient(90deg,#3b82f6,#6ee7b7)"></div></div></div>`;}).join('')}`
+    }
   };
 
-  // ── helper: accordion wrapper ──────────────────────────────────────────────
-  const acc=(id,cls,icon,title,badge,body,defaultOpen=false)=>`
-    <div class="acc-item ${cls}">
-      <div class="acc-header${defaultOpen?' open':''}" id="h-${id}" onclick="tog('${id}')">
-        <span style="font-size:16px">${icon}</span>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:800;line-height:1.2">${title}</div>
-          ${badge?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">${badge}</div>`:''}
-        </div>
-        <span class="acc-chevron">▼</span>
-      </div>
-      <div class="acc-body${defaultOpen?' open':''}" id="b-${id}">${body}</div>
-    </div>`;
-
+  // ── RENDER HTML ──────────────────────────────────────────────────────────
   document.getElementById("content").innerHTML=`
 
-  <!-- ══ A. RINGKASAN ══ -->
-  <div class="sec-div">Ringkasan</div>
-
-  <!-- A1. Angka Utama -->
-  <div class="stat-grid">
-    <div class="stat-card s1"><div class="num">${total}</div><div class="lbl">Ikut Tour</div></div>
-    <div class="stat-card s2"><div class="num">${totalPeserta}</div><div class="lbl">Total Peserta</div></div>
-    <div class="stat-card s3"><div class="num">${totalDewasa}</div><div class="lbl">Dewasa</div></div>
-    <div class="stat-card s4"><div class="num">${totalAnak}</div><div class="lbl">Anak</div></div>
-    <div class="stat-card s5"><div class="num">${totalTidak}</div><div class="lbl">Tidak Ikut</div></div>
-    <div class="stat-card s6"><div class="num">${GRAND_TOTAL-totalIsi}</div><div class="lbl">Belum Respons</div></div>
-  </div>
-
-  <!-- A2. Progress Overall -->
-  <div class="card" style="background:rgba(16,185,129,0.07);border-color:rgba(16,185,129,0.2)">
-    <div class="ring-wrap">
-      <div class="ring-info">
-        <div class="ring-pct">${pct(totalIsi,GRAND_TOTAL)}%</div>
-        <div class="ring-sub">${totalIsi} sudah respons · <span style="color:#fda4af;font-weight:700">${GRAND_TOTAL-totalIsi} belum</span></div>
-        <div style="margin-top:6px;font-size:11px">
-          <span style="color:#6ee7b7">✅ ${total} ikut</span>
-          <span style="color:rgba(255,255,255,0.25)"> · </span>
-          <span style="color:#fda4af">❌ ${totalTidak} tidak ikut</span>
-        </div>
-      </div>
-      <svg width="72" height="72" viewBox="0 0 72 72">
-        <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="7"/>
-        <circle cx="36" cy="36" r="28" fill="none" stroke="#6ee7b7" stroke-width="7"
-          stroke-dasharray="${Math.round(pct(totalIsi,GRAND_TOTAL)*1.759)} 175.9"
-          stroke-linecap="round" transform="rotate(-90 36 36)"/>
-        <text x="36" y="31" text-anchor="middle" fill="#fda4af" font-size="15" font-weight="900" font-family="Poppins,sans-serif">${GRAND_TOTAL-totalIsi}</text>
-        <text x="36" y="44" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7.5" font-family="Poppins,sans-serif">belum</text>
-        <text x="36" y="53" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="7.5" font-family="Poppins,sans-serif">respons</text>
+  <!-- TOP: Ring + 6 kartu klik -->
+  <div class="top-area">
+    <div class="ring-box">
+      <svg width="64" height="64" viewBox="0 0 64 64" style="flex-shrink:0">
+        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="6"/>
+        <circle cx="32" cy="32" r="26" fill="none" stroke="#6ee7b7" stroke-width="6"
+          stroke-dasharray="${Math.round(pctTotal*1.633)} 163.4"
+          stroke-linecap="round" transform="rotate(-90 32 32)"/>
+        <text x="32" y="28" text-anchor="middle" fill="#fda4af" font-size="14" font-weight="900" font-family="Poppins,sans-serif">${belum}</text>
+        <text x="32" y="39" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="7" font-family="Poppins,sans-serif">belum</text>
       </svg>
+      <div class="ring-pct">${pctTotal}%</div>
+      <div class="ring-lbl">${totalIsi}/${GRAND}</div>
     </div>
-    <div class="bar-track" style="height:9px">
-      <div class="bar-fill" style="width:${pct(totalIsi,GRAND_TOTAL)}%;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div>
-    </div>
-  </div>
-
-  <!-- A3. Ringkasan quick-stats: kamar + bus -->
-  <div class="mini-grid">
-    <div class="mini-card" style="background:rgba(20,184,166,0.14);border:1px solid rgba(20,184,166,0.25)">
-      <div class="mn" style="color:#2dd4bf">${km.totalKamar}</div>
-      <div class="ml">Total Kamar</div>
-      <div class="mp" style="color:#2dd4bf;font-size:10px">${km.kamarKeluarga}K · ${km.kamarSharing}S · ${km.kamarSolo}Solo</div>
-    </div>
-    <div class="mini-card" style="background:rgba(59,130,246,0.14);border:1px solid rgba(59,130,246,0.25)">
-      <div class="mn" style="color:#7ecfff">${busCount}</div>
-      <div class="ml">Bus Dibutuhkan</div>
-      <div class="mp" style="color:#7ecfff;font-size:10px">${pesertaBus} peserta · ${kursiKosong} kursi kosong</div>
+    <div class="stat-grid">
+      <div class="sc c1" id="sc-ikut" onclick="drill('ikut')"><div class="sn">${total}</div><div class="sl">Ikut Tour</div><div class="sa">▼</div></div>
+      <div class="sc c3" id="sc-pax" onclick="drill('pax')"><div class="sn">${totalPeserta}</div><div class="sl">Total Pax</div><div class="sa">▼</div></div>
+      <div class="sc c5" id="sc-belum" onclick="drill('belum')"><div class="sn">${belum}</div><div class="sl">Blm Isi</div><div class="sa">▼</div></div>
+      <div class="sc c6" id="sc-kamar" onclick="drill('kamar')"><div class="sn">${km.totalKamar}</div><div class="sl">Kamar</div><div class="sa">▼</div></div>
+      <div class="sc" style="background:rgba(59,130,246,0.14);border:1px solid rgba(59,130,246,0.25)" id="sc-bus" onclick="drill('bus')"><div class="sn" style="color:#7ecfff">${busCount}</div><div class="sl" style="color:rgba(255,255,255,0.5)">Bus</div><div class="sa">▼</div></div>
+      <div class="sc c5" id="sc-tidak" onclick="drill('tidak')"><div class="sn">${totalTidak}</div><div class="sl">Tdk Ikut</div><div class="sa">▼</div></div>
     </div>
   </div>
 
-  <!-- A4. Komposisi peserta -->
-  ${acc('peserta','sec-acc','👨‍👩‍👧‍👦','Komposisi Peserta',`${totalDewasa} dewasa · ${totalAnak} anak`,`
-    <div class="stat-row" style="background:rgba(59,130,246,0.1)"><span class="sr-l">👨‍💼 Dewasa</span><span class="sr-v" style="color:#93c5fd">${totalDewasa}</span><span class="sr-p" style="color:#93c5fd">${pct(totalDewasa,totalPeserta)}%</span></div>
-    <div class="stat-row" style="background:rgba(247,201,72,0.1)"><span class="sr-l">👶 Anak 0–5 th</span><span class="sr-v" style="color:#f7c948">${anakR["0-5"]}</span><span class="sr-p" style="color:#f7c948">${pct(anakR["0-5"],totalAnak)}%</span></div>
-    <div class="stat-row" style="background:rgba(16,185,129,0.1)"><span class="sr-l">🧒 Anak 6–12 th</span><span class="sr-v" style="color:#6ee7b7">${anakR["6-12"]}</span><span class="sr-p" style="color:#6ee7b7">${pct(anakR["6-12"],totalAnak)}%</span></div>
-    <div class="stat-row" style="background:rgba(233,69,96,0.1)"><span class="sr-l">🧑 Anak 13–17 th</span><span class="sr-v" style="color:#fda4af">${anakR["13-17"]}</span><span class="sr-p" style="color:#fda4af">${pct(anakR["13-17"],totalAnak)}%</span></div>
-  `)}
+  <!-- Drill-down panel -->
+  <div class="drill" id="drillPanel"></div>
 
-  <!-- ══ B. SECTION ══ -->
+  <!-- Progress bar + pill summary -->
+  <div class="card" style="background:rgba(16,185,129,0.07);border-color:rgba(16,185,129,0.2);padding:12px 14px">
+    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
+      <span style="color:rgba(255,255,255,0.4)">${totalIsi} respons · ${belum} belum</span>
+      <span style="font-weight:700;color:#6ee7b7">${pctTotal}% dari ${GRAND}</span>
+    </div>
+    <div class="bar-track" style="height:8px;margin-bottom:9px">
+      <div class="bar-fill" style="width:${pct(total,GRAND)}%;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div>
+    </div>
+    <div class="pills">
+      <span class="pill" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7">✓ ${total} ikut</span>
+      <span class="pill" style="background:rgba(233,69,96,0.12);border:1px solid rgba(233,69,96,0.25);color:#fda4af">✕ ${totalTidak} tidak</span>
+      <span class="pill" style="background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.25);color:#f7c948">? ${belum} belum</span>
+      <span class="pill" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.45)">${totalPeserta} pax · ${totalDewasa} dws · ${totalAnak} anak</span>
+    </div>
+  </div>
+
+  <!-- SECTION PROGRESS -->
   <div class="sec-div">Progress per Section</div>
   <div class="card" style="background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.2)">
     <div class="card-title" style="color:#c084fc">🏢 Pendaftaran per Section</div>
@@ -444,243 +450,161 @@ function render(data){
       const daftar=perSection[sec]||0;
       const p=Math.min(pct(daftar,target),100);
       const color=p>=100?"#6ee7b7":p>=60?"#f7c948":"#fda4af";
-      const normNik=v=>String(v).replace(/^0+/,'').trim();
-      const sudahNikSet=new Set(data.map(r=>normNik(r[2])));
-      // Sudah daftar & ikut di section ini
       const orang=dataIkut.filter(r=>r[3]===sec);
-      // Sudah daftar tapi tidak ikut di section ini
       const orangTidak=dataTidak.filter(r=>r[3]===sec);
-      // Belum daftar di section ini (dari MASTER)
       const belumSec=MASTER.filter(k=>k.sec===sec&&!sudahNikSet.has(normNik(k.noreg)));
       const secId='sec-'+sec.replace(/\W/g,'');
-
-      const sudahRows=orang.length===0?`<div class="empty">Belum ada pendaftar ikut</div>`:
+      const sudahRows=orang.length===0?`<div class="empty">Belum ada</div>`:
         orang.map((r,i)=>`
-          <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
             <span style="font-size:10px;color:rgba(255,255,255,0.22);width:18px">${i+1}</span>
-            <div style="flex:1">
-              <div style="font-size:12px;font-weight:700">${r[1]}</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px">${r[28]} · ${kaosLabel(r)} · ${r[11]} org</div>
-            </div>
+            <div style="flex:1"><div style="font-size:12px;font-weight:700">${r[1]}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px">${r[28]==='Ikut Bus Panitia'?'🚌':'🚗'} · ${kaosLabel(r)} · ${r[11]} org · ${r[5].replace('2026','').trim()}</div></div>
             <span class="badge" style="${kamarMap[r[1]]?bStyle[kamarMap[r[1]].tipe]:bStyle['k']}">${kamarMap[r[1]]?kamarMap[r[1]].lbl:'—'}</span>
           </div>`).join('');
-
       const tidakRows=orangTidak.length===0?'':
-        `<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(107,114,128,0.3)">
-          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">❌ Tidak ikut (${orangTidak.length})</div>
-          ${orangTidak.map((r,i)=>`
-            <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
-              <span style="font-size:10px;color:rgba(255,255,255,0.2);width:18px">${i+1}</span>
-              <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);flex:1">${r[1]}</span>
-              <span class="badge" style="background:rgba(107,114,128,0.15);border:1px solid rgba(107,114,128,0.3);color:rgba(255,255,255,0.4)">Tidak Ikut</span>
-            </div>`).join('')}
-        </div>`;
-
+        `<div class="divider"></div>
+         <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">✕ Tidak ikut (${orangTidak.length})</div>
+         ${orangTidak.map(r=>`<div style="font-size:11px;color:rgba(255,255,255,0.4);padding:3px 0">✕ ${r[1]}</div>`).join('')}`;
       const belumRows=belumSec.length===0?'':
-        `<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(233,69,96,0.2)">
-          <div style="font-size:10px;font-weight:700;color:#fda4af;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">❌ Belum isi form (${belumSec.length})</div>
-          ${belumSec.map((k,i)=>`
-            <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(233,69,96,0.08)">
-              <span style="font-size:10px;color:rgba(255,255,255,0.22);width:18px">${i+1}</span>
-              <div style="flex:1">
-                <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.7)">${k.name}</div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px">NIK: ${k.noreg}</div>
-              </div>
-              <span class="badge" style="background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);color:#fda4af">Belum</span>
-            </div>`).join('')}
-        </div>`;
-
+        `<div class="divider"></div>
+         <div style="font-size:9px;font-weight:700;color:#fda4af;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⚠️ Belum isi (${belumSec.length})</div>
+         ${belumSec.map((k,i)=>`
+           <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(233,69,96,0.07)">
+             <span style="font-size:11px;color:rgba(255,255,255,0.55);font-weight:600">${k.name}</span>
+             <span style="font-size:10px;color:rgba(255,255,255,0.2)">${k.noreg}</span>
+           </div>`).join('')}`;
       return `
         <div class="bar-wrap">
-          <div class="bar-top">
-            <span class="bl">${sec}</span>
-            <span class="bv" style="color:${color}">${daftar}/${target} <span style="font-size:10px;opacity:.6">(${p}%)</span></span>
-          </div>
-          <div class="bar-track" style="margin-bottom:6px"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div>
+          <div class="bar-top"><span class="bl">${sec}</span><span class="bv" style="color:${color}">${daftar}/${target} <span style="opacity:.6;font-size:10px">(${p}%)</span></span></div>
+          <div class="bar-track" style="margin-bottom:5px"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div>
         </div>
-        <div class="acc-item orang-acc" style="margin-bottom:10px;${belumSec.length>0?'border-color:rgba(233,69,96,0.2)':''}">
+        <div class="acc-item orang-acc" style="margin-bottom:10px${belumSec.length>0?';border-color:rgba(233,69,96,0.18)':''}">
           <div class="acc-header" id="h-${secId}" onclick="tog('${secId}')">
-            <span style="font-size:13px">👤</span>
+            <span style="font-size:12px">👤</span>
             <div style="flex:1">
-              <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6)">Tap untuk lihat detail</div>
+              <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5)">Detail anggota section</div>
               <div style="font-size:10px;margin-top:2px">
-                <span style="color:#6ee7b7">✅ ${orang.length} ikut</span>
-                ${orangTidak.length>0?`<span style="color:rgba(255,255,255,0.25)"> · </span><span style="color:rgba(255,255,255,0.4)">❌ ${orangTidak.length} tidak ikut</span>`:''}
-                ${belumSec.length>0?`<span style="color:rgba(255,255,255,0.25)"> · </span><span style="color:#fda4af">⚠️ ${belumSec.length} belum</span>`:''}
+                <span style="color:#6ee7b7">✅ ${orang.length}</span>
+                ${orangTidak.length>0?`<span style="color:rgba(255,255,255,0.2)"> · </span><span style="color:rgba(255,255,255,0.35)">✕ ${orangTidak.length}</span>`:''}
+                ${belumSec.length>0?`<span style="color:rgba(255,255,255,0.2)"> · </span><span style="color:#fda4af">⚠️ ${belumSec.length} belum</span>`:''}
               </div>
             </div>
             <span class="acc-chevron">▼</span>
           </div>
           <div class="acc-body" id="b-${secId}">
-            ${orang.length>0?`<div style="font-size:10px;font-weight:700;color:#6ee7b7;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">✅ Ikut tour (${orang.length})</div>`:''}
-            ${sudahRows}
-            ${tidakRows}
-            ${belumRows}
+            ${orang.length>0?`<div style="font-size:9px;font-weight:700;color:#6ee7b7;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">✅ Ikut Tour</div>`:''}
+            ${sudahRows}${tidakRows}${belumRows}
           </div>
         </div>`;
     }).join('')}
-    <div style="padding:10px 14px;background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.25);border-radius:10px;display:flex;justify-content:space-between;align-items:center">
-      <span style="font-weight:800;color:#f7c948;font-size:13px">Grand Total</span>
-      <span style="font-weight:900;color:#f7c948;font-size:14px">${total} / ${GRAND_TOTAL} (${pctTotal}%)</span>
+    <div style="padding:9px 13px;background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.2);border-radius:9px;display:flex;justify-content:space-between">
+      <span style="font-weight:800;color:#f7c948;font-size:12px">Grand Total</span>
+      <span style="font-weight:900;color:#f7c948;font-size:13px">${total} / ${GRAND} (${pctTotal}%)</span>
     </div>
   </div>
 
-  <!-- ══ C. TRANSPORTASI ══ -->
+  <!-- TRANSPORTASI -->
   <div class="sec-div">Transportasi</div>
-
-  ${acc('bus','bus-acc','🚌',`Kebutuhan Bus (Kap. ${BUS_CAPACITY})`,`${busCount} bus · ${pesertaBus} peserta · ${kursiKosong} kursi kosong`,`
-    <div class="mini-grid" style="margin-bottom:12px">
-      <div class="mini-card" style="background:rgba(59,130,246,0.14);border:1px solid rgba(59,130,246,0.25)"><div class="mn" style="color:#7ecfff">${busCount}</div><div class="ml">Bus Dibutuhkan</div></div>
-      <div class="mini-card" style="background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.25)"><div class="mn" style="color:#6ee7b7">${pesertaBus}</div><div class="ml">Peserta Naik Bus</div></div>
-      <div class="mini-card" style="background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.25)"><div class="mn" style="color:#f7c948">${kursiKosong}</div><div class="ml">Kursi Kosong</div></div>
-      <div class="mini-card" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25)"><div class="mn" style="color:#c084fc">${busCount*BUS_CAPACITY}</div><div class="ml">Total Kursi</div></div>
+  ${acc('bus','bus-acc','🚌',`Kebutuhan Bus (Kap. ${BUS_CAP})`,`${busCount} bus · ${pesertaBus} peserta · ${kursiKosong} kosong`,`
+    <div class="m2" style="margin-bottom:10px">
+      <div class="mc" style="background:rgba(59,130,246,0.14);border:1px solid rgba(59,130,246,0.2)"><div class="mn" style="color:#7ecfff">${busCount}</div><div class="ml">Bus</div></div>
+      <div class="mc" style="background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.2)"><div class="mn" style="color:#6ee7b7">${pesertaBus}</div><div class="ml">Peserta naik bus</div></div>
+      <div class="mc" style="background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.2)"><div class="mn" style="color:#f7c948">${kursiKosong}</div><div class="ml">Kursi kosong</div></div>
+      <div class="mc" style="background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.2)"><div class="mn" style="color:#ffb347">${total-naikBus}</div><div class="ml">Kend. sendiri</div></div>
     </div>
-    ${Array.from({length:busCount},(_,i)=>{
-      const terisi=i<Math.floor(pesertaBus/BUS_CAPACITY)?BUS_CAPACITY:(pesertaBus%BUS_CAPACITY||BUS_CAPACITY);
-      return `<div class="bar-wrap"><div class="bar-top"><span class="bl">🚌 Bus ${i+1}</span><span class="bv" style="color:#7ecfff">${terisi} terisi · ${BUS_CAPACITY-terisi} kosong</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(terisi,BUS_CAPACITY)}%;background:linear-gradient(90deg,#3b82f6,#6ee7b7)"></div></div></div>`;
-    }).join('')||'<div class="empty">Belum ada peserta bus</div>'}
-    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.07)">
-      <div class="card-title" style="color:rgba(255,255,255,0.3);margin-bottom:10px">📅 Pilihan Tanggal</div>
-      ${Object.entries(perTanggal).map(([k,v],i)=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:${CLR[i%CLR.length]}">${v} orang (${pct(v,total)}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,Math.max(...Object.values(perTanggal)))}%;background:${CLR[i%CLR.length]}"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>'}
-    </div>
-    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.07)">
-      <div class="card-title" style="color:rgba(255,255,255,0.3);margin-bottom:10px">🎫 Tipe Kehadiran</div>
-      ${Object.entries(perKehadiran).map(([k,v],i)=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:${CLR[(i+3)%CLR.length]}">${v} orang (${pct(v,total)}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,total)}%;background:${CLR[(i+3)%CLR.length]}"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>'}
-    </div>
+    ${Array.from({length:busCount},(_,i)=>{const t=i<Math.floor(pesertaBus/BUS_CAP)?BUS_CAP:(pesertaBus%BUS_CAP||BUS_CAP);return`
+      <div class="bar-wrap"><div class="bar-top"><span class="bl">🚌 Bus ${i+1}</span><span class="bv" style="color:#7ecfff">${t}/${BUS_CAP}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct(t,BUS_CAP)}%;background:linear-gradient(90deg,#3b82f6,#6ee7b7)"></div></div></div>`;}).join('')}
+    <div class="divider"></div>
+    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Pilihan Tanggal</div>
+    ${Object.entries(perTanggal).map(([k,v],i)=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">${k.replace('2026','').trim()}</span><span class="bv" style="color:${CLR[i]}">${v} · ${pct(v,total)}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,Math.max(...Object.values(perTanggal)))}%;background:${CLR[i]}"></div></div></div>`).join('') || '<div class="empty">Belum ada</div>'}
+    <div class="divider"></div>
+    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Tipe Kehadiran</div>
+    ${Object.entries(perKehadiran).map(([k,v],i)=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:${CLR[i+3]}">${v} · ${pct(v,total)}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,total)}%;background:${CLR[i+3]}"></div></div></div>`).join('') || '<div class="empty">Belum ada</div>'}
   `,true)}
 
-  <!-- ══ D. KAMAR ══ -->
+  <!-- AKOMODASI -->
   <div class="sec-div">Akomodasi</div>
-
   <div class="card" style="background:rgba(20,184,166,0.07);border-color:rgba(20,184,166,0.2)">
     <div class="card-title" style="color:#2dd4bf">🛏️ Kebutuhan Kamar Hotel</div>
-    <!-- Ringkasan angka -->
-    <div class="mini-grid" style="margin-bottom:12px">
-      <div class="mini-card" style="background:rgba(20,184,166,0.16);border:1px solid rgba(20,184,166,0.25)"><div class="mn" style="color:#2dd4bf">${km.totalKamar}</div><div class="ml">Total Kamar</div></div>
-      <div class="mini-card" style="background:rgba(251,146,60,0.14);border:1px solid rgba(251,146,60,0.25)"><div class="mn" style="color:#fb923c">${km.kamarKeluarga}</div><div class="ml">Keluarga</div><div class="mp" style="color:#fb923c">${pct(km.kamarKeluarga,km.totalKamar)}%</div></div>
-      <div class="mini-card" style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.22)"><div class="mn" style="color:#f9a8d4">${km.kamarSolo}</div><div class="ml">Solo (Wanita)</div><div class="mp" style="color:#f9a8d4">${pct(km.kamarSolo,km.totalKamar)}%</div></div>
-      <div class="mini-card" style="background:rgba(99,102,241,0.14);border:1px solid rgba(99,102,241,0.25)"><div class="mn" style="color:#a5b4fc">${km.kamarSharing}</div><div class="ml">Sharing</div><div class="mp" style="color:#a5b4fc">${pct(km.kamarSharing,km.totalKamar)}%</div></div>
+    <div class="m2" style="margin-bottom:10px">
+      <div class="mc" style="background:rgba(20,184,166,0.16);border:1px solid rgba(20,184,166,0.25)"><div class="mn" style="color:#2dd4bf">${km.totalKamar}</div><div class="ml">Total Kamar</div></div>
+      <div class="mc" style="background:rgba(251,146,60,0.14);border:1px solid rgba(251,146,60,0.25)"><div class="mn" style="color:#fb923c">${km.kamarKeluarga}</div><div class="ml">Keluarga · ${pct(km.kamarKeluarga,km.totalKamar)}%</div></div>
+      <div class="mc" style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.22)"><div class="mn" style="color:#f9a8d4">${km.kamarSolo}</div><div class="ml">Solo · ${pct(km.kamarSolo,km.totalKamar)}%</div></div>
+      <div class="mc" style="background:rgba(99,102,241,0.14);border:1px solid rgba(99,102,241,0.25)"><div class="mn" style="color:#a5b4fc">${km.kamarSharing}</div><div class="ml">Sharing · ${pct(km.kamarSharing,km.totalKamar)}%</div></div>
     </div>
-    <!-- Bar proporsi -->
-    <div style="height:12px;border-radius:8px;overflow:hidden;display:flex;margin-bottom:16px">
-      <div style="width:${pct(km.kamarKeluarga,km.totalKamar)}%;background:linear-gradient(90deg,#f97316,#fb923c)"></div>
-      <div style="width:${pct(km.kamarSolo,km.totalKamar)}%;background:linear-gradient(90deg,#db2777,#f9a8d4)"></div>
-      <div style="width:${pct(km.kamarSharing,km.totalKamar)}%;background:linear-gradient(90deg,#6366f1,#a5b4fc)"></div>
+    <div style="height:10px;border-radius:6px;overflow:hidden;display:flex;margin-bottom:14px">
+      <div style="width:${pct(km.kamarKeluarga,km.totalKamar)}%;background:#f97316"></div>
+      <div style="width:${pct(km.kamarSolo,km.totalKamar)}%;background:#db2777"></div>
+      <div style="width:${pct(km.kamarSharing,km.totalKamar)}%;background:#6366f1"></div>
     </div>
-
-    <!-- Drill-down: Kamar Keluarga -->
-    ${acc('km-keluarga','kamar-keluarga-acc','👨‍👩‍👧',`Kamar Keluarga`,`${km.kamarKeluarga} kamar · 1 karyawan = 1 kamar`,`
-      ${Object.entries(km.breakdown).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
-        <div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:#fb923c">${v} kamar (${pct(v,km.kamarKeluarga)}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,km.kamarKeluarga)}%;background:#fb923c"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>'}
-      <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07)">
-        ${km.keluarga.map((r,i)=>`
-          <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-            <span style="font-size:10px;color:rgba(255,255,255,0.25);width:18px">${i+1}</span>
-            <div style="flex:1"><div style="font-size:12px;font-weight:700">${r[1]}</div><div style="font-size:10px;color:rgba(255,255,255,0.38)">${shortSec(r[3])}</div></div>
-            <span class="badge" style="background:rgba(251,146,60,0.18);border:1px solid rgba(251,146,60,0.3);color:#fb923c">${r[9]} dws · ${r[10]} anak</span>
-          </div>`).join('')||'<div class="empty">Belum ada</div>'}
-      </div>
-    `)}
-
-    <!-- Drill-down: Kamar Solo -->
-    ${km.kamarSolo>0?acc('km-solo','kamar-solo-acc','👩','Kamar Solo',`${km.kamarSolo} kamar · Wanita, tidak digabung`,
-      km.soloFixed.map(r=>`
-        <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.15);border-radius:8px">
-          <span style="font-size:20px">👩</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:700">${r[1]}</div><div style="font-size:10px;color:rgba(255,255,255,0.38)">${r[3]}</div></div>
-          <span class="badge" style="background:rgba(236,72,153,0.18);border:1px solid rgba(236,72,153,0.3);color:#f9a8d4">1 Kamar</span>
-        </div>`).join('')):''}
-
-    <!-- Drill-down: Kamar Sharing -->
-    ${acc('km-sharing','kamar-sharing-acc','👥','Kamar Sharing',`${km.kamarSharing} kamar · ${km.sharingPool.length} orang · ${km.kosongSharing} slot kosong`,`
-      ${km.sharingRooms.map((room,i)=>{
-        const isi=room.members.length,kosong=ROOM_CAPACITY-isi,isFull=kosong===0;
-        return `<div class="room-block" style="${!room.same?'border-color:rgba(247,201,72,0.28)':''}">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:6px;flex-wrap:wrap">
-            <span style="font-size:13px;font-weight:800;color:#a5b4fc">🛏️ Kamar ${i+1}</span>
-            <div style="display:flex;gap:5px">
+    ${acc('km-k','km-k-acc','👨‍👩‍👧','Kamar Keluarga',`${km.kamarKeluarga} kamar`,`
+      ${Object.entries(km.breakdown).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:#fb923c">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,km.kamarKeluarga)}%;background:#fb923c"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>'}
+      <div class="divider"></div>
+      ${km.keluarga.map((r,i)=>`
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <span style="font-size:10px;color:rgba(255,255,255,0.2);width:18px">${i+1}</span>
+          <div style="flex:1"><div style="font-size:12px;font-weight:700">${r[1]}</div><div style="font-size:10px;color:rgba(255,255,255,0.38)">${shortSec(r[3])}</div></div>
+          <span class="badge" style="background:rgba(251,146,60,0.18);border:1px solid rgba(251,146,60,0.3);color:#fb923c">${r[9]} dws · ${r[10]} anak</span>
+        </div>`).join('')||'<div class="empty">Belum ada</div>'}`)}
+    ${km.kamarSolo>0?acc('km-s','km-s-acc','👩','Kamar Solo',`${km.kamarSolo} kamar · wanita tanpa keluarga`,km.soloFixed.map(r=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:8px;background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.15);border-radius:8px">
+        <span style="font-size:18px">👩</span>
+        <div style="flex:1"><div style="font-size:12px;font-weight:700">${r[1]}</div><div style="font-size:10px;color:rgba(255,255,255,0.38)">${r[3]}</div></div>
+      </div>`).join('')):''}
+    ${acc('km-sh','km-sh-acc','👥','Kamar Sharing',`${km.kamarSharing} kamar · ${km.kosongSharing} slot kosong`,
+      km.sharingRooms.map((room,i)=>{
+        const isi=room.members.length,kosong=ROOM_CAP-isi,isFull=kosong===0;
+        return`<div class="room-block" style="${!room.same?'border-color:rgba(247,201,72,0.28)':''}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-wrap:wrap;gap:5px">
+            <span style="font-size:12px;font-weight:800;color:#a5b4fc">🛏️ Kamar ${i+1}</span>
+            <div style="display:flex;gap:4px">
               <span class="badge" style="${!room.same?'background:rgba(247,201,72,0.12);border:1px solid rgba(247,201,72,0.3);color:#f7c948':'background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);color:#a5b4fc'}">${room.same?'1 SECTION':'LINTAS'}</span>
-              <span class="badge" style="${isFull?'background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.28);color:#6ee7b7':'background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.25);color:#f7c948'}">${isi}/${ROOM_CAPACITY}${isFull?' Full':` +${kosong}kosong`}</span>
+              <span class="badge" style="${isFull?'background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.28);color:#6ee7b7':'background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.25);color:#f7c948'}">${isi}/${ROOM_CAP}${isFull?' Full':` · ${kosong} kosong`}</span>
             </div>
           </div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:8px;font-style:italic">${room.label}</div>
-          <div class="bar-track" style="margin-bottom:8px;height:5px"><div class="bar-fill" style="width:${pct(isi,ROOM_CAPACITY)}%;background:${isFull?'#6ee7b7':'#a5b4fc'}"></div></div>
-          ${room.members.map((r,j)=>`
-            <div class="room-person">
-              <span style="font-size:10px;color:rgba(255,255,255,0.22);width:16px">${j+1}</span>
-              <span style="font-size:12px;font-weight:700;flex:1">${r[1]}</span>
-              <span style="font-size:10px;color:rgba(255,255,255,0.32)">${shortSec(r[3])}</span>
-            </div>`).join('')}
-          ${kosong>0?Array.from({length:kosong},()=>`<div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.03)"><span style="font-size:11px;color:rgba(255,255,255,0.15);font-style:italic">— slot kosong</span></div>`).join(''):''}
-        </div>`;
-      }).join('')||'<div class="empty">Belum ada</div>'}
-    `)}
+          <div style="font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:6px;font-style:italic">${room.label}</div>
+          <div class="bar-track" style="margin-bottom:7px;height:4px"><div class="bar-fill" style="width:${pct(isi,ROOM_CAP)}%;background:${isFull?'#6ee7b7':'#a5b4fc'}"></div></div>
+          ${room.members.map((r,j)=>`<div class="room-person"><span style="font-size:10px;color:rgba(255,255,255,0.2);width:14px">${j+1}</span><span style="font-size:12px;font-weight:700;flex:1">${r[1]}</span><span style="font-size:10px;color:rgba(255,255,255,0.3)">${shortSec(r[3])}</span></div>`).join('')}
+          ${kosong>0?Array.from({length:kosong},()=>`<div style="padding:3px 0"><span style="font-size:10px;color:rgba(255,255,255,0.13);font-style:italic">— slot kosong</span></div>`).join(''):''}
+        </div>`;}).join('')||'<div class="empty">Belum ada</div>')}
   </div>
 
-  <!-- ══ E. KAOS ══ -->
+  <!-- KAOS -->
   <div class="sec-div">Kaos</div>
-
   ${acc('kaos','sec-acc','👕','Ukuran & Model Kaos',`${perLengan["Lengan Pendek"]||0} pendek · ${perLengan["Lengan Panjang"]||0} panjang`,`
-    <!-- Ringkasan lengan -->
-    <div class="mini-grid" style="margin-bottom:14px">
-      <div class="mini-card" style="background:rgba(233,69,96,0.1);border:1px solid rgba(233,69,96,0.22)">
-        <div class="mn" style="color:#fda4af">${perLengan["Lengan Pendek"]||0}</div>
-        <div class="ml">Lengan Pendek</div>
-        <div class="mp" style="color:#fda4af">${pct(perLengan["Lengan Pendek"]||0,total)}%</div>
-      </div>
-      <div class="mini-card" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.22)">
-        <div class="mn" style="color:#c084fc">${perLengan["Lengan Panjang"]||0}</div>
-        <div class="ml">Lengan Panjang</div>
-        <div class="mp" style="color:#c084fc">${pct(perLengan["Lengan Panjang"]||0,total)}%</div>
-      </div>
+    <div class="m2" style="margin-bottom:12px">
+      <div class="mc" style="background:rgba(233,69,96,0.1);border:1px solid rgba(233,69,96,0.22)"><div class="mn" style="color:#fda4af">${perLengan["Lengan Pendek"]||0}</div><div class="ml">Lengan Pendek · ${pct(perLengan["Lengan Pendek"]||0,total)}%</div></div>
+      <div class="mc" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.22)"><div class="mn" style="color:#c084fc">${perLengan["Lengan Panjang"]||0}</div><div class="ml">Lengan Panjang · ${pct(perLengan["Lengan Panjang"]||0,total)}%</div></div>
     </div>
+    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Detail per Lengan + Ukuran</div>
+    ${(()=>{const mx=Math.max(...Object.values(perKaos),1);return Object.entries(perKaos).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`
+      <div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:${CLR[i%CLR.length]}">${v} <span style="opacity:.6;font-size:10px">(${pct(v,total)}%)</span></span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct(v,mx)}%;background:${CLR[i%CLR.length]}"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>';})()}`)}
 
-    <!-- Summary gabungan Lengan + Ukuran -->
-    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Detail Lengan + Ukuran</div>
-    ${(()=>{
-      const perKaos = {};
-      dataIkut.forEach(r => {
-        const lengan = getLengan(r);
-        const size   = getSize(r);
-        if (!lengan || !size) return;
-        const key = `${lengan} ${size}`;
-        perKaos[key] = (perKaos[key]||0) + 1;
-      });
-      const maxKaos = Math.max(...Object.values(perKaos), 1);
-      return Object.entries(perKaos)
-        .sort((a,b) => b[1]-a[1])
-        .map(([k,v], i) => `
-          <div class="bar-wrap">
-            <div class="bar-top">
-              <span class="bl">${k}</span>
-              <span class="bv" style="color:${CLR[i%CLR.length]}">${v} orang <span style="opacity:.6;font-size:10px">(${pct(v,total)}%)</span></span>
-            </div>
-            <div class="bar-track"><div class="bar-fill" style="width:${pct(v,maxKaos)}%;background:${CLR[i%CLR.length]}"></div></div>
-          </div>`).join('') || '<div class="empty">Belum ada data</div>';
-    })()}
-  `)}
-
-  <!-- ══ F. DATA PENDAFTAR ══ -->
+  <!-- SEMUA PENDAFTAR -->
   <div class="sec-div">Data Pendaftar</div>
-
-  ${acc('all-pendaftar','sec-acc','📋',`Semua Pendaftar`,`${total} orang terdaftar · tap untuk expand`,
+  ${acc('all','sec-acc','📋','Semua Pendaftar',`${data.length} orang · tap untuk expand`,
     data.map((r,i)=>{
-      const km_info=kamarMap[r[1]]||{tipe:'k',lbl:'—'};
-      return `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:11px;margin-bottom:7px">
-        <div style="font-size:13px;font-weight:800;margin-bottom:7px">${i+1}. ${r[1]}</div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:rgba(255,255,255,0.38)">Section</span><span style="font-size:11px;font-weight:600;text-align:right;max-width:60%">${r[3]}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:rgba(255,255,255,0.38)">Tanggal</span><span style="font-size:11px;font-weight:600;color:#f7c948">${r[5]}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:rgba(255,255,255,0.38)">Transport</span><span style="font-size:11px;font-weight:600">${r[28]}</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:11px;color:rgba(255,255,255,0.38)">Kamar</span><span class="badge" style="${bStyle[km_info.tipe]}">${km_info.lbl}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:rgba(255,255,255,0.38)">Kaos</span><span style="font-size:11px;font-weight:600">${kaosLabel(r)}</span></div>
-        <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:rgba(255,255,255,0.38)">Peserta</span><span style="font-size:12px;font-weight:800;color:#f7c948">${r[11]} orang</span></div>
-      </div>`;
-    }).join('')
-  )}
-
+      const isIkut=!r[32]||r[32]==="Ya"||r[32]==="";
+      const ki=kamarMap[r[1]]||{tipe:'k',lbl:'—'};
+      return`<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,${isIkut?'0.07':'0.04'});border-radius:9px;padding:10px;margin-bottom:7px${!isIkut?';opacity:.55':''}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:13px;font-weight:800">${i+1}. ${r[1]}</div>
+          <span class="badge" style="${isIkut?'background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7':'background:rgba(233,69,96,0.15);border:1px solid rgba(233,69,96,0.3);color:#fda4af'}">${isIkut?'Ikut':'Tidak'}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 10px">
+          <div style="font-size:10px;color:rgba(255,255,255,0.35)">${shortSec(r[3])}</div>
+          <div style="font-size:10px;color:#f7c948;font-weight:700">${r[5].replace('2026','').trim()}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.45)">${r[28]==='Ikut Bus Panitia'?'🚌 Bus':'🚗 Sendiri'}</div>
+          <div style="font-size:10px;font-weight:800;color:#f7c948">${r[11]} orang</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.45)">${kaosLabel(r)}</div>
+          <span class="badge" style="${bStyle[ki.tipe]};font-size:9px">${ki.lbl}</span>
+        </div>
+      </div>`;}).join(''))}
   `;
 }
-
 loadData();
 </script>
 </body>
