@@ -76,6 +76,27 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
 .success p{font-size:13px;color:rgba(255,255,255,0.65);line-height:2.2;margin-bottom:24px}
 .success p strong{color:white;font-weight:800}
 .btn-reset{background:linear-gradient(90deg,#a855f7,#3b82f6);color:white;border:none;border-radius:12px;padding:12px 32px;font-weight:800;cursor:pointer;font-size:14px;font-family:'Poppins',sans-serif;letter-spacing:0.5px}
+/* ── MODAL KONFIRMASI ── */
+.konfir-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.konfir-overlay.show{display:flex}
+.konfir-panel{background:linear-gradient(160deg,#1a1535,#0f1225);border:1px solid rgba(255,255,255,0.12);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:24px 20px 32px;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:88vh;overflow-y:auto}
+.konfir-overlay.show .konfir-panel{transform:translateY(0)}
+.konfir-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.konfir-icon{font-size:28px}
+.konfir-title{font-size:16px;font-weight:800;color:white}
+.konfir-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+.konfir-row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.konfir-row:last-child{border-bottom:none}
+.konfir-emoji{font-size:16px;width:22px;flex-shrink:0;margin-top:1px}
+.konfir-label{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:3px;letter-spacing:.5px;text-transform:uppercase}
+.konfir-value{font-size:13px;color:white;font-weight:600;line-height:1.5}
+.konfir-anak{font-size:12px;color:rgba(255,255,255,0.55);margin-top:4px;padding-left:8px;border-left:2px solid rgba(255,255,255,0.1)}
+.konfir-footer{display:flex;gap:10px;margin-top:20px}
+.konfir-btn-ubah{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.7);font-size:13px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .15s}
+.konfir-btn-ubah:hover{background:rgba(255,255,255,0.08)}
+.konfir-btn-ok{flex:2;padding:12px;border-radius:12px;border:none;background:linear-gradient(90deg,#10b981,#059669);color:white;font-size:13px;font-weight:800;cursor:pointer;font-family:'Poppins',sans-serif;transition:opacity .15s}
+.konfir-btn-ok:hover{opacity:.9}
+.konfir-btn-ok:disabled{opacity:.5;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -235,7 +256,7 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
     <div class="missing" id="missing"></div>
 
     <div class="btn-wrap">
-      <button class="btn-submit" onclick="submitForm()">DAFTAR SEKARANG 🚌</button>
+      <button class="btn-submit" onclick="bukaKonfirmasi()">DAFTAR SEKARANG 🚌</button>
     </div>
     </div><!-- /form-detail -->
 
@@ -252,23 +273,45 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
   </div>
 </div>
 
+<!-- ── MODAL KONFIRMASI ── -->
+<div id="konfirModal" class="konfir-overlay" onclick="tutupKonfirmasi(event)">
+  <div class="konfir-panel" id="konfirPanel">
+    <div class="konfir-header">
+      <span class="konfir-icon">📋</span>
+      <div>
+        <div class="konfir-title">Cek Data Sebelum Daftar</div>
+        <div class="konfir-sub">Pastikan semua data sudah benar</div>
+      </div>
+    </div>
+    <div class="konfir-body" id="konfirBody"></div>
+    <div class="konfir-footer">
+      <button class="konfir-btn-ubah" onclick="tutupKonfirmasi()">✏️ Ubah Data</button>
+      <button class="konfir-btn-ok" id="konfirBtnOk" onclick="doSubmit()">✅ Ya, Daftarkan!</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxsFAX3pNyTnv5RgU9cJ089a6Rp-znaLzi-Pj0qF1DDQCW20GN6UZVRC178QDwNENgQ/exec";
+const SHEET_ID = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
 
-// ── MASTER LIST (auto-fill nama + section dari NIK) ───────────────────────
-const MASTER = [
+// ── MASTER LIST — diload dari Google Sheet master_karyawan ────────
+// Fallback ke data lokal jika Sheet tidak bisa diakses
+let MASTER = [];
+let masterLoaded = false;
+
+// Data lokal sebagai fallback
+const MASTER_FALLBACK = [
   {name:"CAHYA TRI KARTIKA L.",noreg:"9709655",sec:"Dept. Head"},
   {name:"IWAN KUSTIAWAN",noreg:"9305558",sec:"CCR & Ordering NR Engine Sec"},
   {name:"HENDRO SUJATMIKO",noreg:"0313690",sec:"CCR & Ordering NR Engine Sec"},
   {name:"MUHAMMAD IQBAL AWALUDIN",noreg:"2335761",sec:"CCR & Ordering NR Engine Sec"},
   {name:"DAYUDYA LUTHFIARASTY",noreg:"2132735",sec:"CCR & Ordering NR Engine Sec"},
   {name:"ERWIN WIJAYA",noreg:"1527966",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"AGUS NURCAHYO",noreg:"1324345",sec:"CCR & Ordering NR Engine Sec"},
   {name:"AMRI FEBRIANSYAH",noreg:"0819022",sec:"CCR & Ordering NR Engine Sec"},
   {name:"SUHARDI",noreg:"0313792",sec:"CCR & Ordering NR Engine Sec"},
   {name:"DIKRY FUZI RAHMAN",noreg:"2537991",sec:"CCR & Ordering NR Engine Sec"},
   {name:"MUHAMMAD LATIFUL ANAM",noreg:"2437275",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"RISYAD MALADI",noreg:"1931364",sec:"CCR & Ordering NR Engine Sec"},
   {name:"HAMBZAH MUBAROQ",noreg:"1628898",sec:"CCR & Ordering NR Engine Sec"},
   {name:"DEDE SURYADI",noreg:"0718509",sec:"CCR & Ordering NR Engine Sec"},
   {name:"SUSI APSARI",noreg:"1931369",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
@@ -283,7 +326,6 @@ const MASTER = [
   {name:"EKA DARMAWAN",noreg:"1021334",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
   {name:"BABAM HADI PERMANA",noreg:"0415367",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
   {name:"TOTO SUGIARTO",noreg:"0010339",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
-  {name:"MOHAMAD ALI AKBAR",noreg:"2537982",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
   {name:"EGI NUGRAHA",noreg:"1223214",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
   {name:"DENI PRATAMA",noreg:"1020968",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
   {name:"PURNOMO",noreg:"1222867",sec:"CCR Plant #2 Prod Indication & Admin Sec"},
@@ -296,65 +338,86 @@ const MASTER = [
   {name:"IKHSAN SAPUTRA",noreg:"1020932",sec:"CCR Vehicle Plant #1 Sec"},
   {name:"AHMAD YANI",noreg:"0414443",sec:"CCR Vehicle Plant #1 Sec"},
   {name:"EMDI ERWIN",noreg:"0010015",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"I S M A I L",noreg:"9305614",sec:"CCR Vehicle Plant #1 Sec"},
-  {name:"IMAM BAEDOWI",noreg:"1221928",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"ISMAIL",noreg:"9305614",sec:"CCR Vehicle Plant #1 Sec"},
+  {name:"IMAMUDIN",noreg:"1221928",sec:"CCR Vehicle Plant #1 Sec"},
   {name:"WALUYO",noreg:"1020636",sec:"CCR Vehicle Plant #1 Sec"},
   {name:"CHAIRUL AMAN PUJAKESUMA",noreg:"1020967",sec:"CCR Vehicle Plant #1 Sec"},
   {name:"DRIGA SUKOCO",noreg:"0010039",sec:"CCR Vehicle Plant #1 Sec"},
   {name:"ALDO REFAIZA AISDYA",noreg:"1931375",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"LOQMAN ARIFIN",noreg:"1424951",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"LOQMAN",noreg:"1424951",sec:"Component Ordering & Inventory Mgt. Sec"},
   {name:"YANYAN MULYANA",noreg:"1324157",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"DONI ARIYONARTA",noreg:"0415152",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"DONI ARIYANTO",noreg:"0415152",sec:"Component Ordering & Inventory Mgt. Sec"},
   {name:"MOCHAMAD SOLEH",noreg:"0212808",sec:"Component Ordering & Inventory Mgt. Sec"},
   {name:"ARI HERYAWAN",noreg:"0010684",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"R. SENJA SONIA NUR ASYIAH",noreg:"1223279",sec:"Component Ordering & Inventory Mgt. Sec"},
+  {name:"SENJA",noreg:"1223279",sec:"Component Ordering & Inventory Mgt. Sec"},
   {name:"RIZZAL FIRDAUS",noreg:"0516498",sec:"Component Ordering & Inventory Mgt. Sec"},
-  {name:"HERU FARDYANTO",noreg:"9709390",sec:"Warehouse Plant #3 Sec"},
-  {name:"ADNAN KOHAR",noreg:"0415766",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"MASRIYO",noreg:"2335743",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"RIYAN ARIF MUSTOFA",noreg:"1425685",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"MOHAMAD SAEFULLOH",noreg:"0010341",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"DAFA RIZKIDA HERDIAN",noreg:"2336205",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"FUAD HABIB",noreg:"2538145",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"DODY KURNIAWAN",noreg:"1425792",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ARYO BIMANTORO",noreg:"1020499",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ZULPENDI",noreg:"0010036",sec:"Warehouse KRW Plant & Steel Opr Sec"},
   {name:"A. FATKHU SURUR",noreg:"2234560",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ARIS FIRDAUS",noreg:"1324660",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"M IBNU FAJAR",noreg:"2335970",sec:"Warehouse KRW Plant & Steel Opr Sec"},
   {name:"BIAN DWI GUSTAMA",noreg:"2336492",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"FIXNU SEBRIYANTO",noreg:"2538165",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"M.IBNU FAJAR",noreg:"2335970",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"NASRUL",noreg:"1222864",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"DODY KURNIAWAN",noreg:"1425792",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ZULPENDI",noreg:"0010036",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"RIYAN ARIF MUSTOFA",noreg:"1425685",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ADNAN KOHAR",noreg:"0415766",sec:"Warehouse KRW Plant & Steel Opr Sec"},
+  {name:"ARYO BIMANTORO",noreg:"1020499",sec:"Warehouse KRW Plant & Steel Opr Sec"},
   {name:"AHMAD MUHARAM",noreg:"0414843",sec:"Warehouse KRW Plant & Steel Opr Sec"},
-  {name:"ADE SUNARYA",noreg:"0415099",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"JAELANI",noreg:"9709148",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"RAHMAT GALIH PRIYONO",noreg:"1221926",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"MAGHFIROTUN KHASANAH",noreg:"1121612",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"DADANG",noreg:"9406307",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"MOHAMAD SAEFULLOH",noreg:"0010341",sec:"Warehouse KRW Plant & Steel Opr Sec"},
   {name:"MOESTAFA ABADI",noreg:"9405759",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"SUTARNO",noreg:"0818979",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"MAGHFIROTUN KHASANAH",noreg:"1121612",sec:"Warehouse Ordering & Engineering Sec"},
   {name:"KUSWANDI",noreg:"0414713",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"GALIH PRIBADI",noreg:"2538241",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"KHOERUL ANAM",noreg:"2537981",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"MUHAMMAD HERI FAUZI",noreg:"2639294",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"RIFKA PANJI YOGA PRASETYO",noreg:"2538242",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"ANDIKA ADITIA",noreg:"2335668",sec:"Warehouse Ordering & Engineering Sec"},
   {name:"AMIR",noreg:"1021225",sec:"Warehouse Ordering & Engineering Sec"},
-  {name:"TOMY SAPUTRA",noreg:"1020469",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"SUTARNO",noreg:"0818979",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"JAELANI",noreg:"9709148",sec:"Warehouse Ordering & Engineering Sec"},
+  {name:"HERU FARDYANTO",noreg:"9709390",sec:"Warehouse Plant #3 Sec"},
+  {name:"ARIF KURNIAWAN",noreg:"0010813",sec:"Warehouse Plant #3 Sec"},
+  {name:"MUHAMAD RASWA",noreg:"1426744",sec:"Warehouse Plant #3 Sec"},
   {name:"BAGUS USWANTO",noreg:"2132168",sec:"Warehouse Plant #3 Sec"},
   {name:"JHAMES ANDERSON",noreg:"2336020",sec:"Warehouse Plant #3 Sec"},
-  {name:"SEPTI SETYANINGSIH",noreg:"1527153",sec:"Warehouse Plant #3 Sec"},
-  {name:"ARIEF KURNIAWAN",noreg:"0010813",sec:"Warehouse Plant #3 Sec"},
-  {name:"MAEZAROFI",noreg:"0414549",sec:"Warehouse Plant #3 Sec"},
-  {name:"BIN BINTANG PINAYUNGAN",noreg:"1527796",sec:"Warehouse Plant #3 Sec"},
-  {name:"SURAHMAN",noreg:"1527798",sec:"Warehouse Plant #3 Sec"},
-  {name:"JAENUN",noreg:"1426724",sec:"Warehouse Plant #3 Sec"},
   {name:"ANDY RIYATNO",noreg:"0212749",sec:"Warehouse Plant #3 Sec"},
-  {name:"PUJI PANGESTU",noreg:"1930783",sec:"Warehouse Plant #3 Sec"},
-  {name:"MUHAMAD RASWA",noreg:"1426744",sec:"Warehouse Plant #3 Sec"},
-  {name:"MURDIYANTO",noreg:"1323859",sec:"Warehouse Plant #3 Sec"},
-  {name:"MOHAMAD ROHMAT",noreg:"1020113",sec:"Warehouse Plant #3 Sec"},
+  {name:"SURAHMAN",noreg:"1527798",sec:"Warehouse Plant #3 Sec"},
 ];
+
+// Load master dari Google Sheet saat halaman dibuka
+async function loadMasterFromSheet() {
+  const nikInput = document.getElementById('nik');
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=master_karyawan`;
+    const res  = await fetch(url);
+    const txt  = await res.text();
+    const json = JSON.parse(txt.substring(47).slice(0,-2));
+    const rows = (json.table.rows || []).filter(r => r.c && r.c[1] && r.c[1].v);
+    if (rows.length > 0) {
+      MASTER = rows.map(r => ({
+        noreg: String(r.c[1] ? r.c[1].v : ''),
+        name : String(r.c[2] ? r.c[2].v : ''),
+        sec  : String(r.c[3] ? r.c[3].v : ''),
+      })).filter(k => k.noreg && k.name);
+      masterLoaded = true;
+      console.log(`Master loaded from Sheet: ${MASTER.length} karyawan`);
+    } else {
+      throw new Error('Empty');
+    }
+  } catch(e) {
+    // Fallback ke data lokal
+    MASTER = MASTER_FALLBACK;
+    masterLoaded = true;
+    console.log('Master fallback to local data');
+  }
+  // Enable input noreg setelah master siap
+  if (nikInput) {
+    nikInput.disabled = false;
+    nikInput.placeholder = 'Nomor registrasi 7 digit';
+  }
+}
+
+// Disable input noreg sementara sampai master siap
+window.addEventListener('DOMContentLoaded', () => {
+  const nikInput = document.getElementById('nik');
+  if (nikInput) {
+    nikInput.disabled = true;
+    nikInput.placeholder = 'Memuat data karyawan...';
+  }
+  loadMasterFromSheet();
+});
 
 const normNik = v => String(v).replace(/^0+/,'').trim();
 
@@ -619,13 +682,11 @@ function updateSummary() {
   s.innerHTML = html;
 }
 
-async function submitForm() {
+// ── Buka modal konfirmasi (validasi dulu) ─────────────────────────
+function bukaKonfirmasi() {
   const nama = document.getElementById("nama").value;
   const noHp = document.getElementById("noHp").value;
   const dept = document.getElementById("dept").value;
-  const nik = document.getElementById("nik").value;
-  const catatan = document.getElementById("catatan").value;
-  const namaIstri = document.getElementById("nama-istri") ? document.getElementById("nama-istri").value : "-";
 
   const fieldMap = { "err-nama":"Nama Lengkap", "err-noHp":"No. HP / WhatsApp", "err-dept":"Section", "err-tanggal":"Pilihan Tanggal", "err-kehadiran":"Kehadiran", "err-transport":"Cara Berangkat", "err-lengan-k":"Model Lengan Kaos", "err-size-k":"Ukuran Kaos" };
   const checks = { "err-nama":!!nama, "err-noHp":!!noHp, "err-dept":!!dept, "err-tanggal":!!state.tanggal, "err-kehadiran":!!state.kehadiran, "err-transport":!!state.transport, "err-lengan-k":!!state.lenganK, "err-size-k":!!state.sizeK };
@@ -644,17 +705,98 @@ async function submitForm() {
     el.scrollIntoView({behavior:"smooth",block:"center"});
     return;
   }
-
   document.getElementById("missing").style.display = "none";
-  const btn = document.querySelector(".btn-submit");
-  btn.textContent = "Mengirim... ⏳";
+
+  // Bangun isi konfirmasi
+  const total = 1 + state.jumlahIstri + state.jumlahAnak;
+  const namaIstri = document.getElementById("nama-istri") ? document.getElementById("nama-istri").value : "-";
+  const catatan = document.getElementById("catatan").value;
+  const nik = document.getElementById("nik").value;
+
+  // Data anak
+  let anakHtml = '';
+  if (state.jumlahAnak > 0) {
+    anakHtml = state.anak.map((a,i) =>
+      `<div class="konfir-anak">Anak ${i+1}: <strong>${a.nama||'?'}</strong> · ${a.usia||'?'} tahun</div>`
+    ).join('');
+  }
+
+  // Keluarga detail
+  let keluargaDetail = state.kehadiran;
+  if (state.kehadiran === 'Bawa Keluarga') {
+    keluargaDetail = `Bawa Keluarga — <strong>${total} orang</strong>`;
+    if (state.jumlahIstri > 0) keluargaDetail += `<div class="konfir-anak">Istri: <strong>${namaIstri||'-'}</strong></div>`;
+    if (anakHtml) keluargaDetail += anakHtml;
+  }
+
+  document.getElementById('konfirBody').innerHTML = `
+    <div class="konfir-row">
+      <div class="konfir-emoji">👤</div>
+      <div><div class="konfir-label">Karyawan</div>
+      <div class="konfir-value">${nama}<br><span style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:400">${dept}</span></div></div>
+    </div>
+    <div class="konfir-row">
+      <div class="konfir-emoji">📅</div>
+      <div><div class="konfir-label">Tanggal Tour</div>
+      <div class="konfir-value" style="color:#f7c948">${state.tanggal}</div></div>
+    </div>
+    <div class="konfir-row">
+      <div class="konfir-emoji">🎫</div>
+      <div><div class="konfir-label">Kehadiran</div>
+      <div class="konfir-value">${keluargaDetail}</div></div>
+    </div>
+    <div class="konfir-row">
+      <div class="konfir-emoji">🚗</div>
+      <div><div class="konfir-label">Transportasi</div>
+      <div class="konfir-value" style="color:#93c5fd">${state.transport}</div></div>
+    </div>
+    <div class="konfir-row">
+      <div class="konfir-emoji">👕</div>
+      <div><div class="konfir-label">Kaos</div>
+      <div class="konfir-value" style="color:#6ee7b7">${state.lenganK} / Size ${state.sizeK}</div></div>
+    </div>
+    <div class="konfir-row">
+      <div class="konfir-emoji">📱</div>
+      <div><div class="konfir-label">No. HP</div>
+      <div class="konfir-value">${noHp}</div></div>
+    </div>
+    ${catatan && catatan !== '-' ? `
+    <div class="konfir-row">
+      <div class="konfir-emoji">📝</div>
+      <div><div class="konfir-label">Catatan</div>
+      <div class="konfir-value" style="font-weight:400;color:rgba(255,255,255,0.6)">${catatan}</div></div>
+    </div>` : ''}
+  `;
+
+  const modal = document.getElementById('konfirModal');
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function tutupKonfirmasi(e) {
+  // Tutup hanya jika klik overlay (bukan panel)
+  if (e && e.target !== document.getElementById('konfirModal')) return;
+  document.getElementById('konfirModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ── Submit setelah konfirmasi ──────────────────────────────────────
+async function doSubmit() {
+  const btn = document.getElementById('konfirBtnOk');
+  btn.textContent = 'Mengirim... ⏳';
   btn.disabled = true;
 
+  const nama = document.getElementById("nama").value;
+  const noHp = document.getElementById("noHp").value;
+  const dept = document.getElementById("dept").value;
+  const nik  = document.getElementById("nik").value;
+  const catatan = document.getElementById("catatan").value;
+  const namaIstri = document.getElementById("nama-istri") ? document.getElementById("nama-istri").value : "-";
   const total = 1 + state.jumlahIstri + state.jumlahAnak;
   const anakSummary = state.anak.map((a,i)=>`Anak ${i+1}: ${a.nama||'-'} (${a.usia||'?'} th)`).join(" | ");
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbxsFAX3pNyTnv5RgU9cJ089a6Rp-znaLzi-Pj0qF1DDQCW20GN6UZVRC178QDwNENgQ/exec", {
+    await fetch(GAS_URL, {
       method:"POST", mode:"no-cors",
       headers:{"Content-Type":"text/plain"},
       body: JSON.stringify({
@@ -667,6 +809,10 @@ async function submitForm() {
         "Catatan":catatan||"-", "Ikut Tour":"Ya"
       })
     });
+    // Tutup modal
+    document.getElementById('konfirModal').classList.remove('show');
+    document.body.style.overflow = '';
+    // Tampilkan success
     document.getElementById("formArea").style.display = "none";
     document.getElementById("successDetail").innerHTML =
       `Nama: <strong>${nama}</strong><br>
@@ -679,10 +825,12 @@ async function submitForm() {
     window.scrollTo({top:0, behavior:"smooth"});
   } catch(e) {
     alert("Gagal mengirim. Periksa koneksi internet.");
-    btn.textContent = "DAFTAR SEKARANG 🚌";
+    btn.textContent = '✅ Ya, Daftarkan!';
     btn.disabled = false;
   }
 }
+
+async function submitForm() { bukaKonfirmasi(); } // backward compat
 
 function resetForm() {
   state = { tanggal:"", kehadiran:"", transport:"", lenganK:"", sizeK:"", jumlahIstri:0, jumlahAnak:0, anak:[] };
