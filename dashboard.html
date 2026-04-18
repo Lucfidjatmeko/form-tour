@@ -237,18 +237,18 @@ select.f-input{cursor:pointer}
 const SHEET_ID = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
 const GRAND    = 98;
 const SOLO     = "dayudya luthfiarasty";
-const BUS_DEF  = 50;
+const BUS_DEF  = 59;
 const ROOM_DEF = 4;
 
 const TARGETS = {
   "Dept. Head":1,
-  "CCR & Ordering NR Engine Sec":13,
+  "CCR & Ordering NR Engine Sec":14,
   "CCR Plant #2 Prod Indication & Admin Sec":17,
   "CCR Vehicle Plant #1 Sec":13,
   "Component Ordering & Inventory Mgt. Sec":8,
   "Warehouse KRW Plant & Steel Opr Sec":16,
   "Warehouse Ordering & Engineering Sec":15,
-  "Warehouse Plant #3 Sec":14
+  "Warehouse Plant #3 Sec":15
 };
 
 const CLR = ["#4d8ef8","#22d07a","#f5a623","#f472b6","#00d4b4","#a78bfa","#f05252","#fb923c"];
@@ -412,7 +412,7 @@ function calcSummary(data) {
 
   const naikBus   = dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").length;
   const pesertaBus= sum(dataIkut.filter(r=>r[28]==="Ikut Bus Panitia").map(r=>parseInt(r[11])||1));
-  const kendaraanSendiri = dataIkut.filter(r=>r[28]==="Kendaraan Sendiri").length;
+  const kendaraanSendiri = dataIkut.filter(r=>r[28]&&!String(r[28]).toLowerCase().includes('bus')).length;
 
   const perSection = cnt(dataIkut.map(r=>r[3]));
   const perTanggal = cnt(dataIkut.map(r=>r[5]));
@@ -471,8 +471,7 @@ function generateAlert(s) {
   const topTgl = Object.entries(s.perTanggal).sort((a,b)=>b[1]-a[1]);
   if(topTgl.length>0){
     const [tglTop, cntTop] = topTgl[0];
-    const runnerUp = topTgl[1] ? ` · #2: ${topTgl[1][0].replace('2026','').trim()} (${topTgl[1][1]})` : '';
-    alerts.push({type:'blue', icon:'📅', msg:`<span class="at">TANGGAL TERPILIH:</span> <strong>${tglTop}</strong> unggul dengan <strong>${cntTop} suara</strong>${runnerUp}.`});
+    alerts.push({type:'blue', icon:'📅', msg:`<span class="at">TANGGAL TERPILIH:</span> <strong>${tglTop}</strong> — ${cntTop} suara terbanyak.`});
   }
 
   return alerts;
@@ -866,7 +865,8 @@ function render(data) {
             <span style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Total Declined</span>
             <span style="font-size:18px;font-weight:900;color:#f05252">${s.totalTidak} orang</span>
           </div>`;
-          Object.entries(bySec).sort((a,b)=>b[1].length-a[1].length).forEach(([sec,rows])=>{
+          const SECT_ORDER_K=Object.keys(TARGETS);
+        Object.entries(bySec).sort((a,b)=>{const si=SECT_ORDER_K.indexOf(a[0]),sj=SECT_ORDER_K.indexOf(b[0]);return(si<0?999:si)-(sj<0?999:sj);}).forEach(([sec,rows])=>{
             h+=`<div style="margin-bottom:14px">
               <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;margin-bottom:6px;border-bottom:1px solid var(--border)">
                 <span style="font-size:11px;font-weight:700;color:var(--text2)">${sec}</span>
@@ -928,7 +928,7 @@ function render(data) {
       title:`🚗 Kendaraan Sendiri — Detail`,
       color:'#fb923c',
       html:(()=>{
-        const kList=s.dataIkut.filter(r=>r[28]==='Kendaraan Sendiri');
+        const kList=s.dataIkut.filter(r=>r[28]&&!String(r[28]).toLowerCase().includes('bus'));
         const totalPaxKend=kList.reduce((a,r)=>a+(parseInt(r[11])||1),0);
         const bySec={};
         kList.forEach(r=>{const sc=r[3]||'?';if(!bySec[sc])bySec[sc]=[];bySec[sc].push(r);});
@@ -1040,7 +1040,7 @@ function render(data) {
       <div class="hero-card" id="hc-bus" onclick="openDrill('bus')">
         <div class="hero-num" style="color:#fb923c">${s.kendaraanSendiri}</div>
         <div class="hero-lbl">Kend. Sendiri</div>
-        <div class="hero-sub">${s.dataIkut.filter(r=>r[28]==='Kendaraan Sendiri').reduce((a,r)=>a+(parseInt(r[11])||1),0)} pax</div>
+        <div class="hero-sub">${s.dataIkut.filter(r=>r[28]&&!String(r[28]).toLowerCase().includes('bus')).reduce((a,r)=>a+(parseInt(r[11])||1),0)} pax</div>
         <div class="hero-arr">▼</div>
       </div>
       <div class="hero-card" id="hc-tidak" onclick="openDrill('tidak')">
