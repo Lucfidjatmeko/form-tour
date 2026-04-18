@@ -466,8 +466,13 @@ function generateAlert(s) {
   if(busInfo.kosong < 5 && busInfo.kosong >= 0) alerts.push({type:'red', icon:'🚌', msg:`<span class="at">BUS HAMPIR PENUH:</span> Sisa ${busInfo.kosong} kursi dari ${busInfo.busDibut} bus. Pertimbangkan tambah armada.`});
   else if(busInfo.kosong > 30) alerts.push({type:'blue', icon:'🚌', msg:`<span class="at">BUS:</span> ${busInfo.kosong} kursi masih kosong dari ${busInfo.busDibut} bus. Bisa dioptimalkan.`});
 
-  const hotelInfo = calcHotel(s.totalPax, window._roomCap||ROOM_DEF);
-  if(hotelInfo.occupancy > 95) alerts.push({type:'amber', icon:'🏨', msg:`<span class="at">HOTEL PENUH:</span> Occupancy ${hotelInfo.occupancy}% — hampir tidak ada ruang. Perlu konfirmasi ekstra dengan hotel.`});
+  // Highlight tanggal terbanyak
+  const topTgl = Object.entries(s.perTanggal).sort((a,b)=>b[1]-a[1]);
+  if(topTgl.length>0){
+    const [tglTop, cntTop] = topTgl[0];
+    const runnerUp = topTgl[1] ? ` · #2: ${topTgl[1][0].replace('2026','').trim()} (${topTgl[1][1]})` : '';
+    alerts.push({type:'blue', icon:'📅', msg:`<span class="at">TANGGAL TERPILIH:</span> <strong>${tglTop}</strong> unggul dengan <strong>${cntTop} suara</strong>${runnerUp}.`});
+  }
 
   return alerts;
 }
