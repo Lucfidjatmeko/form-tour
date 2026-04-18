@@ -235,20 +235,20 @@ select.f-input{cursor:pointer}
 //  CONFIG
 // ═══════════════════════════════════════════════════════════
 const SHEET_ID = "1uy7Oa5iPPdNgoe85Dr4EqprhPBODZoXTkBEaogxpvMo";
-const GRAND    = 98;
+const GRAND    = 97;
 const SOLO     = "dayudya luthfiarasty";
-const BUS_DEF  = 50;
+const BUS_DEF  = 59;
 const ROOM_DEF = 4;
 
 const TARGETS = {
   "Dept. Head":1,
-  "CCR & Ordering NR Engine Sec":14,
+  "CCR & Ordering NR Engine Sec":13,
   "CCR Plant #2 Prod Indication & Admin Sec":17,
   "CCR Vehicle Plant #1 Sec":13,
   "Component Ordering & Inventory Mgt. Sec":8,
   "Warehouse KRW Plant & Steel Opr Sec":16,
   "Warehouse Ordering & Engineering Sec":15,
-  "Warehouse Plant #3 Sec":14
+  "Warehouse Plant #3 Sec":15
 };
 
 const CLR = ["#4d8ef8","#22d07a","#f5a623","#f472b6","#00d4b4","#a78bfa","#f05252","#fb923c"];
@@ -261,7 +261,6 @@ const MASTER = [
   {name:"DAYUDYA LUTHFIARASTY",noreg:"2132735",sec:"CCR & Ordering NR Engine Sec"},
   {name:"ERWIN WIJAYA",noreg:"1527966",sec:"CCR & Ordering NR Engine Sec"},
   {name:"AGUS NURCAHYO",noreg:"1324345",sec:"CCR & Ordering NR Engine Sec"},
-  {name:"RIZAL SUGIYANTO",noreg:"1527143",sec:"CCR & Ordering NR Engine Sec"},
   {name:"AMRI FEBRIANSYAH",noreg:"0819022",sec:"CCR & Ordering NR Engine Sec"},
   {name:"SUHARDI",noreg:"0313792",sec:"CCR & Ordering NR Engine Sec"},
   {name:"DIKRY FUZI RAHMAN",noreg:"2537991",sec:"CCR & Ordering NR Engine Sec"},
@@ -658,6 +657,14 @@ function applyFilter() {
       const qMatch = !q||name.includes(q)||section.toLowerCase().includes(q);
       return statusMatch&&secMatch&&qMatch;
     });
+    // Sort: urutan section sesuai TARGETS, lalu nama alphabetical
+    const SECT_ORDER=Object.keys(TARGETS);
+    filtered.sort((a,b)=>{
+      if(Array.isArray(a))return 0; // belum rows skip
+      const si=SECT_ORDER.indexOf(a[3]||''),sj=SECT_ORDER.indexOf(b[3]||'');
+      if(si!==sj)return(si<0?999:si)-(sj<0?999:sj);
+      return(a[1]||'').localeCompare(b[1]||'','id');
+    });
   }
 
   const tbody = document.getElementById('tblBody');
@@ -716,21 +723,16 @@ function render(data) {
 
   // Hero drill content
   const drillContent = {
+    // ─── 1. IKUT TOUR — tanggal + transport ───────────────────
     ikut: {
       title:`✅ ${s.totalIkut} Ikut Tour — Detail`,
       color:'#22d07a',
       html:`
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-          ${Object.entries(s.perTanggal).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>`
-            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;text-align:center">
-              <div style="font-size:20px;font-weight:900;color:${CLR[i]}">${v}</div>
-              <div style="font-size:9px;color:var(--text3);margin-top:3px">${k.replace('2026','').trim()}</div>
-            </div>`).join('')}
-          ${Object.entries(s.perKehadiran).map(([k,v],i)=>`
-            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;text-align:center">
-              <div style="font-size:20px;font-weight:900;color:${CLR[i+3]}">${v}</div>
-              <div style="font-size:9px;color:var(--text3);margin-top:3px">${k}</div>
-            </div>`).join('')}
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+          <div style="background:rgba(34,208,122,0.1);border:1px solid rgba(34,208,122,0.2);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:20px;font-weight:900;color:#22d07a">${s.totalIkut}</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:3px">Total Ikut</div>
+          </div>
           <div style="background:rgba(77,142,248,0.12);border:1px solid rgba(77,142,248,0.2);border-radius:8px;padding:10px;text-align:center">
             <div style="font-size:20px;font-weight:900;color:#7ecfff">${s.naikBus}</div>
             <div style="font-size:9px;color:var(--text3);margin-top:3px">Naik Bus</div>
@@ -739,8 +741,20 @@ function render(data) {
             <div style="font-size:20px;font-weight:900;color:#fb923c">${s.kendaraanSendiri}</div>
             <div style="font-size:9px;color:var(--text3);margin-top:3px">Kend. Sendiri</div>
           </div>
-        </div>`
+        </div>
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Pilihan Tanggal</div>
+        ${Object.entries(s.perTanggal).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>{
+          const mx=Math.max(...Object.values(s.perTanggal));
+          return`<div style="margin-bottom:9px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
+              <span style="font-size:12px;color:var(--text2)">${k}</span>
+              <span style="font-size:12px;font-weight:800;color:${CLR[i]}">${v} orang · ${pct(v,s.totalIkut)}%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct(v,mx)}%;background:${CLR[i]}"></div></div>
+          </div>`;}).join('')}`
     },
+
+    // ─── 2. TOTAL PAX — dewasa/anak/balita ────────────────────
     pax: {
       title:`👥 ${s.totalPax} Total Peserta`,
       color:'#f7c948',
@@ -761,9 +775,9 @@ function render(data) {
         </div>
         <div class="donut-wrap">
           ${donutSVG([
-            {val:s.paxDewasaActual,sub:'dewasa',pct:pct(s.paxDewasaActual,s.totalPax),color:'#4d8ef8'},
-            {pct:pct(s.paxAnak,s.totalPax),color:'#f7c948'},
-            {pct:pct(s.paxBalita,s.totalPax),color:'#f472b6'},
+            {val:s.paxDewasaActual,sub:'dewasa',pct:pct(s.paxDewasaActual,s.totalPax||1),color:'#4d8ef8'},
+            {pct:pct(s.paxAnak,s.totalPax||1),color:'#f7c948'},
+            {pct:pct(s.paxBalita,s.totalPax||1),color:'#f472b6'},
           ],110)}
           <div class="donut-legend">
             ${[['Dewasa ≥12',s.paxDewasaActual,'#4d8ef8'],['Anak 5–11',s.paxAnak,'#f7c948'],['Balita <5',s.paxBalita,'#f472b6']].map(([l,v,c])=>`
@@ -771,73 +785,161 @@ function render(data) {
                 <div class="leg-dot" style="background:${c}"></div>
                 <span class="leg-label">${l}</span>
                 <span class="leg-val" style="color:${c}">${v}</span>
-                <span class="leg-pct">${pct(v,s.totalPax)}%</span>
+                <span class="leg-pct">${pct(v,s.totalPax||1)}%</span>
               </div>`).join('')}
           </div>
         </div>`
     },
+
+    // ─── 3. PENDING — nama per section + noreg ────────────────
     belum: {
-      title:`⚠️ ${s.belum} Belum Respons`,
+      title:`⚠️ ${s.belum} Belum Isi Form`,
       color:'#f5a623',
       html: s.belum===0
         ?`<div class="empty">🎉 Semua sudah konfirmasi!</div>`
-        :Object.entries(Object.fromEntries(Object.keys(TARGETS).map(sec=>[sec,MASTER.filter(k=>k.sec===sec&&!sudahNikSet.has(normN(k.noreg)))])))
-          .filter(([,v])=>v.length>0).sort((a,b)=>b[1].length-a[1].length)
-          .map(([sec,list])=>`
-            <div style="margin-bottom:12px">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-                <span style="font-size:11px;color:var(--text2)">${sec}</span>
-                <span class="badge bdg-a">${list.length} orang</span>
+        :(()=>{
+          const totalBelumAll=MASTER.filter(k=>!sudahNikSet.has(normN(k.noreg))).length;
+          let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+            <span style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Total Belum Isi</span>
+            <span style="font-size:18px;font-weight:900;color:#f5a623">${totalBelumAll} orang</span>
+          </div>`;
+          Object.entries(TARGETS).forEach(([sec,tgt])=>{
+            const list=MASTER.filter(k=>k.sec===sec&&!sudahNikSet.has(normN(k.noreg)));
+            if(!list.length)return;
+            h+=`<div style="margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;margin-bottom:6px;border-bottom:1px solid var(--border)">
+                <span style="font-size:11px;font-weight:700;color:var(--text2)">${sec}</span>
+                <span class="badge bdg-a">${list.length} belum</span>
               </div>
-              ${list.map(k=>`<div style="font-size:11px;color:rgba(255,255,255,0.55);padding:4px 0 4px 10px;border-left:2px solid rgba(245,166,35,0.3)">⚠️ ${k.name}</div>`).join('')}
-            </div>`).join('')
+              ${list.map(k=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0 5px 10px;border-left:2px solid rgba(245,166,35,0.3);border-bottom:1px solid rgba(255,255,255,0.04)">
+                <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.75)">${k.name}</span>
+                <span style="font-size:10px;color:var(--text3);font-family:monospace">${k.noreg}</span>
+              </div>`).join('')}
+            </div>`;
+          });
+          return h;
+        })()
     },
+
+    // ─── 4. DECLINED — nama per section ──────────────────────
     tidak: {
       title:`❌ ${s.totalTidak} Tidak Ikut`,
       color:'#f05252',
       html: s.totalTidak===0
         ?`<div class="empty">Belum ada yang tidak ikut</div>`
-        :s.dataTidak.map((r,i)=>`
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-            <span style="font-size:10px;color:var(--text3);width:18px">${i+1}</span>
-            <div style="flex:1"><div style="font-size:12px;font-weight:700">${r[1]}</div><div style="font-size:10px;color:var(--text3)">${shortS(r[3])}</div></div>
-            <span class="badge bdg-r">Tidak Ikut</span>
-          </div>`).join('')
+        :(()=>{
+          const bySec={};
+          s.dataTidak.forEach(r=>{const sc=r[3]||'?';if(!bySec[sc])bySec[sc]=[];bySec[sc].push(r);});
+          let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+            <span style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Total Declined</span>
+            <span style="font-size:18px;font-weight:900;color:#f05252">${s.totalTidak} orang</span>
+          </div>`;
+          Object.entries(bySec).sort((a,b)=>b[1].length-a[1].length).forEach(([sec,rows])=>{
+            h+=`<div style="margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;margin-bottom:6px;border-bottom:1px solid var(--border)">
+                <span style="font-size:11px;font-weight:700;color:var(--text2)">${sec}</span>
+                <span class="badge bdg-r">${rows.length} orang</span>
+              </div>
+              ${rows.map(r=>`<div style="display:flex;align-items:center;padding:5px 0 5px 10px;border-left:2px solid rgba(240,82,82,0.35);border-bottom:1px solid rgba(255,255,255,0.04)">
+                <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.75);flex:1">${r[1]}</span>
+              </div>`).join('')}
+            </div>`;
+          });
+          return h;
+        })()
     },
+
+    // ─── 5. STATUS PER SECTION — confirmed/pending/declined ──
     kamar: {
-      title:`🏨 ${km.totalKamar} Kamar — Rincian`,
-      color:'#00d4b4',
-      html:`
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
-          <div style="text-align:center;padding:10px;background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.2);border-radius:8px">
-            <div style="font-size:20px;font-weight:900;color:#fb923c">${km.kamarKeluarga}</div>
-            <div style="font-size:9px;color:var(--text3);margin-top:3px">Keluarga</div>
+      title:`🏢 Status Kehadiran per Section`,
+      color:'#a78bfa',
+      html:(()=>{
+        let h=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+          <div style="background:rgba(34,208,122,0.1);border:1px solid rgba(34,208,122,0.2);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:20px;font-weight:900;color:#22d07a">${s.totalIkut}</div><div style="font-size:9px;color:var(--text3);margin-top:3px">Confirmed</div>
           </div>
-          <div style="text-align:center;padding:10px;background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.18);border-radius:8px">
-            <div style="font-size:20px;font-weight:900;color:#f9a8d4">${km.kamarSolo}</div>
-            <div style="font-size:9px;color:var(--text3);margin-top:3px">Solo</div>
+          <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:20px;font-weight:900;color:#f5a623">${s.belum}</div><div style="font-size:9px;color:var(--text3);margin-top:3px">Pending</div>
           </div>
-          <div style="text-align:center;padding:10px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);border-radius:8px">
-            <div style="font-size:20px;font-weight:900;color:#a5b4fc">${km.kamarSharing}</div>
-            <div style="font-size:9px;color:var(--text3);margin-top:3px">Sharing</div>
+          <div style="background:rgba(240,82,82,0.1);border:1px solid rgba(240,82,82,0.2);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:20px;font-weight:900;color:#f05252">${s.totalTidak}</div><div style="font-size:9px;color:var(--text3);margin-top:3px">Declined</div>
           </div>
-        </div>
-        <div style="font-size:11px;color:var(--text3)">Detail lengkap lihat bagian Akomodasi ↓</div>`
+        </div>`;
+        Object.entries(TARGETS).forEach(([sec,tgt])=>{
+          const confirmed=s.dataIkut.filter(r=>r[3]===sec).length;
+          const declined=s.dataTidak.filter(r=>r[3]===sec).length;
+          const pending=Math.max(0,tgt-confirmed-declined);
+          const pC=pct(confirmed,tgt),pD=pct(declined,tgt),pP=pct(pending,tgt);
+          h+=`<div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+              <span style="font-size:11px;font-weight:700;color:var(--text2)">${sec}</span>
+              <span style="font-size:10px;color:var(--text3)">${tgt} target</span>
+            </div>
+            <div style="display:flex;height:7px;border-radius:4px;overflow:hidden;margin-bottom:5px;background:rgba(255,255,255,0.05)">
+              <div style="width:${pC}%;background:#22d07a"></div>
+              <div style="width:${pP}%;background:#f5a623"></div>
+              <div style="width:${pD}%;background:#f05252"></div>
+            </div>
+            <div style="display:flex;gap:12px;font-size:10px;font-weight:700">
+              <span style="color:#22d07a">✓ ${confirmed}</span>
+              <span style="color:#f5a623">? ${pending}</span>
+              ${declined>0?`<span style="color:#f05252">✕ ${declined}</span>`:''}
+            </div>
+          </div>`;
+        });
+        return h;
+      })()
     },
+
+    // ─── 6. KENDARAAN SENDIRI — per section + pax ─────────────
     bus: {
-      title:`🚌 Kebutuhan Bus`,
-      color:'#4d8ef8',
-      html:`
-        <div id="busSimResultDrill"></div>
-        <script>
-          (function(){const b=calcBus(${s.pesertaBus},${BUS_DEF});
-          document.getElementById('busSimResultDrill').innerHTML=
-            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-            [['Bus dibutuhkan',b.busDibut,'#7ecfff'],['Peserta naik bus',s.pesertaBus,'#22d07a'],['Kursi kosong',b.kosong,'#f5a623'],['Occupancy',b.occupancy+'%','#4d8ef8']].map(([l,v,c])=>
-              '<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:'+c+'">'+v+'</div><div style="font-size:9px;color:var(--text3);margin-top:3px">'+l+'</div></div>').join('')+'</div>';
-          })()
-        <\/script>`
-    }
+      title:`🚗 Kendaraan Sendiri — Detail`,
+      color:'#fb923c',
+      html:(()=>{
+        const kList=s.dataIkut.filter(r=>r[28]==='Kendaraan Sendiri');
+        const totalPaxKend=kList.reduce((a,r)=>a+(parseInt(r[11])||1),0);
+        const bySec={};
+        kList.forEach(r=>{const sc=r[3]||'?';if(!bySec[sc])bySec[sc]=[];bySec[sc].push(r);});
+        let h=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+          <div style="background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.2);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:22px;font-weight:900;color:#fb923c">${s.kendaraanSendiri}</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:3px">Karyawan</div>
+          </div>
+          <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-size:22px;font-weight:900;color:#f5a623">${totalPaxKend}</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:3px">Total Pax</div>
+          </div>
+        </div>`;
+        Object.entries(bySec).sort((a,b)=>b[1].length-a[1].length).forEach(([sec,rows])=>{
+          const paxSec=rows.reduce((a,r)=>a+(parseInt(r[11])||1),0);
+          h+=`<div style="margin-bottom:13px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px;margin-bottom:6px;border-bottom:1px solid var(--border)">
+              <span style="font-size:11px;font-weight:700;color:var(--text2)">${sec}</span>
+              <div style="display:flex;gap:5px">
+                <span class="badge" style="background:rgba(251,146,60,0.15);color:#fb923c">${rows.length} kary</span>
+                <span class="badge" style="background:rgba(245,166,35,0.15);color:#f5a623">${paxSec} pax</span>
+              </div>
+            </div>
+            ${rows.map(r=>{
+              const jIstri=parseInt(r[7])||0;
+              const jAnak=parseInt(r[10])||0;
+              const namaIstri=r[8]&&r[8]!=='-'?r[8]:'';
+              let keluarga='Sendiri';
+              if(jIstri>0&&jAnak>0) keluarga=`Istri${namaIstri?' ('+namaIstri+')':''} + ${jAnak} anak`;
+              else if(jIstri>0) keluarga=`Istri${namaIstri?' ('+namaIstri+')':''}`;
+              else if(jAnak>0) keluarga=`${jAnak} anak`;
+              return`<div style="display:flex;align-items:center;gap:8px;padding:7px 0 7px 10px;border-left:2px solid rgba(251,146,60,0.35);border-bottom:1px solid rgba(255,255,255,0.04)">
+                <div style="flex:1">
+                  <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.85)">${r[1]}</div>
+                  <div style="font-size:9px;color:var(--text3);margin-top:2px">👨‍👩‍👧 ${keluarga}</div>
+                </div>
+                <span style="font-size:12px;font-weight:800;color:#f5a623">${r[11]} pax</span>
+              </div>`;}).join('')}
+          </div>`;
+        });
+        return h;
+      })()
+    },
   };
 
   // ── Populate section filter
@@ -898,15 +1000,15 @@ function render(data) {
         <div class="hero-arr">▼</div>
       </div>
       <div class="hero-card" id="hc-kamar" onclick="openDrill('kamar')">
-        <div class="hero-num" style="color:#00d4b4">${km.totalKamar}</div>
-        <div class="hero-lbl">Kamar</div>
-        <div class="hero-sub">${km.kamarKeluarga}K · ${km.kamarSharing}S · ${km.kamarSolo}Solo</div>
+        <div class="hero-num" style="color:#a78bfa">${Object.keys(TARGETS).length}</div>
+        <div class="hero-lbl">Per Section</div>
+        <div class="hero-sub">✓ ${s.totalIkut} · ? ${s.belum} · ✕ ${s.totalTidak}</div>
         <div class="hero-arr">▼</div>
       </div>
       <div class="hero-card" id="hc-bus" onclick="openDrill('bus')">
-        <div class="hero-num" style="color:#4d8ef8">${calcBus(s.pesertaBus,BUS_DEF).busDibut}</div>
-        <div class="hero-lbl">Bus</div>
-        <div class="hero-sub">${s.pesertaBus} peserta</div>
+        <div class="hero-num" style="color:#fb923c">${s.kendaraanSendiri}</div>
+        <div class="hero-lbl">Kend. Sendiri</div>
+        <div class="hero-sub">${s.dataIkut.filter(r=>r[28]==='Kendaraan Sendiri').reduce((a,r)=>a+(parseInt(r[11])||1),0)} pax</div>
         <div class="hero-arr">▼</div>
       </div>
       <div class="hero-card" id="hc-tidak" onclick="openDrill('tidak')">
