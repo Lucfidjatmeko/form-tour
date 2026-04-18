@@ -488,12 +488,38 @@ function hitungKamar(data) {
     const ch=overflow.slice(i,i+ROOM_DEF);
     sharingRooms.push({label:[...new Set(ch.map(r=>r[3]))].join(" + "),same:false,members:ch});
   }
+
+  // Breakdown + rekomendasi kamar berdasarkan usia anak nyata
   const breakdown={};
-  keluarga.forEach(r=>{const d=parseInt(r[9])||1,a=parseInt(r[10])||0,k=`${d} Dws${a>0?` + ${a} Anak`:''}`;breakdown[k]=(breakdown[k]||0)+1;});
+  const kamarRekom={"1 kamar":0,"2 kamar":0,"3 kamar":0};
+  keluarga.forEach(r=>{
+    const d=parseInt(r[9])||1,a=parseInt(r[10])||0;
+    const k=`${d} Dws${a>0?` + ${a} Anak`:''}`;
+    breakdown[k]=(breakdown[k]||0)+1;
+    // Hitung anak berdasarkan usia nyata (kolom M-Z = r[12]-r[27])
+    let anakDewasa=0,anakKecil=0;
+    for(let i=0;i<8;i++){
+      const n=r[12+i*2],u=parseInt(r[13+i*2]);
+      if(n&&n!=="-"&&!isNaN(u)){
+        if(u>=12) anakDewasa++;
+        else if(u>=5) anakKecil++;
+      }
+    }
+    // Efektif dewasa = dewasa form + anak >=12 (butuh tempat tidur sendiri)
+    const efDewasa=d+anakDewasa;
+    const totalPaxFam=parseInt(r[11])||d+a;
+    // Rekomendasi kamar
+    let rek=1;
+    if(efDewasa>=4||totalPaxFam>=7) rek=3;
+    else if(efDewasa>=3||totalPaxFam>=5||(efDewasa>=2&&anakKecil>=2)) rek=2;
+    kamarRekom[rek===1?"1 kamar":rek===2?"2 kamar":"3 kamar"]++;
+  });
+
   return{keluarga,soloFixed,sharingPool,sharingRooms,
     kamarKeluarga:keluarga.length,kamarSolo:soloFixed.length,kamarSharing:sharingRooms.length,
     totalKamar:keluarga.length+soloFixed.length+sharingRooms.length,
-    kosongSharing:sharingRooms.length*ROOM_DEF-sharingPool.length,breakdown};
+    kosongSharing:sharingRooms.length*ROOM_DEF-sharingPool.length,
+    breakdown,kamarRekom};
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1197,14 +1223,62 @@ function render(data) {
       <div style="width:${pct(km.kamarSharing,km.totalKamar)}%;background:#6366f1"></div>
     </div>
     ${acc('km-k','km-k-acc','👨‍👩‍👧','Kamar Keluarga',`${km.kamarKeluarga} kamar`,`
+      <!-- Rekomendasi kamar berdasarkan usia anak nyata -->
+      <div style="margin-bottom:12px;padding:11px 13px;background:rgba(0,212,180,0.08);border:1px solid rgba(0,212,180,0.2);border-radius:8px">
+        <div style="font-size:10px;font-weight:700;color:#2dd4bf;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Estimasi Kebutuhan Kamar (berdasarkan usia anak)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px">
+          <div style="background:rgba(34,208,122,0.1);border:1px solid rgba(34,208,122,0.2);border-radius:6px;padding:8px;text-align:center">
+            <div style="font-size:18px;font-weight:900;color:#22d07a">${km.kamarRekom['1 kamar']||0}</div>
+            <div style="font-size:8px;color:var(--text3);margin-top:2px">1 Kamar</div>
+          </div>
+          <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);border-radius:6px;padding:8px;text-align:center">
+            <div style="font-size:18px;font-weight:900;color:#f5a623">${km.kamarRekom['2 kamar']||0}</div>
+            <div style="font-size:8px;color:var(--text3);margin-top:2px">2 Kamar</div>
+          </div>
+          <div style="background:rgba(240,82,82,0.1);border:1px solid rgba(240,82,82,0.2);border-radius:6px;padding:8px;text-align:center">
+            <div style="font-size:18px;font-weight:900;color:#f05252">${km.kamarRekom['3 kamar']||0}</div>
+            <div style="font-size:8px;color:var(--text3);margin-top:2px">3 Kamar</div>
+          </div>
+        </div>
+        <div style="font-size:9px;color:var(--text3);line-height:1.6">
+          Anak ≥12 th dihitung sebagai dewasa (butuh tempat tidur sendiri).
+          <strong style="color:#f5a623">2 kamar</strong> direkomendasikan jika ada anak ≥12 th atau total pax ≥5.
+        </div>
+      </div>
+      <!-- Breakdown komposisi -->
+      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Komposisi Keluarga</div>
       ${Object.entries(km.breakdown).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar-wrap"><div class="bar-top"><span class="bl">${k}</span><span class="bv" style="color:#fb923c">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,km.kamarKeluarga)}%;background:#fb923c"></div></div></div>`).join('')||'<div class="empty">Belum ada</div>'}
       <div class="divider"></div>
-      ${km.keluarga.map((r,i)=>`
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
-          <span style="font-size:10px;color:var(--text3);width:18px">${i+1}</span>
-          <div style="flex:1"><div style="font-size:12px;font-weight:700">${r[1]}</div><div style="font-size:10px;color:var(--text3)">${shortS(r[3])}</div></div>
-          <span class="badge" style="background:rgba(251,146,60,0.18);border:1px solid rgba(251,146,60,0.3);color:#fb923c">${r[9]} dws · ${r[10]} anak</span>
-        </div>`).join('')||'<div class="empty">Belum ada</div>'}`)}
+      <!-- Detail per keluarga dengan usia anak -->
+      ${km.keluarga.map((r,i)=>{
+        let anakDewasa=0,anakKecil=0,anakBalita=0,detailAnak=[];
+        for(let j=0;j<8;j++){
+          const n=r[12+j*2],u=parseInt(r[13+j*2]);
+          if(n&&n!=="-"&&!isNaN(u)){
+            if(u>=12){anakDewasa++;detailAnak.push(`${n} (${u}th, dewasa)`);}
+            else if(u>=5){anakKecil++;detailAnak.push(`${n} (${u}th)`);}
+            else{anakBalita++;detailAnak.push(`${n} (${u}th, balita)`);}
+          }
+        }
+        const efDewasa=parseInt(r[9])+anakDewasa;
+        const totalPaxFam=parseInt(r[11])||0;
+        let rekKamar=1;
+        if(efDewasa>=4||totalPaxFam>=7) rekKamar=3;
+        else if(efDewasa>=3||totalPaxFam>=5||(efDewasa>=2&&anakKecil>=2)) rekKamar=2;
+        const rekColor=rekKamar===1?'#22d07a':rekKamar===2?'#f5a623':'#f05252';
+        return`<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:${detailAnak.length>0?'7px':'0'}">
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700">${r[1]}</div>
+              <div style="font-size:9px;color:var(--text3);margin-top:2px">${r[9]} dws · ${r[10]} anak · total ${r[11]} pax${anakDewasa>0?` · <span style="color:#f5a623">${anakDewasa} anak ≥12th</span>`:''}</div>
+            </div>
+            <div style="text-align:center;background:rgba(255,255,255,0.05);border-radius:6px;padding:5px 10px;border:1px solid ${rekColor}40">
+              <div style="font-size:14px;font-weight:900;color:${rekColor}">${rekKamar}</div>
+              <div style="font-size:7px;color:var(--text3)">kamar</div>
+            </div>
+          </div>
+          ${detailAnak.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px">${detailAnak.map(a=>`<span style="font-size:9px;padding:2px 7px;border-radius:4px;background:${a.includes('dewasa')?'rgba(245,166,35,0.12)':'rgba(255,255,255,0.05)'};border:1px solid ${a.includes('dewasa')?'rgba(245,166,35,0.3)':'rgba(255,255,255,0.08)'};color:${a.includes('dewasa')?'#f5a623':'var(--text3)'}">${a}</span>`).join('')}</div>`:''}
+        </div>`;}).join('')||'<div class="empty">Belum ada</div>'}`)}
     ${km.kamarSolo>0?acc('km-s','km-s-acc','👩','Kamar Solo',`${km.kamarSolo} kamar`,km.soloFixed.map(r=>`
       <div style="padding:8px;background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.15);border-radius:8px;margin-bottom:6px">
         <div style="font-size:12px;font-weight:700">${r[1]}</div>
